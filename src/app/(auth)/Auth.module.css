@@ -1,0 +1,108 @@
+.authContainer {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, #f8fafc, #e2e8f0);
+    font-family: 'Inter', sans-serif;
+}
+
+.authCard {
+    background: white;
+    padding: 3rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    width: 100%;
+    max-width: 440px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.brandName {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #0f172a;
+}
+
+.title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #020617;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.subtitle {
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.5rem;
+}
+
+.input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 0.875rem;
+    background: #0f172a;
+    color: white;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.submitBtn:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+}
+
+.footerText {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.footerLink {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.footerLink:hover {
+    text-decoration: underline;
+}

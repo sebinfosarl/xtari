@@ -1,0 +1,136 @@
+.adminContainer {
+    display: flex;
+    min-height: 100vh;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.sidebar {
+    width: 280px;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.brand {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #2563eb;
+    letter-spacing: -0.025em;
+    border-bottom: 2px solid #f8fafc;
+}
+
+.nav {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.875rem 1.25rem;
+    color: #64748b;
+    text-decoration: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 0.2s;
+}
+
+.navItem:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+/* Active state placeholder */
+.navItemActive {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 1.5rem 1rem;
+}
+
+.sidebarFooter {
+    padding: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.contentContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    height: 72px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.headerTitle {
+    font-weight: 600;
+    font-size: 1.125rem;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.userProfile:hover {
+    background: #f8fafc;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    background: #2563eb;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.content {
+    padding: 2.5rem;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}

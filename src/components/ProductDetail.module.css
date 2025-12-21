@@ -1,0 +1,165 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 6rem;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.imageSection {
+    background: #f4f4f5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.mainImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.infoSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.category {
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.price {
+    font-size: 2rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+}
+
+.actions {
+    margin-bottom: 2rem;
+}
+
+.addBtn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    transition: all 0.2s;
+}
+
+.addBtn:hover {
+    background: var(--color-primary-light);
+    transform: translateY(-2px);
+}
+
+.added {
+    background: #10b981;
+    /* Green */
+}
+
+.added:hover {
+    background: #059669;
+}
+
+.features {
+    display: flex;
+    gap: 2rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.upsellSection {
+    border-top: 1px solid var(--color-border);
+    padding-top: 4rem;
+}
+
+.sectionTitle {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+.upsellGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.upsellCard {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.upsellCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.upsellImage {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.upsellInfo {
+    padding: 1rem;
+}
+
+.upsellTitle {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.upsellPrice {
+    color: var(--color-primary);
+    font-weight: 700;
+}

@@ -1,0 +1,267 @@
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.statCard {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.statHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.iconWrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statTrend {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.625rem;
+    border-radius: 1rem;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.statLabel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.statValue {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+}
+
+/* Colors */
+.blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.indigo {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.emerald {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.orange {
+    background: #fff7ed;
+    color: #f97316;
+}
+
+.mainGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.tableSection,
+.cardSection {
+    background: white;
+    border-radius: 1.25rem;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.viewAllBtn {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #2563eb;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.table td {
+    padding: 1rem;
+    font-size: 0.9375rem;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.bold {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.pending {
+    background: #fff7ed;
+    color: #f97316;
+}
+
+.shipped {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.delivered {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.quickActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.actionBtn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-weight: 600;
+    text-align: left;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.actionBtn:hover {
+    background: white;
+    border-color: #cbd5e1;
+}
+
+.empty {
+    padding: 3rem;
+    text-align: center;
+    color: #94a3b8;
+}
+
+/* Forms (Used in subpages) */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.input,
+.textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-size: 0.9375rem;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: white;
+}
+
+.submitBtn {
+    padding: 0.875rem;
+    background: #0f172a;
+    color: white;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.imageCell {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.deleteBtn {
+    padding: 0.5rem;
+    color: #ef4444;
+    background: #fef2f2;
+    border-radius: 0.375rem;
+    cursor: pointer;
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "p1",
+    "title": "Canon PIXMA Pro-200 Wireless",
+    "description": "Professional photo printer with 8-color dye-based ink system for vibrant and accurate printing.",
+    "price": 599.99,
+    "category": "printers",
+    "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&q=80&w=800",
+    "featured": true
+  },
+  {
+    "id": "p2",
+    "title": "Ergonomic Mesh Office Chair",
+    "description": "High-back mesh chair with dynamic lumbar support and adjustable arms for all-day comfort.",
+    "price": 349,
+    "category": "office-furniture",
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=800",
+    "featured": true
+  },
+  {
+    "id": "p3",
+    "title": "Modern Walnut Desk",
+    "description": "Minimalist walnut writing desk with ample surface area and sleek metal legs.",
+    "price": 899,
+    "category": "office-furniture",
+    "image": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=800",
+    "featured": true
+  },
+  {
+    "id": "p4",
+    "title": "HP 67XL High Yield Black Ink",
+    "description": "Original HP Ink Cartridge providing up to 2x more prints vs standard.",
+    "price": 24.99,
+    "category": "ink-printers",
+    "image": "https://images.unsplash.com/photo-1549419163-1215b2447990?auto=format&fit=crop&q=80&w=800",
+    "featured": false
+  },
+  {
+    "id": "p5",
+    "title": "Geometric Gold Sculpture",
+    "description": "Abstract metal sculpture with a brushed gold finish, perfect for modern office decor.",
+    "price": 129.5,
+    "category": "home-deco",
+    "image": "https://images.unsplash.com/photo-1582298950005-4c07d30d9229?auto=format&fit=crop&q=80&w=800",
+    "featured": true
+  },
+  {
+    "id": "p6",
+    "title": "Mechanical Robot Building Kit",
+    "description": "Advanced building set for engineering enthusiasts. 500+ pieces with motor functions.",
+    "price": 89.99,
+    "category": "toys",
+    "image": "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?auto=format&fit=crop&q=80&w=800",
+    "featured": false
+  },
+  {
+    "id": "p7",
+    "title": "Oak 3-Drawer File Cabinet",
+    "description": "Solid oak mobile file cabinet with locking caster wheels and spacious drawers.",
+    "price": 219,
+    "category": "office-storage",
+    "image": "https://plus.unsplash.com/premium_photo-1663089688180-444ff0066e5d?auto=format&fit=crop&q=80&w=800",
+    "featured": false
+  },
+  {
+    "id": "vyoww2xrg",
+    "title": "hola",
+    "description": "Top product",
+    "price": 100,
+    "category": "printers",
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
+    "featured": false
+  }
+]
