@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson } from '@/lib/db';
-import { Eye, Truck, Calendar, Phone, Search, MapPin, Package } from 'lucide-react';
+import { Eye, Truck, Calendar, Phone, Search, MapPin, Package, CheckCircle, Circle, X } from 'lucide-react';
 import { createShipmentAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import DeliveryDialog from '@/components/DeliveryDialog';
@@ -95,17 +95,6 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                         <h2 className={styles.sectionTitle}>Delivery Management</h2>
                         <div className={styles.statTrend}>{filteredDeliveries.length} active deliveries</div>
                     </div>
-                    <div className="flex flex-wrap gap-2 w-full sm:w-auto items-center">
-                        <button
-                            onClick={handleBulkShip}
-                            disabled={isShippingBulk || selectedOrderIds.length === 0}
-                            className="btn btn-sm btn-primary"
-                            title="Export selected orders to Cathedis"
-                        >
-                            <Truck size={16} className={isShippingBulk ? 'animate-spin' : ''} />
-                            {isShippingBulk ? 'Shipping...' : `Ship (${selectedOrderIds.length})`}
-                        </button>
-                    </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-4">
@@ -154,6 +143,7 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                             <th>Customer</th>
                             <th>Destination</th>
                             <th>Shipping Status</th>
+                            <th>Delivery Note</th>
                             <th>Manage</th>
                         </tr>
                     </thead>
@@ -202,6 +192,21 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                                     )}
                                 </td>
                                 <td>
+                                    <div className="flex justify-center">
+                                        {order.deliveryNotePrinted ? (
+                                            <div className={`${styles.indicator} ${styles.indicatorPrinted}`} title="Delivery Note Printed">
+                                                <CheckCircle size={14} />
+                                                <span className="text-[10px]">PRINTED</span>
+                                            </div>
+                                        ) : (
+                                            <div className={`${styles.indicator} ${styles.indicatorPending}`} title="Not Printed">
+                                                <Circle size={14} className="opacity-50" />
+                                                <span className="text-[10px] italic">PENDING</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </td>
+                                <td>
                                     <button
                                         onClick={() => setSelectedOrder(order)}
                                         className={styles.eyeBtn}
@@ -215,7 +220,7 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                         ))}
                         {filteredDeliveries.length === 0 && (
                             <tr>
-                                <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
+                                <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
                                     <Package size={48} style={{ margin: '0 auto 1rem', opacity: 0.3 }} />
                                     <p>No active deliveries found in this view.</p>
                                 </td>
@@ -223,17 +228,55 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                         )}
                     </tbody>
                 </table>
+                {/* DYNAMIC SPACER - Prevents sticky bar from hiding last rows */}
+                {selectedOrderIds.length > 0 && (
+                    <div className={styles.tableSpacer} />
+                )}
             </div>
 
-            {
-                selectedOrder && (
-                    <DeliveryDialog
-                        order={selectedOrder}
-                        products={products}
-                        onClose={() => setSelectedOrder(null)}
-                    />
-                )
-            }
-        </div >
+            {selectedOrder && (
+                <DeliveryDialog
+                    order={selectedOrder}
+                    products={products}
+                    onClose={() => setSelectedOrder(null)}
+                />
+            )}
+
+            {/* STICKY BULK ACTION BAR - Modern & Floating */}
+            {selectedOrderIds.length > 0 && (
+                <div className={styles.stickyBar}>
+                    <div className="flex items-center gap-4">
+                        <div className={styles.selectionBadge}>
+                            {selectedOrderIds.length}
+                        </div>
+                        <div className="hidden sm:block">
+                            <div className="font-extrabold text-slate-800 leading-tight text-xs uppercase tracking-wider">Orders Selected</div>
+                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Bulk Export Ready</div>
+                        </div>
+                    </div>
+
+                    <div style={{ height: '24px', width: '2px', background: '#f1f5f9', margin: '0 0.5rem' }} />
+
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={handleBulkShip}
+                            disabled={isShippingBulk}
+                            className={styles.bulkShipBtn}
+                        >
+                            <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
+                            <span>{isShippingBulk ? 'Exporting...' : 'Export to Cathedis'}</span>
+                        </button>
+
+                        <button
+                            onClick={() => setSelectedOrderIds([])}
+                            className={styles.bulkCloseBtn}
+                            title="Cancel Selection"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }

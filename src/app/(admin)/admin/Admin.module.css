@@ -757,3 +757,124 @@
 .fab:active {
     transform: scale(0.95);
 }
+
+/* Sticky Bulk Action Bar - Refined for document flow */
+.stickyBar {
+    position: sticky;
+    bottom: 1.5rem;
+    margin: 1.5rem auto 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    padding: 0.85rem 1.5rem;
+    border-radius: 99rem;
+    /* Pill shape */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 1);
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    width: max-content;
+    min-width: 480px;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.selectionBadge {
+    width: 2.75rem;
+    height: 2.75rem;
+    background: #2563eb;
+    color: white;
+    border-radius: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.625rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.indicatorPrinted {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+}
+
+.indicatorPending {
+    background: #f8fafc;
+    color: #94a3b8;
+    border: 1px solid #f1f5f9;
+}
+
+.bulkShipBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 99rem;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+}
+
+.bulkShipBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+    filter: brightness(1.1);
+}
+
+.bulkCloseBtn {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    color: #94a3b8;
+    border-radius: 50%;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.bulkCloseBtn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fecaca;
+    transform: rotate(90deg);
+}
+
+.tableSpacer {
+    height: 100px;
+    transition: height 0.3s ease;
+}

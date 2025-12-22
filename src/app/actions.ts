@@ -254,3 +254,36 @@ export async function bulkPrintVouchersAction(orderIds: string[]) {
         return { success: false, error: error.message };
     }
 }
+
+export async function markDeliveryNotePrintedAction(orderId: string) {
+    try {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === orderId);
+
+        if (!order) {
+            return { success: false, error: 'Order not found' };
+        }
+
+        order.deliveryNotePrinted = true;
+
+        // Add log entry
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'print',
+            message: 'Delivery note printed.',
+            timestamp: new Date().toISOString(),
+            user: 'Admin'
+        });
+
+        await updateOrder(order);
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/deliveries');
+
+        return { success: true, order: JSON.parse(JSON.stringify(order)) };
+    } catch (error: any) {
+        console.error('Failed to mark delivery note as printed:', error);
+        return { success: false, error: error.message || 'Failed to update print status' };
+    }
+}

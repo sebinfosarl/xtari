@@ -8,7 +8,7 @@ import {
     X, Save, Phone, MapPin,
     User as UserIcon, ShoppingCart, Truck, Package, ChevronDown, ChevronUp, Printer, Trash2
 } from 'lucide-react';
-import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction } from '@/app/actions';
+import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface DeliveryDialogProps {
@@ -296,10 +296,16 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose 
                                         </button>
 
                                         <button
-                                            onClick={() => {
+                                            onClick={async () => {
                                                 const frame = document.getElementById('print-iframe') as HTMLIFrameElement;
                                                 if (frame) {
                                                     frame.src = `/print/delivery/${order.id}`;
+                                                    // Track that it was printed
+                                                    const res = await markDeliveryNotePrintedAction(order.id);
+                                                    if (res.success && res.order) {
+                                                        setOrder(res.order);
+                                                        router.refresh(); // Sync with parent
+                                                    }
                                                 }
                                             }}
                                             className="btn btn-sm"

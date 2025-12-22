@@ -68,6 +68,7 @@ export interface Order {
     height?: number;
     fragile?: boolean;
     insuranceValue?: number;
+    deliveryNotePrinted?: boolean;
 }
 
 function ensureDataDir() {

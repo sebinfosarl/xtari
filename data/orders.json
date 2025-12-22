@@ -1763,12 +1763,25 @@
         "message": "Shipment created with Cathedis. ID: 6157965",
         "timestamp": "2025-12-22T11:52:58.110Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-22T12:49:44.909Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-22T12:49:54.887Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6157965",
     "shippingStatus": "En Attente Ramassage",
     "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf"
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf",
+    "deliveryNotePrinted": true
   },
   {
     "id": "XNBZI1",
