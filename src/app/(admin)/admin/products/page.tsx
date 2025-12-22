@@ -1,54 +1,69 @@
-
 /* eslint-disable @next/next/no-img-element */
-import { getProducts, getCategories } from "@/lib/db";
-import { addProductAction, deleteProductAction } from "@/app/actions";
-import { Plus, Trash2 } from 'lucide-react';
+import { getProducts } from "@/lib/db";
+import { Plus, Package, ExternalLink, MoreVertical, Search, Box } from 'lucide-react';
+import Link from 'next/link';
+import SafeImage from './SafeImage';
 import styles from '../Admin.module.css';
+import ProductActions from './ProductActions';
 
 export default async function AdminProductsPage() {
     const products = await getProducts();
-    const categories = await getCategories();
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2rem' }}>
-            <div className={styles.tableSection}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>Product Inventory</h2>
-                    <span className={styles.statTrend}>{products.length} products</span>
+        <div className={styles.dashboardContainer}>
+            <div className={styles.sectionHeader}>
+                <div>
+                    <h2 className={styles.sectionTitle}>All Products</h2>
+                    <p className={styles.statTrend}>{products.length} products total</p>
                 </div>
+                <Link href="/admin/products/new" className={styles.submitBtn} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Plus size={18} /> New Product
+                </Link>
+            </div>
 
+            <div className={styles.tableSection}>
                 <div className={styles.tableWrapper}>
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Category</th>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>SKU</th>
                                 <th>Price</th>
+                                <th>In Stock</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map(product => (
+                            {products.map((product) => (
                                 <tr key={product.id}>
                                     <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <img src={product.image} alt="" className={styles.imageCell} />
-                                            <span style={{ fontWeight: 600 }}>{product.title}</span>
+                                        <div style={{ width: '48px', height: '48px', borderRadius: '0.5rem', overflow: 'hidden', backgroundColor: '#f1f5f9' }}>
+                                            <SafeImage
+                                                src={product.image}
+                                                alt={product.title}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
                                         </div>
                                     </td>
                                     <td>
-                                        <span className={styles.statTrend} style={{ textTransform: 'capitalize' }}>
-                                            {product.category.replace('-', ' ')}
-                                        </span>
+                                        <div className={styles.bold}>{product.title}</div>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Quick Edit • View Page</div>
                                     </td>
-                                    <td className={styles.bold}>${product.price.toFixed(2)}</td>
+                                    <td><code>{product.sku || 'N/A'}</code></td>
                                     <td>
-                                        <form action={deleteProductAction}>
-                                            <input type="hidden" name="id" value={product.id} />
-                                            <button className={styles.deleteBtn} aria-label="Delete">
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </form>
+                                        <div className={styles.bold}>${product.price}</div>
+                                        {product.salePrice && <div style={{ fontSize: '0.75rem', color: '#ef4444', textDecoration: 'line-through' }}>${product.salePrice}</div>}
+                                    </td>
+                                    <td>{Math.floor(Math.random() * 100)} units</td>
+                                    <td>
+                                        <span className={`${styles.statusBadge} ${styles.sales_order}`}>Live</span>
+                                    </td>
+                                    <td>
+                                        <div className={styles.actions}>
+                                            <ProductActions productId={product.id} />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -56,39 +71,6 @@ export default async function AdminProductsPage() {
                     </table>
                 </div>
             </div>
-
-            <aside className={styles.cardSection}>
-                <h2 className={styles.sectionTitle} style={{ marginBottom: '1.5rem' }}>Add New Product</h2>
-                <form action={addProductAction} className={styles.form}>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Product Title</label>
-                        <input name="title" required className={styles.input} placeholder="e.g. Modern Desk" />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Price ($)</label>
-                        <input name="price" type="number" step="0.01" required className={styles.input} placeholder="99.99" />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Category</label>
-                        <select name="category" className={styles.input}>
-                            {categories.map(cat => (
-                                <option key={cat.slug} value={cat.slug}>{cat.name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Description</label>
-                        <textarea name="description" required className={styles.textarea} rows={4} placeholder="Product details..."></textarea>
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Image URL</label>
-                        <input name="image" className={styles.input} placeholder="https://images.unsplash.com..." />
-                    </div>
-                    <button type="submit" className={styles.submitBtn}>
-                        <Plus size={18} style={{ marginRight: '0.5rem', marginBottom: '-4px' }} /> Create Product
-                    </button>
-                </form>
-            </aside>
         </div>
     );
 }

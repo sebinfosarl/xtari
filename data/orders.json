@@ -445,7 +445,7 @@
       }
     ],
     "total": 1498.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T02:25:35.218Z",
     "customer": {
       "name": "Hoho",
@@ -484,12 +484,19 @@
         "message": "Enabled Business/Company Info",
         "timestamp": "2025-12-22T02:25:48.566Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:27:01.111Z",
+        "user": "Admin"
       }
     ],
     "callResult": "Appel confirmer",
     "salesPerson": "nizar sebaghi",
     "invoiceDownloaded": true,
-    "fulfillmentStatus": "picked"
+    "fulfillmentStatus": "picked",
+    "shippingStatus": "ANNULÉE"
   },
   {
     "id": "OI8X3E",
@@ -501,7 +508,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T02:50:45.870Z",
     "customer": {
       "name": "nizarbo",
@@ -533,12 +540,19 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T02:51:13.568Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:26:55.453Z",
+        "user": "Admin"
       }
     ],
     "salesPerson": "nizar sebaghi",
     "invoiceDownloaded": true,
     "invoiceDate": "2025-12-22T02:52:03.975Z",
-    "fulfillmentStatus": "picked"
+    "fulfillmentStatus": "picked",
+    "shippingStatus": "ANNULÉE"
   },
   {
     "id": "D2ES8L",
@@ -706,7 +720,7 @@
       }
     ],
     "total": 599.99,
-    "status": "no_reply",
+    "status": "canceled",
     "date": "2025-12-22T04:18:27.148Z",
     "customer": {
       "name": "Test Bot",
@@ -716,11 +730,17 @@
       "city": "AGLOU",
       "sector": "Centre Ville"
     },
-    "callResult": "Ligne Occupé",
+    "callResult": "Canceled",
     "callHistory": {
       "1": 5
     },
     "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Appel rejete | Call Result set to Canceled",
+        "timestamp": "2025-12-22T20:27:31.944Z",
+        "user": "Admin"
+      },
       {
         "type": "call_tracking",
         "message": "Logged attempt 5 for Day 1",
@@ -745,7 +765,8 @@
         "timestamp": "2025-12-22T06:10:30.763Z",
         "user": "Admin"
       }
-    ]
+    ],
+    "cancellationMotif": "Appel rejete"
   },
   {
     "id": "LXJE73",
@@ -762,7 +783,7 @@
       }
     ],
     "total": 369.96999999999997,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T04:25:02.606Z",
     "customer": {
       "name": "triniti trotinit",
@@ -796,12 +817,19 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-22T19:21:37.323Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:26:38.362Z",
+        "user": "Admin"
       }
     ],
     "salesPerson": "nizar sebaghi",
     "paymentType": "Virement",
     "deliveryNotePrinted": true,
-    "fulfillmentStatus": "picked"
+    "fulfillmentStatus": "picked",
+    "shippingStatus": "ANNULÉE"
   },
   {
     "id": "CGGC8Z",
@@ -813,7 +841,7 @@
       }
     ],
     "total": 599.99,
-    "status": "no_reply",
+    "status": "canceled",
     "date": "2025-12-22T05:38:13.372Z",
     "customer": {
       "name": "Nizaron",
@@ -825,6 +853,12 @@
     },
     "shippingStatus": "En Attente Ramassage",
     "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
+        "timestamp": "2025-12-22T20:27:40.281Z",
+        "user": "Admin"
+      },
       {
         "type": "call_tracking",
         "message": "Logged attempt 2 for Day 1",
@@ -852,10 +886,11 @@
     ],
     "rangeWeight": "Plus de 30Kg",
     "weight": 10,
-    "callResult": "Appel coupé",
+    "callResult": "Canceled",
     "callHistory": {
       "1": 2
-    }
+    },
+    "cancellationMotif": "Mauvais numero"
   },
   {
     "id": "3LCEGM",
@@ -927,7 +962,7 @@
       }
     ],
     "total": 349,
-    "status": "no_reply",
+    "status": "canceled",
     "date": "2025-12-22T05:43:05.654Z",
     "customer": {
       "name": "nazorei",
@@ -939,6 +974,12 @@
     },
     "shippingStatus": "En Attente Ramassage",
     "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
+        "timestamp": "2025-12-22T20:27:52.665Z",
+        "user": "Admin"
+      },
       {
         "type": "status_update",
         "message": "Updated Call Result to Pas de réponse",
@@ -970,11 +1011,12 @@
         "user": "System"
       }
     ],
-    "callResult": "Pas de réponse",
+    "callResult": "Canceled",
     "callHistory": {
       "1": 2
     },
-    "salesPerson": "nizar sebaghi"
+    "salesPerson": "nizar sebaghi",
+    "cancellationMotif": "Mauvais numero"
   },
   {
     "id": "2HL9T3",
@@ -1111,7 +1153,7 @@
       }
     ],
     "total": 948.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T05:58:01.291Z",
     "customer": {
       "name": "lastest",
@@ -1144,6 +1186,12 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-22T19:22:01.937Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:21:28.650Z",
+        "user": "Admin"
       }
     ],
     "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/5091048121697456789?name=Delivery+voucher.pdf",
@@ -1160,7 +1208,7 @@
       }
     ],
     "total": 899,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:02:13.180Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1175,7 +1223,7 @@
     "packageCount": 1,
     "fragile": true,
     "shippingId": "6152668",
-    "shippingStatus": "En Attente Ramassage",
+    "shippingStatus": "ANNULÉE",
     "logs": [
       {
         "type": "fulfillment",
@@ -1199,6 +1247,12 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-22T19:58:20.515Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:26:29.509Z",
+        "user": "Admin"
       }
     ],
     "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/7813035827761481598?name=Delivery+voucher.pdf",
@@ -1216,7 +1270,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:12:04.190Z",
     "customer": {
       "name": "NIZAR",
@@ -1242,6 +1296,12 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-22T20:07:29.502Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:21:34.969Z",
+        "user": "Admin"
       }
     ],
     "deliveryNotePrinted": true
@@ -1256,7 +1316,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:12:45.756Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1276,6 +1336,12 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T12:37:42.205Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:22:26.592Z",
+        "user": "Admin"
       }
     ]
   },
@@ -1289,7 +1355,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:17:13.211Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1309,6 +1375,12 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T12:37:17.790Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:22:37.533Z",
+        "user": "Admin"
       }
     ]
   },
@@ -1322,7 +1394,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:43:11.571Z",
     "customer": {
       "name": "nohaaaaa",
@@ -1348,6 +1420,12 @@
         "message": "Shipment created with Cathedis. ID: 6152669",
         "timestamp": "2025-12-22T06:43:46.936Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:22:43.359Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152669",
@@ -1364,7 +1442,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:44:35.873Z",
     "customer": {
       "name": "nohooooaba",
@@ -1407,10 +1485,16 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-22T20:02:03.764Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:26:23.621Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152670",
-    "shippingStatus": "En Attente Ramassage",
+    "shippingStatus": "ANNULÉE",
     "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11140964204657153691?name=Delivery+voucher.pdf",
     "deliveryNotePrinted": true,
     "fulfillmentStatus": "picked"
@@ -1425,7 +1509,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:46:47.997Z",
     "customer": {
       "name": "babamimouna",
@@ -1457,6 +1541,12 @@
         "message": "Shipment created with Cathedis. ID: 6152673",
         "timestamp": "2025-12-22T06:51:47.465Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:23:04.494Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152673",
@@ -1473,7 +1563,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T06:55:58.061Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1511,6 +1601,12 @@
         "message": "Shipment created with Cathedis. ID: 6152678",
         "timestamp": "2025-12-22T06:58:26.896Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:23:11.995Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152678",
@@ -1527,7 +1623,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T07:12:28.097Z",
     "customer": {
       "name": "anothertest",
@@ -1565,6 +1661,12 @@
         "message": "Pickup requested via hub Tanger",
         "timestamp": "2025-12-22T07:16:48.212Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:23:18.204Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152696",
@@ -1581,7 +1683,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T07:32:52.026Z",
     "customer": {
       "name": "comoestas",
@@ -1613,6 +1715,12 @@
         "message": "Shipment created with Cathedis. ID: 6152736",
         "timestamp": "2025-12-22T07:45:58.038Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:23:24.589Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152736",
@@ -1630,7 +1738,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T07:47:11.965Z",
     "customer": {
       "name": "like a boss",
@@ -1673,10 +1781,16 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-22T19:58:45.431Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:26:17.950Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152739",
-    "shippingStatus": "En Attente Ramassage",
+    "shippingStatus": "ANNULÉE",
     "invoiceDownloaded": true,
     "invoiceDate": "2025-12-22T07:52:09.595Z",
     "deliveryNotePrinted": true,
@@ -1692,7 +1806,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T07:57:58.792Z",
     "customer": {
       "name": "soujack",
@@ -1724,6 +1838,12 @@
         "message": "Shipment created with Cathedis. ID: 6152760",
         "timestamp": "2025-12-22T08:02:14.312Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:24:02.948Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152760",
@@ -1739,7 +1859,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T08:06:36.812Z",
     "customer": {
       "name": "fadfadsf",
@@ -1770,6 +1890,12 @@
         "message": "Shipment created with Cathedis. ID: 6153459",
         "timestamp": "2025-12-22T09:17:31.081Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:24:09.773Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6153459",
@@ -1851,7 +1977,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T09:34:47.282Z",
     "customer": {
       "name": "lastonetoday",
@@ -1877,6 +2003,12 @@
         "message": "Shipment created with Cathedis. ID: 6153815",
         "timestamp": "2025-12-22T09:38:25.877Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:24:28.605Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6153815",
@@ -1894,7 +2026,7 @@
       }
     ],
     "total": 89.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T11:20:08.021Z",
     "customer": {
       "name": "Hellomyfriend",
@@ -1937,6 +2069,12 @@
         "type": "print",
         "message": "Delivery note printed.",
         "timestamp": "2025-12-22T12:49:54.887Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:25:03.732Z",
         "user": "Admin"
       }
     ],
@@ -2071,7 +2209,7 @@
       }
     ],
     "total": 899,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T12:36:58.275Z",
     "customer": {
       "name": "order1",
@@ -2097,6 +2235,12 @@
         "message": "Shipment created with Cathedis. ID: 6159225",
         "timestamp": "2025-12-22T12:40:14.151Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:25:10.470Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6159225",
@@ -2112,7 +2256,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T12:39:31.973Z",
     "customer": {
       "name": "order2",
@@ -2138,6 +2282,12 @@
         "message": "Shipment created with Cathedis. ID: 6159226",
         "timestamp": "2025-12-22T12:40:14.875Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:25:56.733Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6159226",
@@ -2153,7 +2303,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T18:12:25.031Z",
     "customer": {
       "name": "Test User",
@@ -2174,6 +2324,12 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
         "timestamp": "2025-12-22T18:15:16.695Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:26:03.591Z",
+        "user": "Admin"
       }
     ]
   },
@@ -2187,7 +2343,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T18:16:31.071Z",
     "customer": {
       "name": "NEW ONE",
@@ -2212,6 +2368,47 @@
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
         "timestamp": "2025-12-22T18:16:41.934Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:26:11.252Z",
+        "user": "Admin"
+      }
+    ],
+    "shippingStatus": "ANNULÉE"
+  },
+  {
+    "id": "WVXN7F",
+    "items": [
+      {
+        "productId": "p7",
+        "quantity": 1,
+        "price": 219
+      }
+    ],
+    "total": 219,
+    "status": "canceled",
+    "date": "2025-12-22T20:29:43.317Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "AGADIR",
+      "sector": "Tamraght"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Canceled",
+    "cancellationMotif": "Mauvais numero",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to canceled | Reason: Mauvais numero | Call Result set to Canceled",
+        "timestamp": "2025-12-22T20:30:22.392Z",
         "user": "Admin"
       }
     ]

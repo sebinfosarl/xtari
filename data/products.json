@@ -27,24 +27,6 @@
     "featured": true
   },
   {
-    "id": "p4",
-    "title": "HP 67XL High Yield Black Ink",
-    "description": "Original HP Ink Cartridge providing up to 2x more prints vs standard.",
-    "price": 24.99,
-    "category": "ink-printers",
-    "image": "https://images.unsplash.com/photo-1549419163-1215b2447990?auto=format&fit=crop&q=80&w=800",
-    "featured": false
-  },
-  {
-    "id": "p5",
-    "title": "Geometric Gold Sculpture",
-    "description": "Abstract metal sculpture with a brushed gold finish, perfect for modern office decor.",
-    "price": 129.5,
-    "category": "home-deco",
-    "image": "https://images.unsplash.com/photo-1582298950005-4c07d30d9229?auto=format&fit=crop&q=80&w=800",
-    "featured": true
-  },
-  {
     "id": "p6",
     "title": "Mechanical Robot Building Kit",
     "description": "Advanced building set for engineering enthusiasts. 500+ pieces with motor functions.",

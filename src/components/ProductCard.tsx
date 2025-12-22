@@ -28,12 +28,14 @@ export default function ProductCard({ product }: { product: Product }) {
                 {product.featured && <span className={styles.tag}>Featured</span>}
             </Link>
             <div className={styles.content}>
-                <div className={styles.category}>{product.category.replace('-', ' ')}</div>
+                <div className={styles.category}>
+                    {product.category ? product.category.replace('-', ' ') : 'Uncategorized'}
+                </div>
                 <Link href={`/product/${product.id}`}>
                     <h3 className={styles.title}>{product.title}</h3>
                 </Link>
                 <div className={styles.footer}>
-                    <span className={styles.price}>${product.price.toFixed(2)}</span>
+                    <span className={styles.price}>${(product.price || 0).toFixed(2)}</span>
                     <button
                         className={styles.addBtn}
                         aria-label="Add to Cart"

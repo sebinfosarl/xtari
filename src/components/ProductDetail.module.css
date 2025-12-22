@@ -65,6 +65,66 @@
     line-height: 1.7;
 }
 
+.htmlContent {
+    margin-bottom: 2rem;
+}
+
+.htmlContent p {
+    margin-bottom: 1rem;
+}
+
+.htmlContent h1,
+.htmlContent h2,
+.htmlContent h3,
+.htmlContent h4 {
+    color: var(--color-text);
+    margin: 1.5rem 0 1rem 0;
+}
+
+.htmlContent ul,
+.htmlContent ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.htmlContent li {
+    margin-bottom: 0.5rem;
+}
+
+.htmlContent table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+}
+
+.htmlContent th,
+.htmlContent td {
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    text-align: left;
+}
+
+.htmlContent th {
+    background: #f8fafc;
+    font-weight: 700;
+}
+
+.htmlContent img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: 1.5rem 0;
+}
+
+.htmlContent blockquote {
+    border-left: 4px solid var(--color-primary);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--color-text-muted);
+}
+
 .actions {
     margin-bottom: 2rem;
 }
@@ -162,4 +222,46 @@
 .upsellPrice {
     color: var(--color-primary);
     font-weight: 700;
+}
+
+/* Specifications Table */
+.specsContainer {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+}
+
+.specsTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+}
+
+.specsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.specsTable tr {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.specsTable tr:last-child {
+    border-bottom: none;
+}
+
+.specName {
+    padding: 1rem 0;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    width: 40%;
+    vertical-align: top;
+}
+
+.specValue {
+    padding: 1rem 0;
+    color: var(--color-text);
+    font-weight: 500;
 }

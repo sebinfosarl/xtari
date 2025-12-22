@@ -5,7 +5,14 @@ import {
     getOrders, updateOrder,
     Order, Product, SalesPerson,
     saveSalesPerson, deleteSalesPerson,
-    getUser, createUser, createOrder
+    getUser, createUser, createOrder,
+    saveCategory, deleteCategory,
+    getBrands, saveBrand, deleteBrand, Brand,
+    Attribute,
+    deleteAttribute,
+    getAttributes,
+    deleteProduct,
+    getCategories
 } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -43,24 +50,96 @@ export async function adminSignupAction(formData: FormData) {
     }
 
     // Auto login after signup? Or redirect to login. Let's redirect to login for simplicity
-    redirect('/login');
+    redirect('/admin/products');
 }
 
+// Attributes Actions
+export async function saveAttributeAction(formData: FormData) {
+    const id = formData.get('id') as string || Math.random().toString(36).substr(2, 9);
+    const name = formData.get('name') as string;
+    const values = (formData.get('values') as string).split(',').map(v => v.trim()).filter(Boolean);
+
+    await saveAttribute({
+        id,
+        name,
+        values
+    });
+
+    revalidatePath('/admin/products/attributes');
+    redirect('/admin/products/attributes');
+}
+
+export async function deleteAttributeAction(id: string) {
+    await deleteAttribute(id);
+    revalidatePath('/admin/products/attributes');
+}
+
+// Product Actions
 export async function addProductAction(formData: FormData) {
+    const dimensions = {
+        length: parseFloat(formData.get('length') as string) || 0,
+        width: parseFloat(formData.get('width') as string) || 0,
+        height: parseFloat(formData.get('height') as string) || 0,
+    };
+
+    const attributesRaw = formData.get('attributes') as string;
+    const attributes = attributesRaw ? JSON.parse(attributesRaw) : [];
+
+    // Auto-save new attributes to global store
+    if (attributes.length > 0) {
+        const globalAttributes = await getAttributes();
+        for (const attr of attributes) {
+            const existing = globalAttributes.find(a => a.name.toLowerCase() === attr.name.toLowerCase());
+            if (existing) {
+                // Merge values if new ones are added
+                const newValues = attr.values.filter((v: string) => !existing.values.includes(v));
+                if (newValues.length > 0) {
+                    existing.values = [...existing.values, ...newValues];
+                    await saveAttribute(existing);
+                }
+            } else {
+                // Create new attribute
+                await saveAttribute({
+                    id: Math.random().toString(36).substr(2, 9),
+                    name: attr.name,
+                    values: attr.values
+                });
+            }
+        }
+    }
+
+    const categoryIds = formData.getAll('categoryIds') as string[];
+    const gallery = formData.getAll('gallery') as string[];
+
     const product: Product = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: formData.get('id') as string || Math.random().toString(36).substr(2, 9),
         title: formData.get('title') as string,
         description: formData.get('description') as string,
         price: parseFloat(formData.get('price') as string),
-        category: formData.get('category') as string,
+        salePrice: parseFloat(formData.get('salePrice') as string) || undefined,
+        categoryIds: categoryIds,
         image: formData.get('image') as string || 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1',
-        featured: formData.get('featured') === 'on'
+        gallery: gallery,
+        featured: formData.get('featured') === 'on',
+        sku: formData.get('sku') as string,
+        location: formData.get('location') as string,
+        weight: parseFloat(formData.get('weight') as string) || undefined,
+        dimensions: dimensions,
+        brandId: formData.get('brandId') as string || undefined,
+        attributes: attributes,
+        linkedProducts: {
+            upsells: formData.getAll('upsells') as string[],
+            crossSells: formData.getAll('crossSells') as string[],
+            frequentlyBoughtTogether: formData.getAll('frequentlyBoughtTogether') as string[],
+            similarProducts: formData.getAll('similarProducts') as string[],
+        }
     };
 
     await saveProduct(product);
     revalidatePath('/');
     revalidatePath('/admin');
     revalidatePath('/admin/products');
+    redirect('/admin/products');
 }
 
 export async function createOrderAction(formData: FormData) {
@@ -110,12 +189,41 @@ export async function deleteSalesPersonAction(id: string) {
 }
 
 export async function deleteProductAction(formData: FormData) {
-    // In a real app we would delete from DB. 
-    // Since we are using a simple append-only JSON logic in db.ts for this demo, 
-    // we will simulate it or add a delete function to db.ts first.
-    // For now, let's just revalidate.
-    console.log("Delete product requested for", formData.get('id'));
+    const id = formData.get('id') as string;
+    await deleteProduct(id);
     revalidatePath('/admin/products');
+}
+
+export async function saveCategoryAction(formData: FormData) {
+    const category = {
+        id: formData.get('id') as string || Math.random().toString(36).substr(2, 9),
+        name: formData.get('name') as string,
+        slug: formData.get('slug') as string,
+        parentId: formData.get('parentId') as string || undefined,
+    };
+    await saveCategory(category);
+    revalidatePath('/admin/products/categories');
+}
+
+export async function deleteCategoryAction(id: string) {
+    await deleteCategory(id);
+    revalidatePath('/admin/products/categories');
+}
+
+export async function saveBrandAction(formData: FormData) {
+    const brand = {
+        id: formData.get('id') as string || Math.random().toString(36).substr(2, 9),
+        name: formData.get('name') as string,
+        slug: formData.get('slug') as string,
+        logo: formData.get('logo') as string || undefined,
+    };
+    await saveBrand(brand);
+    revalidatePath('/admin/products/brands');
+}
+
+export async function deleteBrandAction(id: string) {
+    await deleteBrand(id);
+    revalidatePath('/admin/products/brands');
 }
 
 // Shipping Actions
@@ -352,4 +460,18 @@ export async function bulkMarkDeliveryNotePrintedAction(orderIds: string[]) {
         console.error('Failed to mark delivery notes as printed in bulk:', error);
         return { success: false, error: error.message || 'Failed to update print status' };
     }
+}
+
+export async function reorderCategoriesAction(items: { id: string; order: number }[]) {
+    const categories = await getCategories();
+
+    for (const item of items) {
+        const category = categories.find(c => c.id === item.id);
+        if (category) {
+            category.order = item.order;
+            await saveCategory(category);
+        }
+    }
+
+    revalidatePath('/admin/products/categories');
 }

@@ -33,12 +33,15 @@ export default function ProductDetailView({ product, upsells }: { product: Produ
                 </div>
 
                 <div className={styles.infoSection}>
-                    <div className={styles.category}>{product.category.replace('-', ' ')}</div>
+                    <div className={styles.category}>{product.category ? product.category.replace('-', ' ') : 'Uncategorized'}</div>
                     <h1 className={styles.title}>{product.title}</h1>
-                    <div className={styles.price}>${product.price.toFixed(2)}</div>
+                    <div className={styles.price}>${(product.price || 0).toFixed(2)}</div>
 
                     <div className={styles.description}>
-                        <p>{product.description}</p>
+                        <div
+                            className={styles.htmlContent}
+                            dangerouslySetInnerHTML={{ __html: product.description }}
+                        />
                         <p>Experience premium quality tailored for your professional lifestyle. This product has been curated to meet the highest standards of durability and aesthetics.</p>
                     </div>
 
@@ -57,6 +60,25 @@ export default function ProductDetailView({ product, upsells }: { product: Produ
                         <div className={styles.featureItem}><Check size={16} className="text-green-500" /> 2 Year Warranty</div>
                         <div className={styles.featureItem}><Check size={16} className="text-green-500" /> Free Shipping</div>
                     </div>
+
+                    {product.attributes && product.attributes.length > 0 && (
+                        <div className={styles.specsContainer}>
+                            <h3 className={styles.specsTitle}>Specifications</h3>
+                            <table className={styles.specsTable}>
+                                <tbody>
+                                    {product.attributes.map((attr, index) => (
+                                        <tr key={index}>
+                                            <td className={styles.specName}>{attr.name}</td>
+                                            <td className={styles.specValue}>
+                                                {/* Handle array values elegantly */}
+                                                {Array.isArray(attr.values) ? attr.values.join(', ') : attr.values}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
             </div>
 

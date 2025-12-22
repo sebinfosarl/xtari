@@ -1,5 +1,5 @@
 
-import { getProducts } from "@/lib/db";
+import { getProducts, getCategories, Product } from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import styles from "../page.module.css";
 import Link from "next/link";
@@ -10,12 +10,23 @@ export default async function Home({
   searchParams: Promise<{ cat?: string }>;
 }) {
   const { cat } = await searchParams;
-  const allProducts = await getProducts();
+  const [allProducts, categories] = await Promise.all([getProducts(), getCategories()]);
+
+  // Enrich products with category slug/name if they only have categoryIds
+  const enrichedProducts = allProducts.map((p: Product) => {
+    if (!p.category && p.categoryIds && p.categoryIds.length > 0) {
+      const category = categories.find(c => c.id === p.categoryIds[0]);
+      if (category) {
+        return { ...p, category: category.slug };
+      }
+    }
+    return p;
+  });
 
   // Filter logic
   const products = cat
-    ? allProducts.filter(p => p.category === cat)
-    : allProducts;
+    ? enrichedProducts.filter((p: Product) => p.category === cat || (p.categoryIds && p.categoryIds.includes(cat)))
+    : enrichedProducts;
 
   const title = cat
     ? `${cat.replace('-', ' ')} Collection`

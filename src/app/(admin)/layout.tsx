@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -16,6 +17,7 @@ import {
     FileText,
     UserCheck,
     Truck,
+    ChevronDown,
 } from 'lucide-react';
 import styles from './AdminLayout.module.css';
 
@@ -25,16 +27,37 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const [productsOpen, setProductsOpen] = useState(pathname.startsWith('/admin/products'));
+
+    useEffect(() => {
+        if (pathname.startsWith('/admin/products')) {
+            setProductsOpen(true);
+        }
+    }, [pathname]);
 
     const isActive = (path: string) => {
         if (path === '/admin' && pathname === '/admin') return true;
-        if (path !== '/admin' && pathname.startsWith(path)) return true;
+        if (path !== '/admin' && pathname === path) return true;
         return false;
+    };
+
+    const isGroupActive = (path: string) => {
+        return pathname.startsWith(path);
     };
 
     const navItems = [
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-        { name: 'Products', href: '/admin/products', icon: Package },
+        {
+            name: 'Products',
+            href: '/admin/products',
+            icon: Package,
+            subItems: [
+                { name: 'All Products', href: '/admin/products' },
+                { name: 'Categories', href: '/admin/products/categories' },
+                { name: 'Brands', href: '/admin/products/brands' },
+                { name: 'Attributes', href: '/admin/products/attributes' },
+            ]
+        },
         { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
         { name: 'Fulfillment', href: '/admin/fulfillment', icon: Truck },
         { name: 'Invoices', href: '/admin/invoices', icon: FileText },
@@ -52,11 +75,44 @@ export default function AdminLayout({
                 <nav className={styles.nav}>
                     {navItems.map((item) => {
                         const Icon = item.icon;
+
+                        if (item.subItems) {
+                            return (
+                                <div key={item.name} className={styles.navGroup}>
+                                    <button
+                                        onClick={() => setProductsOpen(!productsOpen)}
+                                        className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
+                                        style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
+                                    >
+                                        <Icon size={20} /> {item.name}
+                                        <ChevronDown
+                                            size={16}
+                                            className={`${styles.dropdownIcon} ${productsOpen ? styles.dropdownIconOpen : ''}`}
+                                        />
+                                    </button>
+
+                                    {productsOpen && (
+                                        <div className={styles.subMenu}>
+                                            {item.subItems.map(subItem => (
+                                                <Link
+                                                    key={subItem.href}
+                                                    href={subItem.href}
+                                                    className={`${styles.subNavItem} ${isActive(subItem.href) ? styles.subNavItemActive : ''}`}
+                                                >
+                                                    {subItem.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        }
+
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`${styles.navItem} ${isActive(item.href) ? styles.navItemActive : ''}`}
+                                className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
                             >
                                 <Icon size={20} /> {item.name}
                             </Link>
@@ -65,7 +121,7 @@ export default function AdminLayout({
 
                     <div className={styles.divider}></div>
 
-                    <Link href="/admin/settings" className={styles.navItem}>
+                    <Link href="/admin/settings" className={`${styles.navItem} ${isActive('/admin/settings') ? styles.navItemActive : ''}`}>
                         <Settings size={20} /> Settings
                     </Link>
                 </nav>

@@ -9,15 +9,52 @@ export interface Product {
     title: string;
     description: string;
     price: number;
-    category: string;
+    salePrice?: number;
+    categoryIds: string[]; // Changed from category: string
+    category?: string; // Legacy support
     image: string;
+    gallery?: string[];
     featured?: boolean;
+    sku?: string;
+    location?: string;
+    weight?: number;
+    dimensions?: {
+        length: number;
+        width: number;
+        height: number;
+    };
+    linkedProducts?: {
+        upsells: string[];
+        crossSells: string[];
+        frequentlyBoughtTogether: string[];
+        similarProducts: string[];
+    };
+    attributes?: {
+        name: string;
+        values: string[];
+    }[];
+    brandId?: string;
 }
 
 export interface Category {
     id: string;
     name: string;
     slug: string;
+    parentId?: string; // For subcategories
+    order?: number; // For sorting
+}
+
+export interface Brand {
+    id: string;
+    name: string;
+    slug: string;
+    logo?: string;
+}
+
+export interface Attribute {
+    id: string;
+    name: string;
+    values: string[];
 }
 
 export interface Order {
@@ -110,16 +147,89 @@ export async function saveProduct(product: Product) {
     writeJson('products.json', products);
 }
 
+export async function deleteProduct(id: string) {
+    const products = await getProducts();
+    const filtered = products.filter(p => p.id !== id);
+    writeJson('products.json', filtered);
+}
+
 // Categories
 export async function getCategories(): Promise<Category[]> {
-    return readJson<Category[]>('categories.json', [
-        { id: '1', name: 'Ink for Printers', slug: 'ink-printers' },
-        { id: '2', name: 'Printers', slug: 'printers' },
-        { id: '3', name: 'Office Chairs & Tables', slug: 'office-furniture' },
-        { id: '4', name: 'Office Storage', slug: 'office-storage' },
-        { id: '5', name: 'Home Deco', slug: 'home-deco' },
-        { id: '6', name: 'Toys', slug: 'toys' }
-    ]);
+    const categories = await readJson<Category[]>('categories.json', []);
+    return categories.sort((a, b) => (a.order || 0) - (b.order || 0));
+}
+
+export async function saveCategory(category: Category) {
+    const categories = await getCategories();
+    const index = categories.findIndex(c => c.id === category.id);
+    if (index >= 0) {
+        categories[index] = category;
+    } else {
+        categories.push(category);
+    }
+    writeJson('categories.json', categories);
+}
+
+export async function deleteCategory(id: string) {
+    const categories = await getCategories();
+
+    // Find all descendant IDs recursively
+    const getDescendants = (parentId: string): string[] => {
+        const children = categories.filter(c => c.parentId === parentId);
+        let descendants: string[] = children.map(c => c.id);
+        for (const child of children) {
+            descendants = [...descendants, ...getDescendants(child.id)];
+        }
+        return descendants;
+    };
+
+    const idsToDelete = [id, ...getDescendants(id)];
+    const filtered = categories.filter(c => !idsToDelete.includes(c.id));
+    writeJson('categories.json', filtered);
+}
+
+// Brands
+export async function getBrands(): Promise<Brand[]> {
+    return readJson<Brand[]>('brands.json', []);
+}
+
+export async function saveBrand(brand: Brand) {
+    const brands = await getBrands();
+    const index = brands.findIndex(b => b.id === brand.id);
+    if (index >= 0) {
+        brands[index] = brand;
+    } else {
+        brands.push(brand);
+    }
+    writeJson('brands.json', brands);
+}
+
+export async function deleteBrand(id: string) {
+    const brands = await getBrands();
+    const filtered = brands.filter(b => b.id !== id);
+    writeJson('brands.json', filtered);
+}
+
+// Attributes
+export async function getAttributes(): Promise<Attribute[]> {
+    return readJson<Attribute[]>('attributes.json', []);
+}
+
+export async function saveAttribute(attribute: Attribute) {
+    const attributes = await getAttributes();
+    const index = attributes.findIndex(a => a.id === attribute.id);
+    if (index >= 0) {
+        attributes[index] = attribute;
+    } else {
+        attributes.push(attribute);
+    }
+    writeJson('attributes.json', attributes);
+}
+
+export async function deleteAttribute(id: string) {
+    const attributes = await getAttributes();
+    const filtered = attributes.filter(a => a.id !== id);
+    writeJson('attributes.json', filtered);
 }
 
 // Orders

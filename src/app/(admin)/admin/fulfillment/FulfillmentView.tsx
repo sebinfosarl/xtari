@@ -146,20 +146,70 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                             <div className={styles.statTrend}>{filteredOrders.length} orders to process</div>
                         </div>
 
-                        <div className="flex gap-1 bg-slate-100 p-1 rounded-xl">
+                        <div style={{ display: 'flex', gap: '8px', padding: '6px', borderRadius: '9999px', background: 'rgba(241, 245, 249, 0.8)', border: '1px solid #e2e8f0', backdropFilter: 'blur(4px)' }}>
                             <button
                                 onClick={() => { setActiveTab('pick'); setSelectedOrderIds([]); }}
-                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${activeTab === 'pick' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                style={{
+                                    padding: '0.5rem 1.25rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 700,
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    background: activeTab === 'pick' ? '#2563eb' : 'transparent',
+                                    color: activeTab === 'pick' ? 'white' : '#64748b',
+                                    boxShadow: activeTab === 'pick' ? '0 4px 6px -1px rgba(37, 99, 235, 0.3)' : 'none',
+                                    transform: activeTab === 'pick' ? 'scale(1.02)' : 'none'
+                                }}
                             >
-                                <ClipboardList size={18} />
-                                Pick ({pickOrders.length})
+                                <ClipboardList size={18} strokeWidth={2.5} />
+                                <span>Pick</span>
+                                <span style={{
+                                    marginLeft: '0.25rem',
+                                    padding: '0.125rem 0.375rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.625rem',
+                                    background: activeTab === 'pick' ? 'rgba(255,255,255,0.2)' : '#e2e8f0',
+                                    color: activeTab === 'pick' ? 'white' : '#475569'
+                                }}>
+                                    {pickOrders.length}
+                                </span>
                             </button>
                             <button
                                 onClick={() => { setActiveTab('deliveries'); setSelectedOrderIds([]); }}
-                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${activeTab === 'deliveries' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                style={{
+                                    padding: '0.5rem 1.25rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 700,
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    background: activeTab === 'deliveries' ? '#10b981' : 'transparent',
+                                    color: activeTab === 'deliveries' ? 'white' : '#64748b',
+                                    boxShadow: activeTab === 'deliveries' ? '0 4px 6px -1px rgba(16, 185, 129, 0.3)' : 'none',
+                                    transform: activeTab === 'deliveries' ? 'scale(1.02)' : 'none'
+                                }}
                             >
-                                <Truck size={18} />
-                                Deliveries ({deliveryOrders.length})
+                                <Truck size={18} strokeWidth={2.5} />
+                                <span>Deliveries</span>
+                                <span style={{
+                                    marginLeft: '0.25rem',
+                                    padding: '0.125rem 0.375rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.625rem',
+                                    background: activeTab === 'deliveries' ? 'rgba(255,255,255,0.2)' : '#e2e8f0',
+                                    color: activeTab === 'deliveries' ? 'white' : '#475569'
+                                }}>
+                                    {deliveryOrders.length}
+                                </span>
                             </button>
                         </div>
                     </div>
