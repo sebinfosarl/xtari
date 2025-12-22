@@ -1,6 +1,6 @@
 'use server';
 
-import { saveProduct, Product, createOrder, Order, getUser, createUser } from '@/lib/db';
+import { saveProduct, Product, createOrder, Order, getUser, createUser, updateOrder } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -69,11 +69,19 @@ export async function createOrderAction(formData: FormData) {
         customer: {
             name: formData.get('name') as string,
             email: formData.get('email') as string,
+            phone: formData.get('phone') as string,
             address: formData.get('address') as string,
         }
     };
 
     await createOrder(order);
+    revalidatePath('/admin');
+    revalidatePath('/admin/orders');
+    return { success: true };
+}
+
+export async function updateOrderAction(order: Order) {
+    await updateOrder(order);
     revalidatePath('/admin');
     revalidatePath('/admin/orders');
     return { success: true };

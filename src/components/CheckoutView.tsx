@@ -17,7 +17,11 @@ export default function CheckoutView({ upsells }: { upsells: Product[] }) {
         setLoading(true);
 
         // Append cart data
-        formData.append('items', JSON.stringify(items.map(i => ({ productId: i.id, quantity: i.quantity }))));
+        formData.append('items', JSON.stringify(items.map(i => ({
+            productId: i.id,
+            quantity: i.quantity,
+            price: i.price
+        }))));
         formData.append('total', total.toString());
 
         try {
@@ -113,6 +117,10 @@ export default function CheckoutView({ upsells }: { upsells: Product[] }) {
                             <div>
                                 <label className={styles.label}>Email Address</label>
                                 <input required name="email" type="email" className={styles.input} placeholder="john@example.com" />
+                            </div>
+                            <div>
+                                <label className={styles.label}>Phone Number</label>
+                                <input required name="phone" type="tel" className={styles.input} placeholder="+1 234 567 890" />
                             </div>
                             <div>
                                 <label className={styles.label}>Shipping Address</label>

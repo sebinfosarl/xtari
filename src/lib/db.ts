@@ -22,14 +22,22 @@ export interface Category {
 
 export interface Order {
     id: string;
-    items: { productId: string; quantity: number }[];
+    items: {
+        productId: string;
+        quantity: number;
+        price: number; // Stored at time of order/management
+    }[];
     total: number;
-    status: 'pending' | 'shipped' | 'delivered';
+    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply';
+    callResult?: 'Ligne Occupe' | 'Appel coupe' | 'Pas de reponse' | 'Rappel demande' | 'Boite vocal';
+    cancellationMotif?: 'Mauvais numero' | 'Appel rejete' | 'commande en double' | 'Rupture de stock' | 'Pas de reponse' | 'Commande frauduleuse' | 'Annule sans reponse';
+    cancellationComment?: string;
     date: string;
     customer: {
         name: string;
         email: string;
         address: string;
+        phone: string;
     };
 }
 
@@ -91,6 +99,20 @@ export async function getOrders(): Promise<Order[]> {
 export async function createOrder(order: Order) {
     const orders = await getOrders();
     orders.push(order);
+    writeJson('orders.json', orders);
+}
+
+export async function getOrderById(id: string): Promise<Order | undefined> {
+    const orders = await getOrders();
+    return orders.find(o => o.id === id);
+}
+
+export async function updateOrder(order: Order) {
+    const orders = await getOrders();
+    const index = orders.findIndex(o => o.id === order.id);
+    if (index >= 0) {
+        orders[index] = order;
+    }
     writeJson('orders.json', orders);
 }
 

@@ -4,16 +4,24 @@
     "items": [
       {
         "productId": "p1",
-        "quantity": 1
+        "quantity": 1,
+        "price": 599.99
+      },
+      {
+        "productId": "p2",
+        "quantity": 2,
+        "price": 349
       }
     ],
-    "total": 599.99,
+    "total": 1297.99,
     "status": "pending",
     "date": "2025-12-21T22:15:08.745Z",
     "customer": {
       "name": "Nizar Sebaghi",
       "email": "sebaghinizar99@gmail.com",
+      "phone": "+212660015991",
       "address": "Hello world morocco"
-    }
+    },
+    "callResult": "Ligne Occupe"
   }
 ]
