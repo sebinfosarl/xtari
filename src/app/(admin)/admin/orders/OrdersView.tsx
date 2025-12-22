@@ -16,27 +16,121 @@ interface OrdersViewProps {
 export default function OrdersView({ initialOrders: orders, products, salesPeople }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
-    const filteredOrders = orders.filter(o => filter === 'all' || o.status === filter);
+    const filteredOrders = orders.filter(o => {
+        // Status filter
+        if (filter !== 'all' && o.status !== filter) return false;
+
+        // Search query filter
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            const matchesId = o.id.toLowerCase().includes(q);
+            const matchesName = o.customer.name.toLowerCase().includes(q);
+            const matchesPhone = o.customer.phone.toLowerCase().includes(q);
+            if (!matchesId && !matchesName && !matchesPhone) return false;
+        }
+
+        // Date range filter
+        if (startDate || endDate) {
+            const orderDate = new Date(o.date).setHours(0, 0, 0, 0);
+            if (startDate) {
+                const start = new Date(startDate).setHours(0, 0, 0, 0);
+                if (orderDate < start) return false;
+            }
+            if (endDate) {
+                const end = new Date(endDate).setHours(23, 59, 59, 999);
+                if (orderDate > end) return false;
+            }
+        }
+
+        return true;
+    });
 
     return (
         <div className={styles.tableSection}>
-            <div className={styles.sectionHeader}>
-                <div>
-                    <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
-                    <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
+            <div className={styles.sectionHeader} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '1.5rem' }}>
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
+                        <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
+                    </div>
+
+                    <div className="flex gap-2">
+                        {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
+                            <button
+                                key={f}
+                                onClick={() => setFilter(f)}
+                                className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
+                            >
+                                {f.replace('_', ' ').toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-                <div className="flex gap-2">
-                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
-                        <button
-                            key={f}
-                            onClick={() => setFilter(f)}
-                            className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
-                        >
-                            {f.replace('_', ' ').toUpperCase()}
-                        </button>
-                    ))}
+                {/* ADVANCED FILTER BAR */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto auto',
+                    gap: '1rem',
+                    background: '#f8fafc',
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    alignItems: 'center'
+                }}>
+                    <div style={{ position: 'relative' }}>
+                        <input
+                            type="text"
+                            placeholder="Search by ID, Name or Phone..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '0.75rem 1rem 0.75rem 2.5rem',
+                                borderRadius: '8px',
+                                border: '1px solid #cbd5e1',
+                                fontSize: '0.9rem',
+                                background: 'white'
+                            }}
+                        />
+                        <div style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}>
+                            <MessageSquare size={16} /> {/* Using MessageSquare as a placeholder for search if I don't import Search */}
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>From:</span>
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            style={{
+                                padding: '0.6rem',
+                                borderRadius: '8px',
+                                border: '1px solid #cbd5e1',
+                                fontSize: '0.85rem'
+                            }}
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>To:</span>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            style={{
+                                padding: '0.6rem',
+                                borderRadius: '8px',
+                                border: '1px solid #cbd5e1',
+                                fontSize: '0.85rem'
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
 
