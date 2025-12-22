@@ -39,6 +39,12 @@ export interface Order {
         address: string;
         phone: string;
     };
+    logs?: {
+        type: string;
+        message: string;
+        timestamp: string;
+        user?: string; // Optional: track who did it
+    }[];
 }
 
 function ensureDataDir() {

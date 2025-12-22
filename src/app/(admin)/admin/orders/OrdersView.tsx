@@ -12,8 +12,7 @@ interface OrdersViewProps {
     products: Product[];
 }
 
-export default function OrdersView({ initialOrders, products }: OrdersViewProps) {
-    const [orders] = useState(initialOrders);
+export default function OrdersView({ initialOrders: orders, products }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
     return (
@@ -50,11 +49,7 @@ export default function OrdersView({ initialOrders, products }: OrdersViewProps)
                                 <td className={styles.bold}>${order.total.toFixed(2)}</td>
                                 <td>
                                     <span className={`${styles.statusBadge} ${styles[order.status]}`}>
-                                        {order.status === 'pending' && <Clock size={12} />}
-                                        {order.status === 'sales_order' && <CheckCircle2 size={12} />}
-                                        {order.status === 'canceled' && <Ban size={12} />}
-                                        {order.status === 'no_reply' && <MessageSquare size={12} />}
-                                        {order.status.replace('_', ' ')}
+                                        {order.status.replace('_', ' ').toUpperCase()}
                                     </span>
                                 </td>
                                 <td>

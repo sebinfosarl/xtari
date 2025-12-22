@@ -8,20 +8,54 @@
         "price": 599.99
       },
       {
-        "productId": "p2",
+        "productId": "p6",
         "quantity": 2,
-        "price": 349
+        "price": 89.99
       }
     ],
-    "total": 1297.99,
-    "status": "pending",
+    "total": 779.97,
+    "status": "canceled",
     "date": "2025-12-21T22:15:08.745Z",
     "customer": {
       "name": "Nizar Sebaghi",
       "email": "sebaghinizar99@gmail.com",
-      "phone": "+212660015991",
+      "phone": "+212 600 000 112",
       "address": "Hello world morocco"
     },
-    "callResult": "Ligne Occupe"
+    "cancellationMotif": "Pas de reponse",
+    "cancellationComment": "No problem",
+    "callResult": "Ligne Occupé",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Pas de reponse",
+        "timestamp": "2025-12-22T00:31:45.063Z",
+        "user": "Admin"
+      },
+      {
+        "type": "comment",
+        "message": "Second chance",
+        "timestamp": "2025-12-22T00:31:17.356Z",
+        "user": "Admin"
+      },
+      {
+        "type": "item_update",
+        "message": "Updated Mechanical Robot Building Kit: Qty 2, Price $89.99",
+        "timestamp": "2025-12-22T00:31:01.790Z",
+        "user": "Admin"
+      },
+      {
+        "type": "item_add",
+        "message": "Added Mechanical Robot Building Kit to order",
+        "timestamp": "2025-12-22T00:30:57.400Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from canceled to no_reply | Call Result: Ligne Occupé",
+        "timestamp": "2025-12-22T00:30:42.406Z",
+        "user": "Admin"
+      }
+    ]
   }
 ]
