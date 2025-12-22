@@ -1551,11 +1551,124 @@
         "message": "Shipment created with Cathedis. ID: 6152807",
         "timestamp": "2025-12-22T08:10:46.722Z",
         "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6153459",
+        "timestamp": "2025-12-22T09:17:31.081Z",
+        "user": "System"
       }
     ],
-    "shippingId": "6152807",
+    "shippingId": "6153459",
     "shippingStatus": "En Attente Ramassage",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/1897480368977172565?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/1897480368977172565?name=Delivery+voucher.pdf"
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/12201041128531082729?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/12201041128531082729?name=Delivery+voucher.pdf",
+    "insuranceValue": 3999
+  },
+  {
+    "id": "AXR2ID",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "canceled",
+    "date": "2025-12-22T09:20:40.029Z",
+    "customer": {
+      "name": "Finally finally",
+      "email": "",
+      "phone": "0661182296",
+      "address": "ahfirr",
+      "city": "Ahfir",
+      "sector": "Ahfir"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T09:20:52.815Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6153548",
+        "timestamp": "2025-12-22T09:21:19.436Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6153590",
+        "timestamp": "2025-12-22T09:24:13.230Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6153693",
+        "timestamp": "2025-12-22T09:30:54.717Z",
+        "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T09:32:19.039Z",
+        "user": "Admin"
+      }
+    ],
+    "fragile": true,
+    "shippingId": "6153693",
+    "shippingStatus": "ANNULÉE",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/6387348604080338276?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/6387348604080338276?name=Delivery+voucher.pdf",
+    "insuranceValue": 399
+  },
+  {
+    "id": "JG4AYS",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T09:34:47.282Z",
+    "customer": {
+      "name": "lastonetoday",
+      "email": "",
+      "phone": "0661182295",
+      "address": "perfect",
+      "city": "AGUERD TAMANART-TATA",
+      "sector": "TAMANART"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T09:36:41.245Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6153815",
+        "timestamp": "2025-12-22T09:38:25.877Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6153815",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/2329587963391787529?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/2329587963391787529?name=Delivery+voucher.pdf"
   }
 ]

@@ -10,7 +10,7 @@ import {
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { loginCathedis, createCathedisDelivery, getCathedisLogs, generateCathedisVoucher, getCathedisCities, getCathedisBanks, requestCathedisPickup } from '@/lib/shipping';
+import { loginCathedis, createCathedisDelivery, generateCathedisVoucher, getCathedisCities, getCathedisBanks } from '@/lib/shipping';
 
 export async function adminLoginAction(formData: FormData) {
     const username = formData.get('username') as string;
@@ -179,40 +179,13 @@ export async function createShipmentAction(order: Order) {
 
         revalidatePath('/admin');
         revalidatePath(`/admin/orders`);
-        return { success: true };
+        return { success: true, order };
     } catch (error: any) {
         console.error('Shipment creation failed:', error);
         return { success: false, error: error.message || 'Failed to create shipment' };
     }
 }
 
-export async function refreshShipmentStatusAction(orderId: string) {
-    try {
-        const orders = await getOrders();
-        const order = orders.find(o => o.id === orderId);
-
-        if (!order || !order.shippingId) {
-            return { success: false, error: 'No shipment found for this order' };
-        }
-
-        const jsessionid = await loginCathedis();
-        const logs = await getCathedisLogs(order.shippingId, jsessionid);
-
-        // Get latest status from logs
-        if (logs.length > 0) {
-            const latestLog = logs[0];
-            order.shippingStatus = latestLog.summary || order.shippingStatus;
-        }
-
-        await updateOrder(order);
-        revalidatePath('/admin/orders');
-
-        return { success: true, logs };
-    } catch (error: any) {
-        console.error('Status refresh failed:', error);
-        return { success: false, error: error.message || 'Failed to refresh status' };
-    }
-}
 
 export async function getCathedisCitiesAction() {
     try {
@@ -232,44 +205,38 @@ export async function getCathedisBanksAction() {
     }
 }
 
-export async function requestPickupAction(pickupPointId: string, orderIds: string[]) {
+export async function cancelShipmentAction(orderId: string) {
     try {
         const orders = await getOrders();
-        const shippingIds = orders
-            .filter(o => orderIds.includes(o.id) && o.shippingId)
-            .map(o => o.shippingId as string);
+        const order = orders.find(o => o.id === orderId);
 
-        if (shippingIds.length === 0) {
-            return { success: false, error: 'No shipped orders found in selection to request pickup for.' };
+        if (!order) {
+            return { success: false, error: 'Order not found' };
         }
 
-        const jsessionid = await loginCathedis();
-        const success = await requestCathedisPickup(jsessionid, pickupPointId, shippingIds);
+        // Update status
+        order.status = 'canceled';
+        order.shippingStatus = 'ANNULÉE';
 
-        if (success) {
-            // Update local status for all successfully requested orders
-            for (const orderId of orderIds) {
-                const order = orders.find(o => o.id === orderId);
-                if (order) {
-                    order.shippingStatus = 'Ramassage Demandé';
-                    if (!order.logs) order.logs = [];
-                    order.logs.push({
-                        type: 'shipping',
-                        message: `Pickup requested via hub ${pickupPointId === '26301' ? 'Rabat' : 'Tanger'}`,
-                        timestamp: new Date().toISOString(),
-                        user: 'System'
-                    });
-                    await updateOrder(order);
-                }
-            }
-            revalidatePath('/admin/deliveries');
-            revalidatePath('/admin/orders');
-        }
+        // Add log entry
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'status',
+            message: 'Order and Shipment canceled by admin.',
+            timestamp: new Date().toISOString(),
+            user: 'Admin'
+        });
 
-        return { success };
+        await updateOrder(order);
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/deliveries');
+
+        return { success: true, order };
     } catch (error: any) {
-        console.error('Pickup request failed:', error);
-        return { success: false, error: error.message };
+        console.error('Cancellation failed:', error);
+        return { success: false, error: error.message || 'Failed to cancel shipment' };
     }
 }
 

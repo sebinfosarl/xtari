@@ -92,29 +92,6 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
     return result.data[0].values?.delivery || result.data[0];
 }
 
-export async function getCathedisLogs(deliveryId: string, jsessionid: string) {
-    const payload = {
-        action: "delivery.api.logs",
-        data: {
-            context: {
-                id: deliveryId
-            }
-        }
-    };
-
-    const response = await fetch(`${API_URL}/ws/action`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Cookie': `JSESSIONID=${jsessionid}`
-        },
-        body: JSON.stringify(payload)
-    });
-
-    const result = await response.json();
-    return result.data?.[0]?.values?.logs || [];
-}
 
 export async function generateCathedisVoucher(deliveryIds: (string | number)[], jsessionid: string) {
     const payload = {
@@ -168,36 +145,3 @@ export async function getCathedisBanks() {
     return result.status === 0 ? result.data : [];
 }
 
-export async function requestCathedisPickup(jsessionid: string, pickupPointId: string, shippingIds: string[]) {
-    const today = new Date().toISOString().split('T')[0];
-    const payload = {
-        action: "delivery.pickup.save",
-        data: {
-            context: {
-                pickupRequest: {
-                    merchant: { code: "SEBINFO" },
-                    stores: [{ code: "SEBINFO" }],
-                    pickupDate: today,
-                    pickupPoint: { id: parseInt(pickupPointId) },
-                    pickupWay: "AUTO",
-                    deliveries: shippingIds.map(id => ({ id: parseInt(id) }))
-                }
-            }
-        }
-    };
-
-    console.log('Requesting Cathedis Pickup:', JSON.stringify(payload, null, 2));
-    const response = await fetch(`${API_URL}/ws/action`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Cookie': `JSESSIONID=${jsessionid}`
-        },
-        body: JSON.stringify(payload)
-    });
-
-    const result = await response.json();
-    console.log('Pickup API Response:', JSON.stringify(result, null, 2));
-    return result.status === 0;
-}

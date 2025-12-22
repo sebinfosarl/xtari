@@ -4,8 +4,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson } from '@/lib/db';
-import { Eye, Truck, RefreshCw, Calendar, Phone, Search, MapPin, Package } from 'lucide-react';
-import { requestPickupAction, refreshShipmentStatusAction } from '@/app/actions';
+import { Eye, Truck, Calendar, Phone, Search, MapPin, Package } from 'lucide-react';
+import { } from '@/app/actions';
 import styles from '../Admin.module.css';
 import DeliveryDialog from '@/components/DeliveryDialog';
 
@@ -22,15 +22,6 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
     const [shippingStatusFilter, setShippingStatusFilter] = useState<'all' | 'shipped' | 'pending'>('all');
     const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
     const [isShippingBulk, setIsShippingBulk] = useState(false);
-    const [isPushingBulk, setIsPushingBulk] = useState(false);
-    const [isRequestingPickup, setIsRequestingPickup] = useState(false);
-    const [isSyncingShipping, setIsSyncingShipping] = useState(false);
-    const [pickupPoint, setPickupPoint] = useState('26301'); // Default to Rabat
-
-    const pickupPoints = [
-        { id: '26301', label: 'Rabat-CENTRE VILLE-26301' },
-        { id: '36407', label: 'Tanger-Centre Ville-36407' }
-    ];
 
     // Filter for Sales Orders only
     const deliveries = orders.filter(o => o.status === 'sales_order');
@@ -52,44 +43,6 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
 
         return true;
     });
-
-    const handleRequestPickup = async () => {
-        const selectedOrders = deliveries.filter(o => selectedOrderIds.includes(o.id));
-        if (selectedOrders.length === 0) {
-            alert('Please select orders to request pickup for.');
-            return;
-        }
-
-        if (!confirm(`Request a pickup from Cathedis for ${selectedOrders.length} selected deliveries at ${pickupPoints.find(p => p.id === pickupPoint)?.label}?`)) return;
-        setIsRequestingPickup(true);
-        const result = await requestPickupAction(pickupPoint, selectedOrderIds);
-        setIsRequestingPickup(false);
-        if (result.success) {
-            alert('Pickup requested successfully!');
-            setSelectedOrderIds([]);
-            router.refresh();
-        } else {
-            alert(`Error: ${result.error}`);
-        }
-    };
-
-    const handleSyncShipping = async () => {
-        const selectedOrders = deliveries.filter(o => selectedOrderIds.includes(o.id) && o.shippingId);
-        if (selectedOrders.length === 0) {
-            alert('No shipped orders found in selection.');
-            return;
-        }
-
-        setIsSyncingShipping(true);
-        let successCount = 0;
-        for (const order of selectedOrders) {
-            const res = await refreshShipmentStatusAction(order.id);
-            if (res.success) successCount++;
-        }
-        setIsSyncingShipping(false);
-        alert(`Synced ${successCount}/${selectedOrders.length} shipments.`);
-        setSelectedOrderIds([]);
-    };
 
     const handleBulkShip = async () => {
         const selectedOrders = deliveries.filter(o => selectedOrderIds.includes(o.id) && !o.shippingId);
@@ -128,43 +81,6 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
         setSelectedOrderIds([]);
     };
 
-    const handleBulkPush = async () => {
-        const selectedOrders = deliveries.filter(o => selectedOrderIds.includes(o.id) && o.shippingId);
-        if (selectedOrders.length === 0) {
-            alert('No shipped orders found in selection to update.');
-            return;
-        }
-
-        if (!confirm(`PUSH your local modifications for ${selectedOrders.length} selected orders to Cathedis?`)) return;
-
-        const { createShipmentAction } = await import('@/app/actions');
-
-        setIsPushingBulk(true);
-        let successCount = 0;
-        let errors = [];
-
-        for (const order of selectedOrders) {
-            try {
-                const res = await createShipmentAction(order);
-                if (res.success) {
-                    successCount++;
-                } else {
-                    errors.push(`${order.id}: ${res.error}`);
-                }
-            } catch (err: any) {
-                errors.push(`${order.id}: ${err.message}`);
-            }
-        }
-
-        setIsPushingBulk(false);
-        alert(`Successfully updated ${successCount}/${selectedOrders.length} orders on Cathedis.`);
-        if (errors.length > 0) {
-            console.error('Bulk update errors:', errors);
-            alert(`Some orders failed to update. Check console for details.`);
-        }
-        setSelectedOrderIds([]);
-    };
-
 
     return (
         <div className={styles.tableSection}>
@@ -182,50 +98,8 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                             title="Export selected orders to Cathedis"
                         >
                             <Truck size={16} className={isShippingBulk ? 'animate-spin' : ''} />
-                            {isShippingBulk ? 'Shipping...' : `Ship Selected (${selectedOrderIds.length})`}
+                            {isShippingBulk ? 'Shipping...' : `Ship (${selectedOrderIds.length})`}
                         </button>
-                        <button
-                            onClick={handleSyncShipping}
-                            disabled={isSyncingShipping || selectedOrderIds.length === 0}
-                            className="btn btn-outline btn-sm"
-                            title="Pull latest status/logs from Cathedis"
-                        >
-                            <RefreshCw size={16} className={isSyncingShipping ? 'animate-spin' : ''} />
-                            {isSyncingShipping ? 'Refreshing...' : 'Refresh Status'}
-                        </button>
-                        <button
-                            onClick={handleBulkPush}
-                            disabled={isPushingBulk || selectedOrderIds.length === 0}
-                            className="btn btn-sm"
-                            style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }}
-                            title="Push local changes (address/items) to Cathedis"
-                        >
-                            <Truck size={16} className={isPushingBulk ? 'animate-spin' : ''} />
-                            {isPushingBulk ? 'Pushing...' : `Push Data Update (${selectedOrderIds.length})`}
-                        </button>
-
-                        <div className="flex items-center gap-2 ml-auto sm:ml-0" style={{ borderLeft: '1px solid #e2e8f0', paddingLeft: '0.75rem' }}>
-                            <select
-                                value={pickupPoint}
-                                onChange={(e) => setPickupPoint(e.target.value)}
-                                className="btn btn-outline btn-sm text-xs"
-                                style={{ height: '32px', borderColor: '#15803d', color: '#15803d', width: 'auto' }}
-                            >
-                                {pickupPoints.map(p => (
-                                    <option key={p.id} value={p.id}>{p.label}</option>
-                                ))}
-                            </select>
-                            <button
-                                onClick={handleRequestPickup}
-                                disabled={isRequestingPickup || selectedOrderIds.length === 0}
-                                className="btn btn-outline btn-sm"
-                                title="Request Cathedis Pickup for selected"
-                                style={{ borderColor: '#15803d', color: '#15803d' }}
-                            >
-                                <Truck size={16} />
-                                {isRequestingPickup ? 'Requesting...' : 'Request Pickup'}
-                            </button>
-                        </div>
                     </div>
                 </div>
 
