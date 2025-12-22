@@ -193,7 +193,39 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                 <div className={styles.modalBody}>
                     {/* SECTION 1: CUSTOMER INFO */}
                     <section className={styles.infoSection}>
-                        <h3 className={styles.sectionTitle}><UserIcon size={16} /> Customer Details</h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><UserIcon size={16} /> Customer Details</h3>
+                            <button
+                                onClick={() => {
+                                    const isBusiness = !!order.companyName || !!order.ice;
+                                    if (isBusiness) {
+                                        // Disable business mode: clear fields
+                                        setOrder({ ...order, companyName: undefined, ice: undefined, logs: addLog('business_mode', 'Disabled Business/Company Info') });
+                                    } else {
+                                        // Enable business mode: initialize
+                                        setOrder({ ...order, companyName: '', ice: '', logs: addLog('business_mode', 'Enabled Business/Company Info') });
+                                    }
+                                }}
+                                style={{
+                                    fontSize: '0.7rem',
+                                    fontWeight: 800,
+                                    padding: '6px 14px',
+                                    borderRadius: 'full',
+                                    background: (order.companyName !== undefined || order.ice !== undefined) ? 'rgba(59, 130, 246, 0.1)' : '#f8fafc',
+                                    color: (order.companyName !== undefined || order.ice !== undefined) ? '#2563eb' : '#94a3b8',
+                                    border: (order.companyName !== undefined || order.ice !== undefined) ? '1px solid #2563eb' : '1px solid #e2e8f0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                <Briefcase size={14} />
+                                {(order.companyName !== undefined || order.ice !== undefined) ? 'BUSINESS MODE ACTIVE' : 'SWITCH TO BUSINESS INVOICE'}
+                            </button>
+                        </div>
+
                         <div className="grid grid-cols-2 gap-6">
                             <div className={styles.inputGroup}>
                                 <label>Full Name</label>
@@ -203,6 +235,32 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 <label>Phone Number</label>
                                 <input value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
                             </div>
+
+                            {(order.companyName !== undefined || order.ice !== undefined) && (
+                                <>
+                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
+                                        <label style={{ color: '#0369a1' }}>Company/Business Name</label>
+                                        <input
+                                            value={order.companyName || ''}
+                                            onChange={(e) => setOrder({ ...order, companyName: e.target.value })}
+                                            className={styles.inlineInput}
+                                            placeholder="e.g. Acme Corp"
+                                            style={{ background: 'white', borderColor: '#7dd3fc' }}
+                                        />
+                                    </div>
+                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
+                                        <label style={{ color: '#0369a1' }}>ICE (Tax ID)</label>
+                                        <input
+                                            value={order.ice || ''}
+                                            onChange={(e) => setOrder({ ...order, ice: e.target.value })}
+                                            className={styles.inlineInput}
+                                            placeholder="Registration Number"
+                                            style={{ background: 'white', borderColor: '#7dd3fc' }}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Shipping Address</label>
                                 <textarea value={order.customer.address} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })} className={styles.inlineInput} rows={2} />
@@ -490,9 +548,19 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                         </div>
                         <div style={{ textAlign: 'right' }}>
                             <p><strong>Billed To:</strong></p>
-                            <p>{order.customer.name}</p>
-                            <p>{order.customer.phone}</p>
-                            <p>{order.customer.address}</p>
+                            {order.companyName ? (
+                                <>
+                                    <p style={{ fontSize: '1.2rem', fontWeight: 800, margin: '4px 0' }}>{order.companyName}</p>
+                                    <p>ICE: {order.ice || 'N/A'}</p>
+                                    <p>TEL: {order.customer.phone}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p>{order.customer.name}</p>
+                                    <p>{order.customer.phone}</p>
+                                    <p>{order.customer.address}</p>
+                                </>
+                            )}
                         </div>
                     </div>
 
