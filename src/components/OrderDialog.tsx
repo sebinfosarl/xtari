@@ -9,7 +9,7 @@ import {
     X, Save, Trash2, Plus, Phone, MapPin,
     User as UserIcon, ShoppingCart, History,
     CheckCircle2, AlertCircle, MessageSquare, Ban,
-    Search, Clock, FileText, IdCard, Briefcase
+    Search, Clock, FileText, IdCard, Briefcase, Eye
 } from 'lucide-react';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
@@ -18,9 +18,10 @@ interface OrderDialogProps {
     products: Product[];
     salesPeople: SalesPerson[];
     onClose: () => void;
+    readOnly?: boolean;
 }
 
-export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose }: OrderDialogProps) {
+export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose, readOnly = false }: OrderDialogProps) {
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
@@ -32,6 +33,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     const [tempReason, setTempReason] = useState<Order['cancellationMotif']>('' as any);
 
     const [showProductGallery, setShowProductGallery] = useState(false);
+    const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [newComment, setNewComment] = useState('');
@@ -161,26 +163,29 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     };
 
     const handlePrintInvoice = async () => {
-        const updatedOrder = {
-            ...order,
-            invoiceDownloaded: true,
-            logs: addLog('invoice_download', 'Downloaded order invoice')
-        };
-        setOrder(updatedOrder);
+        if (!readOnly) {
+            const now = new Date().toISOString();
+            const updatedOrder = {
+                ...order,
+                invoiceDownloaded: true,
+                invoiceDate: order.invoiceDate || now, // Set once, keep for reprints
+                logs: addLog('invoice_download', `Downloaded order invoice (Issue Date: ${new Date(now).toLocaleString()})`)
+            };
+            setOrder(updatedOrder);
 
-        // Background save to make it permanent as requested
-        try {
-            await updateOrderAction(updatedOrder);
-            router.refresh();
-        } catch (err) {
-            console.error('Failed to auto-save invoice status', err);
+            try {
+                await updateOrderAction(updatedOrder);
+                router.refresh();
+            } catch (err) {
+                console.error('Failed to auto-save invoice status', err);
+            }
         }
 
         window.print();
     };
 
     return (
-        <div className={styles.modalOverlay}>
+        <div className={styles.modalOverlay} style={{ zIndex: 1500 }}>
             <div className={styles.orderModal}>
                 <header className={styles.modalHeader}>
                     <div className={styles.headerInfo}>
@@ -229,11 +234,11 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                         <div className="grid grid-cols-2 gap-6">
                             <div className={styles.inputGroup}>
                                 <label>Full Name</label>
-                                <input value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
+                                <input disabled={readOnly} value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Phone Number</label>
-                                <input value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
+                                <input disabled={readOnly} value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
                             </div>
 
                             {(order.companyName !== undefined || order.ice !== undefined) && (
@@ -241,6 +246,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
                                         <label style={{ color: '#0369a1' }}>Company/Business Name</label>
                                         <input
+                                            disabled={readOnly}
                                             value={order.companyName || ''}
                                             onChange={(e) => setOrder({ ...order, companyName: e.target.value })}
                                             className={styles.inlineInput}
@@ -251,6 +257,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
                                         <label style={{ color: '#0369a1' }}>ICE (Tax ID)</label>
                                         <input
+                                            disabled={readOnly}
                                             value={order.ice || ''}
                                             onChange={(e) => setOrder({ ...order, ice: e.target.value })}
                                             className={styles.inlineInput}
@@ -263,7 +270,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Shipping Address</label>
-                                <textarea value={order.customer.address} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })} className={styles.inlineInput} rows={2} />
+                                <textarea disabled={readOnly} value={order.customer.address} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })} className={styles.inlineInput} rows={2} />
                             </div>
                         </div>
                     </section>
@@ -275,6 +282,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             <div className={styles.inputGroup}>
                                 <label>Work Status</label>
                                 <select
+                                    disabled={readOnly}
                                     className={styles.inlineInput}
                                     value={order.status}
                                     onChange={(e) => handleStatusChange(e.target.value as Order['status'])}
@@ -288,6 +296,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             <div className={styles.inputGroup}>
                                 <label>Sales Person</label>
                                 <select
+                                    disabled={readOnly}
                                     className={styles.inlineInput}
                                     value={order.salesPerson || ''}
                                     onChange={(e) => setOrder({ ...order, salesPerson: e.target.value, logs: addLog('sales_person_assign', `Assigned to ${e.target.value}`) })}
@@ -446,9 +455,11 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                     <section className={styles.infoSection}>
                         <div className="flex justify-between items-center mb-4">
                             <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><ShoppingCart size={16} /> Order Content</h3>
-                            <button onClick={() => setShowProductGallery(true)} className="btn btn-accent btn-sm">
-                                <Plus size={16} /> Add Product
-                            </button>
+                            {!readOnly && (
+                                <button onClick={() => setShowProductGallery(true)} className="btn btn-accent btn-sm">
+                                    <Plus size={16} /> Add Product
+                                </button>
+                            )}
                         </div>
 
                         <table className={styles.managementTable}>
@@ -498,15 +509,17 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                     {/* SECTION 4: LOGS */}
                     <section className={styles.infoSection}>
                         <h3 className={styles.sectionTitle}><History size={16} /> Activity & Comments</h3>
-                        <div className="flex gap-2">
-                            <input
-                                placeholder="Write a log or comment..."
-                                className={styles.inlineInput}
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            />
-                            <button onClick={addComment} className="btn btn-primary">Post</button>
-                        </div>
+                        {!readOnly && (
+                            <div className="flex gap-2">
+                                <input
+                                    placeholder="Write a log or comment..."
+                                    className={styles.inlineInput}
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                />
+                                <button onClick={addComment} className="btn btn-primary">Post</button>
+                            </div>
+                        )}
                         <div className={styles.logContainer}>
                             {order.logs?.map((log, i) => (
                                 <div key={i} className={styles.logEntry}>
@@ -525,17 +538,21 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                     {(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') && (
                         <button
                             onClick={handlePrintInvoice}
-                            className={`btn ${order.invoiceDownloaded ? 'btn-success' : 'btn-outline'}`}
+                            className="btn btn-outline"
                             style={{ marginRight: 'auto' }}
                         >
                             <FileText size={18} />
-                            {order.invoiceDownloaded ? 'Downloaded ✓' : 'Download Invoice'}
+                            Download Invoice
                         </button>
                     )}
-                    <button onClick={onClose} className="btn btn-outline" style={!(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') ? { marginLeft: 'auto' } : {}}>Cancel</button>
-                    <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
-                        {isSaving ? 'Saving...' : <><Save size={18} /> Update Order</>}
+                    <button onClick={onClose} className="btn btn-outline" style={!(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') ? { marginLeft: 'auto' } : {}}>
+                        {readOnly ? 'Close' : 'Cancel'}
                     </button>
+                    {!readOnly && (
+                        <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
+                            {isSaving ? 'Saving...' : <><Save size={18} /> Update Order</>}
+                        </button>
+                    )}
                 </footer>
 
                 {/* HIDDEN INVOICE PRINT AREA */}
@@ -544,7 +561,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                         <div>
                             <h1 style={{ fontSize: '2rem', margin: 0 }}>XTARI INVOICE</h1>
                             <p>Order ID: #{order.id}</p>
-                            <p>Date: {new Date(order.date).toLocaleDateString()}</p>
+                            <p>Issue Date: {order.invoiceDate ? new Date(order.invoiceDate).toLocaleDateString() : new Date().toLocaleDateString()}</p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                             <p><strong>Billed To:</strong></p>
@@ -715,12 +732,36 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             {filteredProducts.length > 0 ? (
                                 filteredProducts.map((p: Product) => (
                                     <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
-                                        <img src={p.image} className={styles.galleryThumb} alt="" />
-                                        <div>
+                                        <div style={{ position: 'relative', width: '60px', height: '60px', flexShrink: 0 }}>
+                                            <img src={p.image} className={styles.galleryThumb} alt="" />
+                                        </div>
+                                        <div style={{ flex: 1, paddingRight: '2.5rem' }}>
                                             <div className={styles.galleryTitle}>{p.title}</div>
                                             <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
                                             <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                         </div>
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
+                                            className={styles.previewBtn}
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '12px',
+                                                right: '12px',
+                                                background: 'white',
+                                                borderRadius: '6px',
+                                                padding: '4px',
+                                                border: '1px solid #e2e8f0',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s',
+                                                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                zIndex: 5
+                                            }}
+                                        >
+                                            <Eye size={14} color="var(--color-primary)" />
+                                        </button>
                                     </div>
                                 ))
                             ) : (
@@ -728,6 +769,55 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     No products found matching your search or category.
                                 </div>
                             )}
+                        </div>
+                    </div>
+                )}
+
+                {/* IMAGE PREVIEW LIGHTBOX */}
+                {previewProduct && (
+                    <div className={styles.confirmOverlay} style={{ zIndex: 2000 }} onClick={() => setPreviewProduct(null)}>
+                        <div
+                            className={styles.confirmCard}
+                            style={{
+                                maxWidth: '600px',
+                                padding: 0,
+                                overflow: 'hidden',
+                                background: 'white'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div style={{ position: 'relative' }}>
+                                <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
+                                <button
+                                    onClick={() => setPreviewProduct(null)}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '10px',
+                                        top: '10px',
+                                        background: 'rgba(0,0,0,0.5)',
+                                        color: 'white',
+                                        borderRadius: '50%',
+                                        padding: '4px',
+                                        border: 'none',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <X size={20} />
+                                </button>
+                            </div>
+                            <div style={{ padding: '1.5rem', background: 'white' }}>
+                                <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
+                                <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
+                                <div className="flex justify-between items-center">
+                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                    >
+                                        Add to Order
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}

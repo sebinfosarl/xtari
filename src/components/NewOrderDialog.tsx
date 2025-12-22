@@ -1,0 +1,444 @@
+
+'use client';
+
+import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { Order, Product, SalesPerson } from '@/lib/db';
+import { createOrderAction } from '@/app/actions';
+import {
+    X, Save, Trash2, Plus, Phone, MapPin,
+    User as UserIcon, ShoppingCart,
+    Search, Briefcase, PlusCircle, Eye
+} from 'lucide-react';
+import styles from '../app/(admin)/admin/Admin.module.css';
+
+interface NewOrderDialogProps {
+    products: Product[];
+    salesPeople: SalesPerson[];
+    onClose: () => void;
+}
+
+export default function NewOrderDialog({ products, salesPeople, onClose }: NewOrderDialogProps) {
+    const router = useRouter();
+    const [isSaving, setIsSaving] = useState(false);
+
+    // Order State
+    const [customer, setCustomer] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        address: ''
+    });
+    const [items, setItems] = useState<{ productId: string; quantity: number; price: number }[]>([]);
+    const [businessInfo, setBusinessInfo] = useState<{ companyName?: string; ice?: string }>({});
+    const [salesPerson, setSalesPerson] = useState('');
+
+    // UI States
+    const [showProductGallery, setShowProductGallery] = useState(false);
+    const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+    const total = useMemo(() => {
+        return items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    }, [items]);
+
+    const allCategories = useMemo(() => {
+        const cats = new Set(products.map(p => p.category));
+        return Array.from(cats);
+    }, [products]);
+
+    const filteredProducts = useMemo(() => {
+        return products.filter(p => {
+            const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
+            return matchesSearch && matchesCategory;
+        });
+    }, [products, searchQuery, selectedCategory]);
+
+    const handleCreate = async () => {
+        if (!customer.name || !customer.phone || items.length === 0) {
+            alert('Please fill in customer details and add at least one product.');
+            return;
+        }
+
+        setIsSaving(true);
+        const formData = new FormData();
+        formData.append('name', customer.name);
+        formData.append('phone', customer.phone);
+        formData.append('email', customer.email);
+        formData.append('address', customer.address);
+        formData.append('total', total.toString());
+        formData.append('items', JSON.stringify(items));
+
+        if (businessInfo.companyName) formData.append('companyName', businessInfo.companyName);
+        if (businessInfo.ice) formData.append('ice', businessInfo.ice);
+        if (salesPerson) formData.append('salesPerson', salesPerson);
+
+        try {
+            await createOrderAction(formData);
+            router.refresh();
+            onClose();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to create order');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const updateItem = (productId: string, quantity: number, price: number) => {
+        setItems(items.map(item =>
+            item.productId === productId ? { ...item, quantity, price } : item
+        ));
+    };
+
+    const addItem = (productId: string) => {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        const existing = items.find(i => i.productId === productId);
+        if (existing) {
+            updateItem(productId, existing.quantity + 1, existing.price);
+        } else {
+            setItems([...items, { productId, quantity: 1, price: product.price }]);
+        }
+        setShowProductGallery(false);
+    };
+
+    const removeItem = (productId: string) => {
+        setItems(items.filter(item => item.productId !== productId));
+    };
+
+    return (
+        <div className={styles.modalOverlay} style={{ zIndex: 1500 }}>
+            <div className={styles.orderModal}>
+                <header className={styles.modalHeader}>
+                    <div className={styles.headerInfo}>
+                        <h2 className={styles.modalTitle}>Create New Order</h2>
+                        <span className={styles.modalSubtitle}>Manual order entry</span>
+                    </div>
+                    <button onClick={onClose} className={styles.closeBtn}><X size={24} /></button>
+                </header>
+
+                <div className={styles.modalBody}>
+                    {/* SECTION 1: CUSTOMER INFO */}
+                    <section className={styles.infoSection}>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><UserIcon size={16} /> Customer Details</h3>
+                            <button
+                                onClick={() => {
+                                    if (businessInfo.companyName !== undefined) {
+                                        setBusinessInfo({});
+                                    } else {
+                                        setBusinessInfo({ companyName: '', ice: '' });
+                                    }
+                                }}
+                                style={{
+                                    fontSize: '0.7rem',
+                                    fontWeight: 800,
+                                    padding: '6px 14px',
+                                    borderRadius: 'full',
+                                    background: (businessInfo.companyName !== undefined) ? 'rgba(59, 130, 246, 0.1)' : '#f8fafc',
+                                    color: (businessInfo.companyName !== undefined) ? '#2563eb' : '#94a3b8',
+                                    border: (businessInfo.companyName !== undefined) ? '1px solid #2563eb' : '1px solid #e2e8f0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                <Briefcase size={14} />
+                                {(businessInfo.companyName !== undefined) ? 'BUSINESS MODE ACTIVE' : 'SWITCH TO BUSINESS INVOICE'}
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className={styles.inputGroup}>
+                                <label>Full Name *</label>
+                                <input
+                                    value={customer.name}
+                                    onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+                                    className={styles.inlineInput}
+                                    placeholder="Customer name"
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Phone Number *</label>
+                                <input
+                                    value={customer.phone}
+                                    onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+                                    className={styles.inlineInput}
+                                    placeholder="Phone number"
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Email Address</label>
+                                <input
+                                    value={customer.email}
+                                    onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
+                                    className={styles.inlineInput}
+                                    placeholder="Email (optional)"
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Sales Person</label>
+                                <select
+                                    className={styles.inlineInput}
+                                    value={salesPerson}
+                                    onChange={(e) => setSalesPerson(e.target.value)}
+                                >
+                                    <option value="">Select Sales Person...</option>
+                                    {salesPeople.map(p => (
+                                        <option key={p.id} value={p.fullName}>{p.fullName}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {businessInfo.companyName !== undefined && (
+                                <>
+                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
+                                        <label style={{ color: '#0369a1' }}>Company/Business Name</label>
+                                        <input
+                                            value={businessInfo.companyName || ''}
+                                            onChange={(e) => setBusinessInfo({ ...businessInfo, companyName: e.target.value })}
+                                            className={styles.inlineInput}
+                                            placeholder="e.g. Acme Corp"
+                                            style={{ background: 'white', borderColor: '#7dd3fc' }}
+                                        />
+                                    </div>
+                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
+                                        <label style={{ color: '#0369a1' }}>ICE (Tax ID)</label>
+                                        <input
+                                            value={businessInfo.ice || ''}
+                                            onChange={(e) => setBusinessInfo({ ...businessInfo, ice: e.target.value })}
+                                            className={styles.inlineInput}
+                                            placeholder="Registration Number"
+                                            style={{ background: 'white', borderColor: '#7dd3fc' }}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
+                                <label>Shipping Address</label>
+                                <textarea
+                                    value={customer.address}
+                                    onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
+                                    className={styles.inlineInput}
+                                    rows={2}
+                                    placeholder="Enter full address"
+                                />
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SECTION 2: ORDER CONTENT */}
+                    <section className={styles.infoSection}>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><ShoppingCart size={16} /> Order Content</h3>
+                            <button onClick={() => setShowProductGallery(true)} className="btn btn-accent btn-sm">
+                                <Plus size={16} /> Add Product
+                            </button>
+                        </div>
+
+                        <table className={styles.managementTable}>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {items.map(item => {
+                                    const product = products.find(p => p.id === item.productId);
+                                    return (
+                                        <tr key={item.productId}>
+                                            <td>
+                                                <div className="flex items-center gap-3">
+                                                    {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
+                                                    <div className="font-bold">{product?.title || 'Unknown'}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="0.01" value={item.price} onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value))} className={styles.inlineInput} style={{ width: '90px' }} />
+                                            </td>
+                                            <td>
+                                                <input type="number" value={item.quantity} onChange={(e) => updateItem(item.productId, parseInt(e.target.value), item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
+                                            </td>
+                                            <td className="font-bold">${(item.price * item.quantity).toFixed(2)}</td>
+                                            <td>
+                                                <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                                {items.length === 0 && (
+                                    <tr>
+                                        <td colSpan={5} className="text-center py-8 text-slate-400 italic">No products added yet.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan={3} className="text-right p-4 font-bold">Total Amount</td>
+                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">${total.toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </section>
+                </div>
+
+                <footer className={styles.modalFooter}>
+                    <button onClick={onClose} className="btn btn-outline" style={{ marginLeft: 'auto' }}>
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleCreate}
+                        disabled={isSaving || items.length === 0}
+                        className="btn btn-primary"
+                        style={{ minWidth: '160px' }}
+                    >
+                        {isSaving ? 'Creating...' : <><PlusCircle size={18} /> Create Order</>}
+                    </button>
+                </footer>
+
+                {/* Product Gallery (Reused from OrderDialog logic) */}
+                {showProductGallery && (
+                    <div className={styles.productGallery}>
+                        <header className={styles.modalHeader}>
+                            <h3 className="font-bold">Inventory Selection</h3>
+                            <button onClick={() => { setShowProductGallery(false); setSearchQuery(''); setSelectedCategory('all'); }} className={styles.closeBtn}><X size={20} /></button>
+                        </header>
+
+                        <div className={styles.gallerySearchWrapper}>
+                            <Search size={18} className="text-slate-400" />
+                            <input
+                                type="text"
+                                placeholder="Search products by title..."
+                                className={styles.gallerySearchInput}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                autoFocus
+                            />
+                        </div>
+
+                        <div className={styles.galleryFilters}>
+                            <button
+                                className={`${styles.filterPill} ${selectedCategory === 'all' ? styles.active : ''}`}
+                                onClick={() => setSelectedCategory('all')}
+                            >
+                                All Products
+                            </button>
+                            {allCategories.map((cat: string) => (
+                                <button
+                                    key={cat}
+                                    className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''}`}
+                                    onClick={() => setSelectedCategory(cat)}
+                                >
+                                    {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className={styles.galleryBody}>
+                            {filteredProducts.length > 0 ? (
+                                filteredProducts.map((p: Product) => (
+                                    <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
+                                        <div style={{ position: 'relative', width: '60px', height: '60px', flexShrink: 0 }}>
+                                            <img src={p.image} className={styles.galleryThumb} alt="" />
+                                        </div>
+                                        <div style={{ flex: 1, paddingRight: '2.5rem' }}>
+                                            <div className={styles.galleryTitle}>{p.title}</div>
+                                            <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
+                                            <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
+                                        </div>
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
+                                            className={styles.previewBtn}
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '12px',
+                                                right: '12px',
+                                                background: 'white',
+                                                borderRadius: '6px',
+                                                padding: '4px',
+                                                border: '1px solid #e2e8f0',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s',
+                                                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                zIndex: 5
+                                            }}
+                                        >
+                                            <Eye size={14} color="var(--color-primary)" />
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="col-span-2 py-12 text-center text-slate-400 italic">
+                                    No products found matching your search or category.
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* IMAGE PREVIEW LIGHTBOX */}
+                {previewProduct && (
+                    <div className={styles.confirmOverlay} style={{ zIndex: 2000 }} onClick={() => setPreviewProduct(null)}>
+                        <div
+                            className={styles.confirmCard}
+                            style={{
+                                maxWidth: '600px',
+                                padding: 0,
+                                overflow: 'hidden',
+                                background: 'white'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div style={{ position: 'relative' }}>
+                                <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
+                                <button
+                                    onClick={() => setPreviewProduct(null)}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '10px',
+                                        top: '10px',
+                                        background: 'rgba(0,0,0,0.5)',
+                                        color: 'white',
+                                        borderRadius: '50%',
+                                        padding: '4px',
+                                        border: 'none',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <X size={20} />
+                                </button>
+                            </div>
+                            <div style={{ padding: '1.5rem', background: 'white' }}>
+                                <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
+                                <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
+                                <div className="flex justify-between items-center">
+                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                    >
+                                        Add to Order
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}

@@ -41,6 +41,7 @@ export interface Order {
     };
     salesPerson?: string;
     invoiceDownloaded?: boolean;
+    invoiceDate?: string;
     companyName?: string;
     ice?: string;
     callHistory?: { [day: number]: number }; // dayIndex: attemptCount

@@ -3,9 +3,10 @@
 
 import { useState } from 'react';
 import { Order, Product, SalesPerson } from '@/lib/db';
-import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare } from 'lucide-react';
+import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus } from 'lucide-react';
 import styles from '../Admin.module.css';
 import OrderDialog from '@/components/OrderDialog';
+import NewOrderDialog from '@/components/NewOrderDialog';
 
 interface OrdersViewProps {
     initialOrders: Order[];
@@ -19,6 +20,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
     const [searchQuery, setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [showNewOrderDialog, setShowNewOrderDialog] = useState(false);
 
     const filteredOrders = orders.filter(o => {
         // Status filter
@@ -52,23 +54,23 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
     return (
         <div className={styles.tableSection}>
             <div className={styles.sectionHeader} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '1.5rem' }}>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
                         <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
                         <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
                     </div>
+                </div>
 
-                    <div className="flex gap-2">
-                        {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
-                            <button
-                                key={f}
-                                onClick={() => setFilter(f)}
-                                className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
-                            >
-                                {f.replace('_', ' ').toUpperCase()}
-                            </button>
-                        ))}
-                    </div>
+                <div className="flex gap-2">
+                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
+                        <button
+                            key={f}
+                            onClick={() => setFilter(f)}
+                            className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
+                        >
+                            {f.replace('_', ' ').toUpperCase()}
+                        </button>
+                    ))}
                 </div>
 
                 {/* ADVANCED FILTER BAR */}
@@ -98,7 +100,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                             }}
                         />
                         <div style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}>
-                            <MessageSquare size={16} /> {/* Using MessageSquare as a placeholder for search if I don't import Search */}
+                            <MessageSquare size={16} />
                         </div>
                     </div>
 
@@ -200,14 +202,34 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                 </table>
             </div>
 
-            {selectedOrder && (
-                <OrderDialog
-                    order={selectedOrder}
-                    products={products}
-                    salesPeople={salesPeople}
-                    onClose={() => setSelectedOrder(null)}
-                />
-            )}
+            {
+                selectedOrder && (
+                    <OrderDialog
+                        order={selectedOrder}
+                        products={products}
+                        salesPeople={salesPeople}
+                        onClose={() => setSelectedOrder(null)}
+                    />
+                )
+            }
+            {
+                showNewOrderDialog && (
+                    <NewOrderDialog
+                        products={products}
+                        salesPeople={salesPeople}
+                        onClose={() => setShowNewOrderDialog(false)}
+                    />
+                )
+            }
+
+            {/* FLOATING ACTION BUTTON */}
+            <button
+                className={styles.fab}
+                onClick={() => setShowNewOrderDialog(true)}
+                title="Create New Order"
+            >
+                <Plus size={32} />
+            </button>
         </div>
     );
 }
