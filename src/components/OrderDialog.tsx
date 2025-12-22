@@ -1,36 +1,53 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { Order, Product } from '@/lib/db';
+import { Order, Product, SalesPerson } from '@/lib/db';
 import { updateOrderAction } from '@/app/actions';
 import {
     X, Save, Trash2, Plus, Phone, MapPin,
     User as UserIcon, ShoppingCart, History,
     CheckCircle2, AlertCircle, MessageSquare, Ban,
-    Search, Clock
+    Search, Clock, FileText, IdCard, Briefcase
 } from 'lucide-react';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface OrderDialogProps {
     order: Order;
     products: Product[];
+    salesPeople: SalesPerson[];
     onClose: () => void;
 }
 
-export default function OrderDialog({ order: initialOrder, products, onClose }: OrderDialogProps) {
+export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose }: OrderDialogProps) {
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
 
     // UI States
     const [pendingStatus, setPendingStatus] = useState<Order['status'] | null>(null);
+    const [activeTabDay, setActiveTabDay] = useState<number>(1);
     const [tempCallResult, setTempCallResult] = useState<Order['callResult']>('' as any);
     const [tempReason, setTempReason] = useState<Order['cancellationMotif']>('' as any);
 
     const [showProductGallery, setShowProductGallery] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [newComment, setNewComment] = useState('');
+
+    const allCategories = useMemo(() => {
+        const cats = new Set(products.map(p => p.category));
+        return Array.from(cats);
+    }, [products]);
+
+    const filteredProducts = useMemo(() => {
+        return products.filter(p => {
+            const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
+            return matchesSearch && matchesCategory;
+        });
+    }, [products, searchQuery, selectedCategory]);
 
     const addLog = (type: string, message: string) => {
         const newLog = {
@@ -58,10 +75,15 @@ export default function OrderDialog({ order: initialOrder, products, onClose }: 
 
         if (pendingStatus === 'no_reply') {
             updates.callResult = tempCallResult;
-            logMsg += ` | Call Result: ${tempCallResult}`;
+            updates.callHistory = { 1: 1 };
+            logMsg += ` | Status: No Reply | Result: ${tempCallResult} | Initiative Day 1`;
         } else if (pendingStatus === 'canceled') {
+            updates.callResult = 'Canceled' as any;
             updates.cancellationMotif = tempReason;
-            logMsg += ` | Reason: ${tempReason}`;
+            logMsg += ` | Reason: ${tempReason} | Call Result set to Canceled`;
+        } else if (pendingStatus === 'sales_order') {
+            updates.callResult = 'Appel confirmer' as any;
+            logMsg += ` | Auto-set Call Result: Appel confirmer`;
         }
 
         setOrder({
@@ -138,6 +160,25 @@ export default function OrderDialog({ order: initialOrder, products, onClose }: 
         }
     };
 
+    const handlePrintInvoice = async () => {
+        const updatedOrder = {
+            ...order,
+            invoiceDownloaded: true,
+            logs: addLog('invoice_download', 'Downloaded order invoice')
+        };
+        setOrder(updatedOrder);
+
+        // Background save to make it permanent as requested
+        try {
+            await updateOrderAction(updatedOrder);
+            router.refresh();
+        } catch (err) {
+            console.error('Failed to auto-save invoice status', err);
+        }
+
+        window.print();
+    };
+
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.orderModal}>
@@ -171,8 +212,8 @@ export default function OrderDialog({ order: initialOrder, products, onClose }: 
 
                     {/* SECTION 2: WORK STATUS */}
                     <section className={styles.infoSection}>
-                        <h3 className={styles.sectionTitle}><AlertCircle size={16} /> Order Workflow</h3>
-                        <div className="grid grid-cols-2 gap-6">
+                        <h3 className={styles.sectionTitle}><AlertCircle size={16} /> Order Workflow & Attribution</h3>
+                        <div className={styles.salesGrid}>
                             <div className={styles.inputGroup}>
                                 <label>Work Status</label>
                                 <select
@@ -186,13 +227,159 @@ export default function OrderDialog({ order: initialOrder, products, onClose }: 
                                     <option value="canceled">Canceled</option>
                                 </select>
                             </div>
+                            <div className={styles.inputGroup}>
+                                <label>Sales Person</label>
+                                <select
+                                    className={styles.inlineInput}
+                                    value={order.salesPerson || ''}
+                                    onChange={(e) => setOrder({ ...order, salesPerson: e.target.value, logs: addLog('sales_person_assign', `Assigned to ${e.target.value}`) })}
+                                >
+                                    <option value="">Select Sales Person...</option>
+                                    {salesPeople.map(p => (
+                                        <option key={p.id} value={p.fullName}>{p.fullName}</option>
+                                    ))}
+                                </select>
+                            </div>
                             {(order.status === 'no_reply' || order.status === 'canceled') && (
-                                <div className={styles.inputGroup}>
-                                    <label>{order.status === 'no_reply' ? 'Current Call Result' : 'Cancellation Reason'}</label>
-                                    <div className="flex items-center h-10 font-bold text-blue-600">
-                                        {order.status === 'no_reply' ? order.callResult || 'Not set' : order.cancellationMotif || 'Not set'}
+                                <>
+                                    <div className={styles.inputGroup}>
+                                        <label>{order.status === 'no_reply' ? 'Current Call Result' : 'Cancellation Reason'}</label>
+                                        {order.status === 'no_reply' ? (
+                                            <select
+                                                className={styles.inlineInput}
+                                                value={order.callResult || ''}
+                                                onChange={(e) => setOrder({ ...order, callResult: e.target.value as any, logs: addLog('status_update', `Updated Call Result to ${e.target.value}`) })}
+                                            >
+                                                <option value="Ligne Occupé">Ligne Occupé</option>
+                                                <option value="Appel coupé">Appel coupé</option>
+                                                <option value="Pas de réponse">Pas de réponse</option>
+                                                <option value="Rappel demandé">Rappel demandé</option>
+                                                <option value="Boite vocal">Boite vocal</option>
+                                            </select>
+                                        ) : (
+                                            <div className="flex items-center h-10 font-bold text-red-600">
+                                                {order.cancellationMotif || 'Not set'}
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
+                                    {order.status === 'no_reply' && (
+                                        <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
+                                            <label style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', display: 'block' }}>Call Activity Tracker</label>
+
+                                            <div style={{
+                                                background: 'rgba(255, 255, 255, 0.7)',
+                                                backdropFilter: 'blur(10px)',
+                                                borderRadius: '20px',
+                                                border: '1px solid rgba(226, 232, 240, 0.8)',
+                                                padding: '1.25rem',
+                                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: '1.5rem'
+                                            }}>
+                                                {/* PREMIUM DAY SELECTOR */}
+                                                <div style={{
+                                                    background: '#f1f5f9',
+                                                    padding: '4px',
+                                                    borderRadius: '14px',
+                                                    display: 'flex',
+                                                    gap: '4px'
+                                                }}>
+                                                    {[1, 2, 3].map(day => (
+                                                        <button
+                                                            key={day}
+                                                            onClick={(e) => {
+                                                                setActiveTabDay(day);
+                                                            }}
+                                                            style={{
+                                                                flex: 1,
+                                                                padding: '10px 0',
+                                                                borderRadius: '10px',
+                                                                fontSize: '0.7rem',
+                                                                fontWeight: '800',
+                                                                letterSpacing: '0.05em',
+                                                                border: 'none',
+                                                                cursor: 'pointer',
+                                                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                                background: activeTabDay === day ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : 'transparent',
+                                                                color: activeTabDay === day ? 'white' : '#64748b',
+                                                                boxShadow: activeTabDay === day ? '0 4px 12px rgba(37, 99, 235, 0.3)' : 'none',
+                                                                transform: activeTabDay === day ? 'scale(1.02)' : 'scale(1)'
+                                                            }}
+                                                        >
+                                                            DAY {day}
+                                                        </button>
+                                                    ))}
+                                                </div>
+
+                                                {/* LED ATTEMPT DOTS */}
+                                                <div style={{
+                                                    background: '#ffffff',
+                                                    padding: '1.25rem',
+                                                    borderRadius: '16px',
+                                                    border: '1px solid #f1f5f9',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between'
+                                                }}>
+                                                    <div>
+                                                        <span style={{ fontSize: '0.65rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Daily Attempts</span>
+                                                        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b' }}>Day {activeTabDay} Status</div>
+                                                    </div>
+
+                                                    <div className="flex gap-4">
+                                                        {[1, 2, 3, 4, 5].map(attempt => {
+                                                            const currentCount = (order.callHistory || {})[activeTabDay] || 0;
+                                                            const isActive = attempt <= currentCount;
+                                                            return (
+                                                                <button
+                                                                    key={attempt}
+                                                                    onClick={() => {
+                                                                        const history = { ...(order.callHistory || {}) };
+                                                                        history[activeTabDay] = attempt;
+                                                                        setOrder({ ...order, callHistory: history, logs: addLog('call_tracking', `Logged attempt ${attempt} for Day ${activeTabDay}`) });
+                                                                    }}
+                                                                    style={{
+                                                                        width: '32px',
+                                                                        height: '32px',
+                                                                        borderRadius: '50%',
+                                                                        background: isActive ? '#10b981' : '#f1f5f9',
+                                                                        border: isActive ? 'none' : '2px solid #e2e8f0',
+                                                                        boxShadow: isActive ? '0 0 15px rgba(16, 185, 129, 0.5)' : 'none',
+                                                                        cursor: 'pointer',
+                                                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                                        position: 'relative',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center'
+                                                                    }}
+                                                                    onMouseEnter={(e) => {
+                                                                        e.currentTarget.style.transform = 'scale(1.2) translateY(-2px)';
+                                                                        if (isActive) e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.6)';
+                                                                    }}
+                                                                    onMouseLeave={(e) => {
+                                                                        e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                                                                        if (isActive) e.currentTarget.style.boxShadow = '0 0 15px rgba(16, 185, 129, 0.5)';
+                                                                    }}
+                                                                >
+                                                                    {isActive && (
+                                                                        <div style={{
+                                                                            width: '8px',
+                                                                            height: '8px',
+                                                                            background: 'white',
+                                                                            borderRadius: '50%',
+                                                                            boxShadow: '0 0 5px white'
+                                                                        }} />
+                                                                    )}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
                     </section>
@@ -277,11 +464,96 @@ export default function OrderDialog({ order: initialOrder, products, onClose }: 
                 </div>
 
                 <footer className={styles.modalFooter}>
-                    <button onClick={onClose} className="btn btn-outline">Cancel</button>
+                    {(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') && (
+                        <button
+                            onClick={handlePrintInvoice}
+                            className={`btn ${order.invoiceDownloaded ? 'btn-success' : 'btn-outline'}`}
+                            style={{ marginRight: 'auto' }}
+                        >
+                            <FileText size={18} />
+                            {order.invoiceDownloaded ? 'Downloaded ✓' : 'Download Invoice'}
+                        </button>
+                    )}
+                    <button onClick={onClose} className="btn btn-outline" style={!(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') ? { marginLeft: 'auto' } : {}}>Cancel</button>
                     <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
                         {isSaving ? 'Saving...' : <><Save size={18} /> Update Order</>}
                     </button>
                 </footer>
+
+                {/* HIDDEN INVOICE PRINT AREA */}
+                <div className={styles.invoicePrintArea}>
+                    <div className={styles.invoiceHeader}>
+                        <div>
+                            <h1 style={{ fontSize: '2rem', margin: 0 }}>XTARI INVOICE</h1>
+                            <p>Order ID: #{order.id}</p>
+                            <p>Date: {new Date(order.date).toLocaleDateString()}</p>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                            <p><strong>Billed To:</strong></p>
+                            <p>{order.customer.name}</p>
+                            <p>{order.customer.phone}</p>
+                            <p>{order.customer.address}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between items-start mt-4 mb-6 pt-4 border-t border-slate-100">
+                        <div>
+                            <p style={{ margin: '0 0 0.5rem 0' }}><strong>Sales Person:</strong> {order.salesPerson || 'Unassigned'}</p>
+                            {salesPeople.find(p => p.fullName === order.salesPerson) && (
+                                <div className="text-[10px] text-slate-500 space-y-1">
+                                    <p>CNIE: {salesPeople.find(p => p.fullName === order.salesPerson)?.cnie}</p>
+                                    <p>ICE: {salesPeople.find(p => p.fullName === order.salesPerson)?.ice} | IF: {salesPeople.find(p => p.fullName === order.salesPerson)?.if}</p>
+                                    <p>TEL: {salesPeople.find(p => p.fullName === order.salesPerson)?.tel}</p>
+                                </div>
+                            )}
+                        </div>
+                        {salesPeople.find(p => p.fullName === order.salesPerson) && (
+                            <div className="flex gap-6 items-end">
+                                {salesPeople.find(p => p.fullName === order.salesPerson)?.signature && (
+                                    <div className="text-center">
+                                        <p className="text-[8px] uppercase font-bold text-slate-400 mb-1">Signature</p>
+                                        <img src={salesPeople.find(p => p.fullName === order.salesPerson)?.signature} alt="Signature" className="h-10 object-contain" />
+                                    </div>
+                                )}
+                                {salesPeople.find(p => p.fullName === order.salesPerson)?.cachet && (
+                                    <div className="text-center">
+                                        <p className="text-[8px] uppercase font-bold text-slate-400 mb-1">Cachet</p>
+                                        <img src={salesPeople.find(p => p.fullName === order.salesPerson)?.cachet} alt="Cachet" className="h-14 object-contain" />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    <table className={styles.invoiceTable}>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {order.items.map(item => {
+                                const product = products.find(p => p.id === item.productId);
+                                return (
+                                    <tr key={item.productId}>
+                                        <td>{product?.title}</td>
+                                        <td>${item.price.toFixed(2)}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>${(item.price * item.quantity).toFixed(2)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+
+                    <div style={{ textAlign: 'right', marginTop: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem' }}>Total: ${order.total.toFixed(2)}</h2>
+                        <p style={{ marginTop: '3rem', fontStyle: 'italic' }}>Thank you for your business!</p>
+                    </div>
+                </div>
 
                 {/* DYNAMIC POPUPS */}
                 {pendingStatus && (
@@ -338,18 +610,56 @@ export default function OrderDialog({ order: initialOrder, products, onClose }: 
                     <div className={styles.productGallery}>
                         <header className={styles.modalHeader}>
                             <h3 className="font-bold">Inventory Selection</h3>
-                            <button onClick={() => setShowProductGallery(false)} className={styles.closeBtn}><X size={20} /></button>
+                            <button onClick={() => { setShowProductGallery(false); setSearchQuery(''); setSelectedCategory('all'); }} className={styles.closeBtn}><X size={20} /></button>
                         </header>
-                        <div className={styles.galleryBody}>
-                            {products.map(p => (
-                                <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
-                                    <img src={p.image} className={styles.galleryThumb} alt="" />
-                                    <div>
-                                        <div className={styles.galleryTitle}>{p.title}</div>
-                                        <div className={styles.galleryPrice}>${p.price}</div>
-                                    </div>
-                                </div>
+
+                        <div className={styles.gallerySearchWrapper}>
+                            <Search size={18} className="text-slate-400" />
+                            <input
+                                type="text"
+                                placeholder="Search products by title..."
+                                className={styles.gallerySearchInput}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                autoFocus
+                            />
+                        </div>
+
+                        <div className={styles.galleryFilters}>
+                            <button
+                                className={`${styles.filterPill} ${selectedCategory === 'all' ? styles.active : ''}`}
+                                onClick={() => setSelectedCategory('all')}
+                            >
+                                All Products
+                            </button>
+                            {allCategories.map((cat: string) => (
+                                <button
+                                    key={cat}
+                                    className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''}`}
+                                    onClick={() => setSelectedCategory(cat)}
+                                >
+                                    {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+                                </button>
                             ))}
+                        </div>
+
+                        <div className={styles.galleryBody}>
+                            {filteredProducts.length > 0 ? (
+                                filteredProducts.map((p: Product) => (
+                                    <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
+                                        <img src={p.image} className={styles.galleryThumb} alt="" />
+                                        <div>
+                                            <div className={styles.galleryTitle}>{p.title}</div>
+                                            <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
+                                            <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="col-span-2 py-12 text-center text-slate-400 italic">
+                                    No products found matching your search or category.
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

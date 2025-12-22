@@ -1,6 +1,12 @@
 'use server';
 
-import { saveProduct, Product, createOrder, Order, getUser, createUser, updateOrder } from '@/lib/db';
+import {
+    getProducts, saveProduct,
+    getOrders, updateOrder,
+    Order, Product, SalesPerson,
+    saveSalesPerson, deleteSalesPerson,
+    getUser, createUser, createOrder
+} from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -85,6 +91,16 @@ export async function updateOrderAction(order: Order) {
     revalidatePath('/admin');
     revalidatePath('/admin/orders');
     return { success: true };
+}
+
+export async function saveSalesPersonAction(salesPerson: SalesPerson) {
+    await saveSalesPerson(salesPerson);
+    revalidatePath('/admin/sales');
+}
+
+export async function deleteSalesPersonAction(id: string) {
+    await deleteSalesPerson(id);
+    revalidatePath('/admin/sales');
 }
 
 export async function deleteProductAction(formData: FormData) {

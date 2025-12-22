@@ -39,6 +39,9 @@ export interface Order {
         address: string;
         phone: string;
     };
+    salesPerson?: string;
+    invoiceDownloaded?: boolean;
+    callHistory?: { [day: number]: number }; // dayIndex: attemptCount
     logs?: {
         type: string;
         message: string;
@@ -147,4 +150,40 @@ export async function createUser(user: User) {
     }
     users.push(user);
     writeJson('users.json', users);
+}
+
+// Sales People
+export interface SalesPerson {
+    id: string;
+    fullName: string;
+    cnie: string;
+    address: string;
+    ice: string;
+    if: string;
+    tp: string;
+    tel: string;
+    email: string;
+    signature?: string; // Image as base64 or URL
+    cachet?: string; // Image as base64 or URL
+}
+
+export async function getSalesPeople(): Promise<SalesPerson[]> {
+    return readJson<SalesPerson[]>('salespeople.json', []);
+}
+
+export async function saveSalesPerson(salesPerson: SalesPerson) {
+    const people = await getSalesPeople();
+    const index = people.findIndex(p => p.id === salesPerson.id);
+    if (index >= 0) {
+        people[index] = salesPerson;
+    } else {
+        people.push(salesPerson);
+    }
+    writeJson('salespeople.json', people);
+}
+
+export async function deleteSalesPerson(id: string) {
+    const people = await getSalesPeople();
+    const filtered = people.filter(p => p.id !== id);
+    writeJson('salespeople.json', filtered);
 }

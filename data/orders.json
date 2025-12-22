@@ -14,7 +14,7 @@
       }
     ],
     "total": 779.97,
-    "status": "canceled",
+    "status": "sales_order",
     "date": "2025-12-21T22:15:08.745Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -24,8 +24,62 @@
     },
     "cancellationMotif": "Pas de reponse",
     "cancellationComment": "No problem",
-    "callResult": "Ligne Occupé",
+    "callResult": "Appel confirmer",
     "logs": [
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice",
+        "timestamp": "2025-12-22T01:10:25.507Z",
+        "user": "Admin"
+      },
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice",
+        "timestamp": "2025-12-22T01:07:42.695Z",
+        "user": "Admin"
+      },
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice",
+        "timestamp": "2025-12-22T01:07:28.549Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to Ahmed",
+        "timestamp": "2025-12-22T00:55:50.970Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to ",
+        "timestamp": "2025-12-22T00:55:33.647Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to Ahmed",
+        "timestamp": "2025-12-22T00:55:18.730Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T00:35:02.373Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from sales_order to no_reply | Call Result: Ligne Occupé",
+        "timestamp": "2025-12-22T00:34:52.352Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from canceled to sales_order",
+        "timestamp": "2025-12-22T00:33:33.549Z",
+        "user": "Admin"
+      },
       {
         "type": "status_update",
         "message": "Changed status from no_reply to canceled | Reason: Pas de reponse",
@@ -56,6 +110,278 @@
         "timestamp": "2025-12-22T00:30:42.406Z",
         "user": "Admin"
       }
-    ]
+    ],
+    "salesPerson": "Ahmed",
+    "invoiceDownloaded": true
+  },
+  {
+    "id": "2JWMTW",
+    "items": [
+      {
+        "productId": "p3",
+        "quantity": 1,
+        "price": 899
+      }
+    ],
+    "total": 899,
+    "status": "sales_order",
+    "date": "2025-12-22T01:08:38.025Z",
+    "customer": {
+      "name": "Drogba",
+      "email": "drogbamail@gamil.com",
+      "phone": "+212661182295",
+      "address": "somewhere in the reainbow"
+    },
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice",
+        "timestamp": "2025-12-22T01:09:07.794Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to Yassine",
+        "timestamp": "2025-12-22T01:09:02.606Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T01:08:59.245Z",
+        "user": "Admin"
+      }
+    ],
+    "salesPerson": "Yassine",
+    "invoiceDownloaded": true
+  },
+  {
+    "id": "5TK16S",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T01:09:59.294Z",
+    "customer": {
+      "name": "amal",
+      "email": "amal@sebinfo.ma",
+      "phone": "0661182295",
+      "address": "hello"
+    },
+    "salesPerson": "nizar sebaghi",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T01:40:06.228Z",
+        "user": "Admin"
+      },
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice",
+        "timestamp": "2025-12-22T01:29:04.457Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to nizar sebaghi",
+        "timestamp": "2025-12-22T01:29:01.983Z",
+        "user": "Admin"
+      }
+    ],
+    "invoiceDownloaded": true,
+    "callResult": "Appel confirmer"
+  },
+  {
+    "id": "6MYV7N",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "p3",
+        "quantity": 2,
+        "price": 899
+      }
+    ],
+    "total": 2147,
+    "status": "canceled",
+    "date": "2025-12-22T01:42:22.223Z",
+    "customer": {
+      "name": "hello baba",
+      "email": "baba@sebinfo.ma",
+      "phone": "0661182295",
+      "address": "hello hello"
+    },
+    "callResult": "Ligne Occupé",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero",
+        "timestamp": "2025-12-22T01:43:08.361Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to nizar sebaghi",
+        "timestamp": "2025-12-22T01:42:41.411Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to no_reply | Call Result: Ligne Occupé",
+        "timestamp": "2025-12-22T01:42:39.065Z",
+        "user": "Admin"
+      }
+    ],
+    "salesPerson": "nizar sebaghi",
+    "cancellationMotif": "Mauvais numero"
+  },
+  {
+    "id": "F4BE9X",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 3,
+        "price": 349
+      }
+    ],
+    "total": 1047,
+    "status": "canceled",
+    "date": "2025-12-22T01:44:37.517Z",
+    "customer": {
+      "name": "sebod",
+      "email": "fajdsi@gmail.com",
+      "phone": "+212661182295",
+      "address": "momocati"
+    },
+    "callResult": "Canceled",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Pas de reponse | Call Result set to Canceled",
+        "timestamp": "2025-12-22T02:02:45.309Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 5 for Day 3",
+        "timestamp": "2025-12-22T02:02:14.843Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 4 for Day 3",
+        "timestamp": "2025-12-22T02:02:13.972Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 3 for Day 3",
+        "timestamp": "2025-12-22T02:02:13.269Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 3",
+        "timestamp": "2025-12-22T02:02:12.585Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 1 for Day 3",
+        "timestamp": "2025-12-22T02:02:11.842Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 5 for Day 2",
+        "timestamp": "2025-12-22T02:02:04.506Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 4 for Day 2",
+        "timestamp": "2025-12-22T02:02:03.699Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 3 for Day 2",
+        "timestamp": "2025-12-22T02:02:02.429Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 2",
+        "timestamp": "2025-12-22T02:01:54.744Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 1 for Day 2",
+        "timestamp": "2025-12-22T01:58:51.654Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to nizar sebaghi",
+        "timestamp": "2025-12-22T01:57:58.965Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 5 for Day 1",
+        "timestamp": "2025-12-22T01:57:46.449Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 3 for Day 1",
+        "timestamp": "2025-12-22T01:57:44.889Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 1 for Day 1",
+        "timestamp": "2025-12-22T01:57:44.164Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Updated Call Result to Rappel demandé",
+        "timestamp": "2025-12-22T01:55:28.050Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Updated Call Result to Pas de réponse",
+        "timestamp": "2025-12-22T01:50:49.815Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to no_reply | Call Result: Rappel demandé",
+        "timestamp": "2025-12-22T01:46:32.975Z",
+        "user": "Admin"
+      }
+    ],
+    "daysCalled": 1,
+    "callsPerDay": 3,
+    "callHistory": {
+      "1": 5,
+      "2": 5,
+      "3": 5
+    },
+    "salesPerson": "nizar sebaghi",
+    "cancellationMotif": "Pas de reponse"
   }
 ]

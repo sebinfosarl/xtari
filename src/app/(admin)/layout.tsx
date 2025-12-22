@@ -11,7 +11,8 @@ import {
     LogOut,
     User,
     Bell,
-    Search
+    Search,
+    Users
 } from 'lucide-react';
 import styles from './AdminLayout.module.css';
 
@@ -32,6 +33,7 @@ export default function AdminLayout({
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { name: 'Products', href: '/admin/products', icon: Package },
         { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
+        { name: 'Sales Team', href: '/admin/sales', icon: Users },
     ];
 
     return (

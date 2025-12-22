@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Order, Product } from '@/lib/db';
+import { Order, Product, SalesPerson } from '@/lib/db';
 import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare } from 'lucide-react';
 import styles from '../Admin.module.css';
 import OrderDialog from '@/components/OrderDialog';
@@ -10,16 +10,34 @@ import OrderDialog from '@/components/OrderDialog';
 interface OrdersViewProps {
     initialOrders: Order[];
     products: Product[];
+    salesPeople: SalesPerson[];
 }
 
-export default function OrdersView({ initialOrders: orders, products }: OrdersViewProps) {
+export default function OrdersView({ initialOrders: orders, products, salesPeople }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
+
+    const filteredOrders = orders.filter(o => filter === 'all' || o.status === filter);
 
     return (
         <div className={styles.tableSection}>
             <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
-                <div className={styles.statTrend}>{orders.length} active orders</div>
+                <div>
+                    <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
+                    <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
+                </div>
+
+                <div className="flex gap-2">
+                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
+                        <button
+                            key={f}
+                            onClick={() => setFilter(f)}
+                            className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
+                        >
+                            {f.replace('_', ' ').toUpperCase()}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             <div className={styles.tableWrapper}>
@@ -36,7 +54,7 @@ export default function OrdersView({ initialOrders: orders, products }: OrdersVi
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map(order => (
+                        {filteredOrders.map(order => (
                             <tr key={order.id}>
                                 <td className={styles.bold}>#{order.id}</td>
                                 <td>
@@ -54,9 +72,23 @@ export default function OrdersView({ initialOrders: orders, products }: OrdersVi
                                 </td>
                                 <td>
                                     {order.callResult ? (
-                                        <span className={styles.resultBadge}>{order.callResult}</span>
+                                        <div className="flex flex-col gap-1">
+                                            <span className={styles.resultBadge}>{order.callResult}</span>
+                                            {order.invoiceDownloaded && (
+                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
+                                                    INVOICE ↓
+                                                </span>
+                                            )}
+                                        </div>
                                     ) : (
-                                        <span className="text-muted text-xs italic">Not called</span>
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-muted text-xs italic">Not called</span>
+                                            {order.invoiceDownloaded && (
+                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
+                                                    INVOICE ↓
+                                                </span>
+                                            )}
+                                        </div>
                                     )}
                                 </td>
                                 <td>
@@ -78,6 +110,7 @@ export default function OrdersView({ initialOrders: orders, products }: OrdersVi
                 <OrderDialog
                     order={selectedOrder}
                     products={products}
+                    salesPeople={salesPeople}
                     onClose={() => setSelectedOrder(null)}
                 />
             )}
