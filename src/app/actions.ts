@@ -230,6 +230,40 @@ export async function cancelShipmentAction(orderId: string) {
     }
 }
 
+export async function cancelOrderAction(orderId: string) {
+    try {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === orderId);
+
+        if (!order) {
+            return { success: false, error: 'Order not found' };
+        }
+
+        // Update status
+        order.status = 'canceled';
+
+        // Add log entry
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'status',
+            message: 'Order canceled by admin (Pre-shipping).',
+            timestamp: new Date().toISOString(),
+            user: 'Admin'
+        });
+
+        await updateOrder(order);
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/fulfillment');
+
+        return { success: true, order };
+    } catch (error: any) {
+        console.error('Cancellation failed:', error);
+        return { success: false, error: error.message || 'Failed to cancel order' };
+    }
+}
+
 export async function bulkPrintVouchersAction(orderIds: string[]) {
     try {
         const orders = await getOrders();
@@ -284,6 +318,38 @@ export async function markDeliveryNotePrintedAction(orderId: string) {
         return { success: true, order: JSON.parse(JSON.stringify(order)) };
     } catch (error: any) {
         console.error('Failed to mark delivery note as printed:', error);
+        return { success: false, error: error.message || 'Failed to update print status' };
+    }
+}
+
+export async function bulkMarkDeliveryNotePrintedAction(orderIds: string[]) {
+    try {
+        const orders = await getOrders();
+        let updatedCount = 0;
+
+        for (const orderId of orderIds) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.deliveryNotePrinted = true;
+                if (!order.logs) order.logs = [];
+                order.logs.push({
+                    type: 'print',
+                    message: 'Delivery note printed (Bulk).',
+                    timestamp: new Date().toISOString(),
+                    user: 'Admin'
+                });
+                await updateOrder(order);
+                updatedCount++;
+            }
+        }
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/fulfillment');
+
+        return { success: true, count: updatedCount };
+    } catch (error: any) {
+        console.error('Failed to mark delivery notes as printed in bulk:', error);
         return { success: false, error: error.message || 'Failed to update print status' };
     }
 }

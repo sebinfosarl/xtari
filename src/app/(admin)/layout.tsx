@@ -36,7 +36,7 @@ export default function AdminLayout({
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { name: 'Products', href: '/admin/products', icon: Package },
         { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
-        { name: 'Deliveries', href: '/admin/deliveries', icon: Truck },
+        { name: 'Fulfillment', href: '/admin/fulfillment', icon: Truck },
         { name: 'Invoices', href: '/admin/invoices', icon: FileText },
         { name: 'Contacts', href: '/admin/contacts', icon: UserCheck },
         { name: 'Sales Team', href: '/admin/sales', icon: Users },

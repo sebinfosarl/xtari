@@ -136,7 +136,7 @@
       }
     ],
     "total": 899,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T01:08:38.025Z",
     "customer": {
       "name": "Drogba",
@@ -148,6 +148,11 @@
     },
     "callResult": "Appel confirmer",
     "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T18:13:53.916Z"
+      },
       {
         "type": "invoice_download",
         "message": "Downloaded order invoice",
@@ -171,10 +176,18 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T01:08:59.245Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:10:04.830Z",
+        "user": "Admin"
       }
     ],
     "salesPerson": "Yassine",
-    "invoiceDownloaded": true
+    "invoiceDownloaded": true,
+    "fulfillmentStatus": "picked",
+    "shippingStatus": "ANNULÉE"
   },
   {
     "id": "5TK16S",
@@ -186,7 +199,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T01:09:59.294Z",
     "customer": {
       "name": "amal",
@@ -196,6 +209,11 @@
     },
     "salesPerson": "nizar sebaghi",
     "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T18:14:34.188Z"
+      },
       {
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
@@ -213,10 +231,18 @@
         "message": "Assigned to nizar sebaghi",
         "timestamp": "2025-12-22T01:29:01.983Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:10:47.171Z",
+        "user": "Admin"
       }
     ],
     "invoiceDownloaded": true,
-    "callResult": "Appel confirmer"
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "shippingStatus": "ANNULÉE"
   },
   {
     "id": "6MYV7N",
@@ -431,6 +457,11 @@
     "ice": "34273847238423",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T18:14:34.715Z"
+      },
+      {
         "type": "invoice_download",
         "message": "Downloaded order invoice",
         "timestamp": "2025-12-22T02:26:13.392Z",
@@ -457,7 +488,8 @@
     ],
     "callResult": "Appel confirmer",
     "salesPerson": "nizar sebaghi",
-    "invoiceDownloaded": true
+    "invoiceDownloaded": true,
+    "fulfillmentStatus": "picked"
   },
   {
     "id": "OI8X3E",
@@ -480,6 +512,11 @@
     "callResult": "Appel confirmer",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T18:14:34.969Z"
+      },
+      {
         "type": "invoice_download",
         "message": "Downloaded order invoice (Issue Date: 12/22/2025, 3:52:03 AM)",
         "timestamp": "2025-12-22T02:52:03.975Z",
@@ -500,7 +537,8 @@
     ],
     "salesPerson": "nizar sebaghi",
     "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-22T02:52:03.975Z"
+    "invoiceDate": "2025-12-22T02:52:03.975Z",
+    "fulfillmentStatus": "picked"
   },
   {
     "id": "D2ES8L",
@@ -512,7 +550,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T03:01:55.494Z",
     "customer": {
       "name": "moomo",
@@ -529,8 +567,28 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T03:02:08.424Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:20:36.919Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Picking list printed (Bulk).",
+        "timestamp": "2025-12-22T19:54:57.394Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:09:28.858Z",
+        "user": "Admin"
       }
-    ]
+    ],
+    "deliveryNotePrinted": true,
+    "pickingListPrinted": true
   },
   {
     "id": "AA7TDO",
@@ -717,6 +775,11 @@
     "callResult": "Appel confirmer",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T19:22:25.803Z"
+      },
+      {
         "type": "sales_person_assign",
         "message": "Assigned to nizar sebaghi",
         "timestamp": "2025-12-22T05:32:20.937Z",
@@ -727,10 +790,18 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T05:32:18.926Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:21:37.323Z",
+        "user": "Admin"
       }
     ],
     "salesPerson": "nizar sebaghi",
-    "paymentType": "Virement"
+    "paymentType": "Virement",
+    "deliveryNotePrinted": true,
+    "fulfillmentStatus": "picked"
   },
   {
     "id": "CGGC8Z",
@@ -796,7 +867,7 @@
       }
     ],
     "total": 599.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T05:41:29.806Z",
     "customer": {
       "name": "nizarsmart",
@@ -825,13 +896,26 @@
         "message": "Shipment created with Cathedis. ID: undefined",
         "timestamp": "2025-12-22T05:42:18.481Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:21:37.334Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-22T20:10:26.257Z",
+        "user": "Admin"
       }
     ],
     "salesPerson": "nizar sebaghi",
     "rangeWeight": "Plus de 30Kg",
     "weight": 10,
     "allowOpening": 1,
-    "shippingStatus": "En Attente Ramassage"
+    "shippingStatus": "En Attente Ramassage",
+    "deliveryNotePrinted": true
   },
   {
     "id": "6KV1LI",
@@ -972,7 +1056,7 @@
       }
     ],
     "total": 349,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-22T05:51:33.728Z",
     "customer": {
       "name": "hopa",
@@ -985,12 +1069,32 @@
     "callResult": "Appel confirmer",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T20:11:09.716Z"
+      },
+      {
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T12:38:47.472Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:22:01.929Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T20:11:28.515Z",
+        "user": "Admin"
       }
-    ]
+    ],
+    "deliveryNotePrinted": false,
+    "fulfillmentStatus": "picked",
+    "shippingStatus": "ANNULÉE"
   },
   {
     "id": "6WVX2W",
@@ -1034,10 +1138,17 @@
         "message": "Shipment created with Cathedis. ID: 6152667",
         "timestamp": "2025-12-22T05:58:45.385Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:22:01.937Z",
+        "user": "Admin"
       }
     ],
     "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/5091048121697456789?name=Delivery+voucher.pdf",
-    "callResult": "Appel confirmer"
+    "callResult": "Appel confirmer",
+    "deliveryNotePrinted": true
   },
   {
     "id": "CNODQP",
@@ -1067,6 +1178,11 @@
     "shippingStatus": "En Attente Ramassage",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T19:58:23.627Z"
+      },
+      {
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T12:38:25.413Z",
@@ -1077,10 +1193,18 @@
         "message": "Shipment created with Cathedis. ID: 6152668",
         "timestamp": "2025-12-22T06:02:38.270Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:58:20.515Z",
+        "user": "Admin"
       }
     ],
     "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/7813035827761481598?name=Delivery+voucher.pdf",
-    "callResult": "Appel confirmer"
+    "callResult": "Appel confirmer",
+    "deliveryNotePrinted": true,
+    "fulfillmentStatus": "picked"
   },
   {
     "id": "KFHP6Q",
@@ -1112,8 +1236,15 @@
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T12:38:15.813Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T20:07:29.502Z",
+        "user": "Admin"
       }
-    ]
+    ],
+    "deliveryNotePrinted": true
   },
   {
     "id": "MTVTEP",
@@ -1249,6 +1380,11 @@
     "callResult": "Appel confirmer",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T19:59:56.146Z"
+      },
+      {
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
         "timestamp": "2025-12-22T06:44:49.850Z",
@@ -1259,11 +1395,25 @@
         "message": "Shipment created with Cathedis. ID: 6152670",
         "timestamp": "2025-12-22T06:45:04.969Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:59:53.562Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-22T20:02:03.764Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152670",
     "shippingStatus": "En Attente Ramassage",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11140964204657153691?name=Delivery+voucher.pdf"
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11140964204657153691?name=Delivery+voucher.pdf",
+    "deliveryNotePrinted": true,
+    "fulfillmentStatus": "picked"
   },
   {
     "id": "5QZLBR",
@@ -1496,6 +1646,11 @@
     "callResult": "Appel confirmer",
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T19:58:49.364Z"
+      },
+      {
         "type": "invoice_download",
         "message": "Downloaded order invoice (Issue Date: 12/22/2025, 8:52:09 AM)",
         "timestamp": "2025-12-22T07:52:09.595Z",
@@ -1512,12 +1667,20 @@
         "message": "Shipment created with Cathedis. ID: 6152739",
         "timestamp": "2025-12-22T07:47:54.567Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-22T19:58:45.431Z",
+        "user": "Admin"
       }
     ],
     "shippingId": "6152739",
     "shippingStatus": "En Attente Ramassage",
     "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-22T07:52:09.595Z"
+    "invoiceDate": "2025-12-22T07:52:09.595Z",
+    "deliveryNotePrinted": true,
+    "fulfillmentStatus": "picked"
   },
   {
     "id": "Z5RE6D",
@@ -1979,5 +2142,78 @@
     ],
     "shippingId": "6159226",
     "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "0HRIF3",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T18:12:25.031Z",
+    "customer": {
+      "name": "Test User",
+      "email": "",
+      "phone": "0600000000",
+      "address": "",
+      "city": "AFOURER",
+      "sector": "Autre"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "to_pick",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-22T18:15:16.695Z",
+        "user": "Admin"
+      }
+    ]
+  },
+  {
+    "id": "P7Y2WX",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T18:16:31.071Z",
+    "customer": {
+      "name": "NEW ONE",
+      "email": "",
+      "phone": "0661182295",
+      "address": "hello world",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-22T18:16:57.308Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-22T18:16:41.934Z",
+        "user": "Admin"
+      }
+    ]
   }
 ]

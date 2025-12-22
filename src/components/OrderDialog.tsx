@@ -96,7 +96,10 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
             logMsg += ` | Reason: ${tempReason} | Call Result set to Canceled`;
         } else if (pendingStatus === 'sales_order') {
             updates.callResult = 'Appel confirmer' as any;
-            logMsg += ` | Auto-set Call Result: Appel confirmer`;
+            if (!order.fulfillmentStatus) {
+                updates.fulfillmentStatus = 'to_pick';
+            }
+            logMsg += ` | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK`;
         }
 
         setOrder({
@@ -213,7 +216,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><UserIcon size={16} /> Customer Details</h3>
                             <button
                                 onClick={() => {
-                                    const isBusiness = !!order.companyName || !!order.ice;
+                                    const isBusiness = order.companyName !== undefined || order.ice !== undefined;
                                     if (isBusiness) {
                                         // Disable business mode: clear fields
                                         setOrder({ ...order, companyName: undefined, ice: undefined, logs: addLog('business_mode', 'Disabled Business/Company Info') });
@@ -746,187 +749,193 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                 </div>
 
                 {/* DYNAMIC POPUPS */}
-                {pendingStatus && (
-                    <div className={styles.confirmOverlay}>
-                        <div className={styles.confirmCard}>
-                            <h3 className={styles.confirmTitle}>Confirm Status: {pendingStatus.replace('_', ' ').toUpperCase()}</h3>
-                            <p className={styles.confirmDesc}>Please provide the necessary details to proceed.</p>
+                {
+                    pendingStatus && (
+                        <div className={styles.confirmOverlay}>
+                            <div className={styles.confirmCard}>
+                                <h3 className={styles.confirmTitle}>Confirm Status: {pendingStatus.replace('_', ' ').toUpperCase()}</h3>
+                                <p className={styles.confirmDesc}>Please provide the necessary details to proceed.</p>
 
-                            {pendingStatus === 'no_reply' && (
-                                <div className={styles.inputGroup}>
-                                    <label>Call Result</label>
-                                    <select className={styles.inlineInput} value={tempCallResult} onChange={(e) => setTempCallResult(e.target.value as any)}>
-                                        <option value="">Select Result...</option>
-                                        <option value="Ligne Occupé">Ligne Occupé</option>
-                                        <option value="Appel coupé">Appel coupé</option>
-                                        <option value="Pas de réponse">Pas de réponse</option>
-                                        <option value="Rappel demandé">Rappel demandé</option>
-                                        <option value="Boite vocal">Boite vocal</option>
-                                    </select>
+                                {pendingStatus === 'no_reply' && (
+                                    <div className={styles.inputGroup}>
+                                        <label>Call Result</label>
+                                        <select className={styles.inlineInput} value={tempCallResult} onChange={(e) => setTempCallResult(e.target.value as any)}>
+                                            <option value="">Select Result...</option>
+                                            <option value="Ligne Occupé">Ligne Occupé</option>
+                                            <option value="Appel coupé">Appel coupé</option>
+                                            <option value="Pas de réponse">Pas de réponse</option>
+                                            <option value="Rappel demandé">Rappel demandé</option>
+                                            <option value="Boite vocal">Boite vocal</option>
+                                        </select>
+                                    </div>
+                                )}
+
+                                {pendingStatus === 'canceled' && (
+                                    <div className={styles.inputGroup}>
+                                        <label>Reason for Cancellation</label>
+                                        <select className={styles.inlineInput} value={tempReason} onChange={(e) => setTempReason(e.target.value as any)}>
+                                            <option value="">Select Reason...</option>
+                                            <option value="Mauvais numero">Mauvais numéro</option>
+                                            <option value="Appel rejete">Appel rejeté</option>
+                                            <option value="commande en double">Commande en double</option>
+                                            <option value="Rupture de stock">Rupture de stock</option>
+                                            <option value="Pas de reponse">Pas de réponse</option>
+                                            <option value="Commande frauduleuse">Commande frauduleuse</option>
+                                        </select>
+                                    </div>
+                                )}
+
+                                <div className="flex gap-3 mt-4">
+                                    <button
+                                        disabled={(pendingStatus === 'no_reply' && !tempCallResult) || (pendingStatus === 'canceled' && !tempReason)}
+                                        onClick={confirmUpdate}
+                                        className="btn btn-primary flex-1"
+                                    >
+                                        Confirm Change
+                                    </button>
+                                    <button onClick={() => { setPendingStatus(null); setTempCallResult('' as any); setTempReason('' as any); }} className="btn btn-outline flex-1">Abort</button>
                                 </div>
-                            )}
-
-                            {pendingStatus === 'canceled' && (
-                                <div className={styles.inputGroup}>
-                                    <label>Reason for Cancellation</label>
-                                    <select className={styles.inlineInput} value={tempReason} onChange={(e) => setTempReason(e.target.value as any)}>
-                                        <option value="">Select Reason...</option>
-                                        <option value="Mauvais numero">Mauvais numéro</option>
-                                        <option value="Appel rejete">Appel rejeté</option>
-                                        <option value="commande en double">Commande en double</option>
-                                        <option value="Rupture de stock">Rupture de stock</option>
-                                        <option value="Pas de reponse">Pas de réponse</option>
-                                        <option value="Commande frauduleuse">Commande frauduleuse</option>
-                                    </select>
-                                </div>
-                            )}
-
-                            <div className="flex gap-3 mt-4">
-                                <button
-                                    disabled={(pendingStatus === 'no_reply' && !tempCallResult) || (pendingStatus === 'canceled' && !tempReason)}
-                                    onClick={confirmUpdate}
-                                    className="btn btn-primary flex-1"
-                                >
-                                    Confirm Change
-                                </button>
-                                <button onClick={() => { setPendingStatus(null); setTempCallResult('' as any); setTempReason('' as any); }} className="btn btn-outline flex-1">Abort</button>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
                 {/* Product Gallery */}
-                {showProductGallery && (
-                    <div className={styles.productGallery}>
-                        <header className={styles.modalHeader}>
-                            <h3 className="font-bold">Inventory Selection</h3>
-                            <button onClick={() => { setShowProductGallery(false); setSearchQuery(''); setSelectedCategory('all'); }} className={styles.closeBtn}><X size={20} /></button>
-                        </header>
+                {
+                    showProductGallery && (
+                        <div className={styles.productGallery}>
+                            <header className={styles.modalHeader}>
+                                <h3 className="font-bold">Inventory Selection</h3>
+                                <button onClick={() => { setShowProductGallery(false); setSearchQuery(''); setSelectedCategory('all'); }} className={styles.closeBtn}><X size={20} /></button>
+                            </header>
 
-                        <div className={styles.gallerySearchWrapper}>
-                            <Search size={18} className="text-slate-400" />
-                            <input
-                                type="text"
-                                placeholder="Search products by title..."
-                                className={styles.gallerySearchInput}
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                autoFocus
-                            />
-                        </div>
+                            <div className={styles.gallerySearchWrapper}>
+                                <Search size={18} className="text-slate-400" />
+                                <input
+                                    type="text"
+                                    placeholder="Search products by title..."
+                                    className={styles.gallerySearchInput}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    autoFocus
+                                />
+                            </div>
 
-                        <div className={styles.galleryFilters}>
-                            <button
-                                className={`${styles.filterPill} ${selectedCategory === 'all' ? styles.active : ''}`}
-                                onClick={() => setSelectedCategory('all')}
-                            >
-                                All Products
-                            </button>
-                            {allCategories.map((cat: string) => (
+                            <div className={styles.galleryFilters}>
                                 <button
-                                    key={cat}
-                                    className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''}`}
-                                    onClick={() => setSelectedCategory(cat)}
+                                    className={`${styles.filterPill} ${selectedCategory === 'all' ? styles.active : ''}`}
+                                    onClick={() => setSelectedCategory('all')}
                                 >
-                                    {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+                                    All Products
                                 </button>
-                            ))}
-                        </div>
+                                {allCategories.map((cat: string) => (
+                                    <button
+                                        key={cat}
+                                        className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''}`}
+                                        onClick={() => setSelectedCategory(cat)}
+                                    >
+                                        {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+                                    </button>
+                                ))}
+                            </div>
 
-                        <div className={styles.galleryBody}>
-                            {filteredProducts.length > 0 ? (
-                                filteredProducts.map((p: Product) => (
-                                    <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
-                                        <div style={{ position: 'relative', width: '60px', height: '60px', flexShrink: 0 }}>
-                                            <img src={p.image} className={styles.galleryThumb} alt="" />
+                            <div className={styles.galleryBody}>
+                                {filteredProducts.length > 0 ? (
+                                    filteredProducts.map((p: Product) => (
+                                        <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
+                                            <div style={{ position: 'relative', width: '60px', height: '60px', flexShrink: 0 }}>
+                                                <img src={p.image} className={styles.galleryThumb} alt="" />
+                                            </div>
+                                            <div style={{ flex: 1, paddingRight: '2.5rem' }}>
+                                                <div className={styles.galleryTitle}>{p.title}</div>
+                                                <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
+                                                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
+                                            </div>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
+                                                className={styles.previewBtn}
+                                                style={{
+                                                    position: 'absolute',
+                                                    bottom: '12px',
+                                                    right: '12px',
+                                                    background: 'white',
+                                                    borderRadius: '6px',
+                                                    padding: '4px',
+                                                    border: '1px solid #e2e8f0',
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.2s',
+                                                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    zIndex: 5
+                                                }}
+                                            >
+                                                <Eye size={14} color="var(--color-primary)" />
+                                            </button>
                                         </div>
-                                        <div style={{ flex: 1, paddingRight: '2.5rem' }}>
-                                            <div className={styles.galleryTitle}>{p.title}</div>
-                                            <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
-                                            <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
-                                        </div>
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
-                                            className={styles.previewBtn}
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: '12px',
-                                                right: '12px',
-                                                background: 'white',
-                                                borderRadius: '6px',
-                                                padding: '4px',
-                                                border: '1px solid #e2e8f0',
-                                                cursor: 'pointer',
-                                                transition: 'all 0.2s',
-                                                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                zIndex: 5
-                                            }}
-                                        >
-                                            <Eye size={14} color="var(--color-primary)" />
-                                        </button>
+                                    ))
+                                ) : (
+                                    <div className="col-span-2 py-12 text-center text-slate-400 italic">
+                                        No products found matching your search or category.
                                     </div>
-                                ))
-                            ) : (
-                                <div className="col-span-2 py-12 text-center text-slate-400 italic">
-                                    No products found matching your search or category.
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
                 {/* IMAGE PREVIEW LIGHTBOX */}
-                {previewProduct && (
-                    <div className={styles.confirmOverlay} style={{ zIndex: 2000 }} onClick={() => setPreviewProduct(null)}>
-                        <div
-                            className={styles.confirmCard}
-                            style={{
-                                maxWidth: '600px',
-                                padding: 0,
-                                overflow: 'hidden',
-                                background: 'white'
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <div style={{ position: 'relative' }}>
-                                <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
-                                <button
-                                    onClick={() => setPreviewProduct(null)}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '10px',
-                                        top: '10px',
-                                        background: 'rgba(0,0,0,0.5)',
-                                        color: 'white',
-                                        borderRadius: '50%',
-                                        padding: '4px',
-                                        border: 'none',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    <X size={20} />
-                                </button>
-                            </div>
-                            <div style={{ padding: '1.5rem', background: 'white' }}>
-                                <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
-                                <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
-                                <div className="flex justify-between items-center">
-                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                {
+                    previewProduct && (
+                        <div className={styles.confirmOverlay} style={{ zIndex: 2000 }} onClick={() => setPreviewProduct(null)}>
+                            <div
+                                className={styles.confirmCard}
+                                style={{
+                                    maxWidth: '600px',
+                                    padding: 0,
+                                    overflow: 'hidden',
+                                    background: 'white'
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <div style={{ position: 'relative' }}>
+                                    <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
                                     <button
-                                        className="btn btn-primary"
-                                        onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                        onClick={() => setPreviewProduct(null)}
+                                        style={{
+                                            position: 'absolute',
+                                            right: '10px',
+                                            top: '10px',
+                                            background: 'rgba(0,0,0,0.5)',
+                                            color: 'white',
+                                            borderRadius: '50%',
+                                            padding: '4px',
+                                            border: 'none',
+                                            cursor: 'pointer'
+                                        }}
                                     >
-                                        Add to Order
+                                        <X size={20} />
                                     </button>
+                                </div>
+                                <div style={{ padding: '1.5rem', background: 'white' }}>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
+                                    <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
+                                    <div className="flex justify-between items-center">
+                                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                        >
+                                            Add to Order
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            </div>
-        </div>
+                    )
+                }
+            </div >
+        </div >
     );
 }

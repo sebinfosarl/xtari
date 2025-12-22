@@ -8,16 +8,17 @@ import {
     X, Save, Phone, MapPin,
     User as UserIcon, ShoppingCart, Truck, Package, ChevronDown, ChevronUp, Printer, Trash2
 } from 'lucide-react';
-import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction } from '@/app/actions';
+import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface DeliveryDialogProps {
     order: Order;
     products: Product[];
     onClose: () => void;
+    showShippingInterface?: boolean;
 }
 
-export default function DeliveryDialog({ order: initialOrder, products, onClose }: DeliveryDialogProps) {
+export default function DeliveryDialog({ order: initialOrder, products, onClose, showShippingInterface = true }: DeliveryDialogProps) {
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
@@ -161,187 +162,189 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose 
                     </section>
 
                     {/* SECTION 3: SHIPPING SETTINGS */}
-                    <section className={styles.infoSection} style={{ background: '#f0fdf4', borderColor: '#86efac' }}>
-                        <h3 className={styles.sectionTitle} style={{ color: '#15803d' }}><Truck size={16} /> Cathedis Shipping Interface</h3>
+                    {showShippingInterface && (
+                        <section className={styles.infoSection} style={{ background: '#f0fdf4', borderColor: '#86efac' }}>
+                            <h3 className={styles.sectionTitle} style={{ color: '#15803d' }}><Truck size={16} /> Cathedis Shipping Interface</h3>
 
-                        <div style={{ padding: '1rem' }}>
-                            {/* Status and ID (only if exists) */}
-                            {order.shippingId && (
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                                    <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid #d1fae5' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>Cathedis Shipment ID</div>
-                                        <div style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#15803d' }}>{order.shippingId}</div>
+                            <div style={{ padding: '1rem' }}>
+                                {/* Status and ID (only if exists) */}
+                                {order.shippingId && (
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                                        <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid #d1fae5' }}>
+                                            <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>Cathedis Shipment ID</div>
+                                            <div style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#15803d' }}>{order.shippingId}</div>
+                                        </div>
+                                        <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid #d1fae5' }}>
+                                            <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>Current Status</div>
+                                            <div style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#15803d' }}>{order.shippingStatus || 'Pending'}</div>
+                                        </div>
                                     </div>
-                                    <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid #d1fae5' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>Current Status</div>
-                                        <div style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#15803d' }}>{order.shippingStatus || 'Pending'}</div>
+                                )}
+
+                                {/* Inputs always visible and editable */}
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'white', padding: '1.5rem', borderRadius: '12px', border: '1px solid #d1fae5', marginBottom: '1.5rem' }}>
+                                    <div className={styles.inputGroup}>
+                                        <label>Payment Type</label>
+                                        <select value={order.paymentType || 'ESPECES'} onChange={(e) => setOrder({ ...order, paymentType: e.target.value })} className={styles.inlineInput}>
+                                            <option value="ESPECES">ESPECES</option>
+                                            <option value="Virement">Virement</option>
+                                        </select>
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label>Delivery Type</label>
+                                        <select value={order.deliveryType || 'Livraison CRBT'} onChange={(e) => setOrder({ ...order, deliveryType: e.target.value })} className={styles.inlineInput}>
+                                            <option value="Livraison CRBT">Livraison CRBT</option>
+                                            <option value="Echange">Echange</option>
+                                        </select>
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label>Range Weight</label>
+                                        <select value={order.rangeWeight || 'Entre 1.2 Kg et 5 Kg'} onChange={(e) => setOrder({ ...order, rangeWeight: e.target.value })} className={styles.inlineInput}>
+                                            <option value="Moins de 1 Kg">Moins de 1 Kg</option>
+                                            <option value="Entre 1.2 Kg et 5 Kg">Entre 1.2 Kg et 5 Kg</option>
+                                            <option value="Entre 5.1 Kg et 10 Kg">Entre 5.1 Kg et 10 Kg</option>
+                                            <option value="Plus de 30Kg">Plus de 30Kg</option>
+                                        </select>
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label>Weight (Kg)</label>
+                                        <input type="number" value={order.weight || 0} onChange={(e) => setOrder({ ...order, weight: parseFloat(e.target.value) })} className={styles.inlineInput} />
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label>Package Count</label>
+                                        <input type="number" value={order.packageCount || 1} onChange={(e) => setOrder({ ...order, packageCount: parseInt(e.target.value) })} className={styles.inlineInput} />
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label>Allow Opening</label>
+                                        <select value={order.allowOpening !== undefined ? order.allowOpening : 1} onChange={(e) => setOrder({ ...order, allowOpening: parseInt(e.target.value) })} className={styles.inlineInput}>
+                                            <option value={0}>No</option>
+                                            <option value={1}>Yes</option>
+                                        </select>
+                                    </div>
+                                    <div className={styles.inputGroup} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <label style={{ margin: 0 }}>Fragile</label>
+                                        <input type="checkbox" checked={order.fragile || false} onChange={(e) => setOrder({ ...order, fragile: e.target.checked })} style={{ width: '20px', height: '20px' }} />
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label>Insurance Value (MAD)</label>
+                                        <input type="number" value={order.insuranceValue || Math.round(order.total || 0)} onChange={(e) => setOrder({ ...order, insuranceValue: parseFloat(e.target.value) })} className={styles.inlineInput} />
                                     </div>
                                 </div>
-                            )}
 
-                            {/* Inputs always visible and editable */}
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'white', padding: '1.5rem', borderRadius: '12px', border: '1px solid #d1fae5', marginBottom: '1.5rem' }}>
-                                <div className={styles.inputGroup}>
-                                    <label>Payment Type</label>
-                                    <select value={order.paymentType || 'ESPECES'} onChange={(e) => setOrder({ ...order, paymentType: e.target.value })} className={styles.inlineInput}>
-                                        <option value="ESPECES">ESPECES</option>
-                                        <option value="Virement">Virement</option>
-                                    </select>
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Delivery Type</label>
-                                    <select value={order.deliveryType || 'Livraison CRBT'} onChange={(e) => setOrder({ ...order, deliveryType: e.target.value })} className={styles.inlineInput}>
-                                        <option value="Livraison CRBT">Livraison CRBT</option>
-                                        <option value="Echange">Echange</option>
-                                    </select>
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Range Weight</label>
-                                    <select value={order.rangeWeight || 'Entre 1.2 Kg et 5 Kg'} onChange={(e) => setOrder({ ...order, rangeWeight: e.target.value })} className={styles.inlineInput}>
-                                        <option value="Moins de 1 Kg">Moins de 1 Kg</option>
-                                        <option value="Entre 1.2 Kg et 5 Kg">Entre 1.2 Kg et 5 Kg</option>
-                                        <option value="Entre 5.1 Kg et 10 Kg">Entre 5.1 Kg et 10 Kg</option>
-                                        <option value="Plus de 30Kg">Plus de 30Kg</option>
-                                    </select>
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Weight (Kg)</label>
-                                    <input type="number" value={order.weight || 0} onChange={(e) => setOrder({ ...order, weight: parseFloat(e.target.value) })} className={styles.inlineInput} />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Package Count</label>
-                                    <input type="number" value={order.packageCount || 1} onChange={(e) => setOrder({ ...order, packageCount: parseInt(e.target.value) })} className={styles.inlineInput} />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Allow Opening</label>
-                                    <select value={order.allowOpening !== undefined ? order.allowOpening : 1} onChange={(e) => setOrder({ ...order, allowOpening: parseInt(e.target.value) })} className={styles.inlineInput}>
-                                        <option value={0}>No</option>
-                                        <option value={1}>Yes</option>
-                                    </select>
-                                </div>
-                                <div className={styles.inputGroup} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <label style={{ margin: 0 }}>Fragile</label>
-                                    <input type="checkbox" checked={order.fragile || false} onChange={(e) => setOrder({ ...order, fragile: e.target.checked })} style={{ width: '20px', height: '20px' }} />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Insurance Value (MAD)</label>
-                                    <input type="number" value={order.insuranceValue || Math.round(order.total || 0)} onChange={(e) => setOrder({ ...order, insuranceValue: parseFloat(e.target.value) })} className={styles.inlineInput} />
-                                </div>
-                            </div>
-
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                {!order.shippingId ? (
-                                    <button
-                                        onClick={async () => {
-                                            if (!order.customer.city || !order.customer.sector) {
-                                                alert('Please select a City and Sector before shipping.');
-                                                return;
-                                            }
-
-                                            const confirmed = confirm(
-                                                `Confirm shipment to:\n\n` +
-                                                `City: ${order.customer.city}\n` +
-                                                `Sector: ${order.customer.sector}\n` +
-                                                `Amount: ${order.total} MAD\n\n` +
-                                                `Is this correct?`
-                                            );
-
-                                            if (!confirmed) return;
-
-                                            setIsCreatingShipment(true);
-                                            const result = await createShipmentAction(order);
-                                            setIsCreatingShipment(false);
-                                            if (result.success && result.order) {
-                                                setOrder(result.order);
-                                                alert('Shipment created successfully!');
-                                                router.refresh();
-                                            } else {
-                                                alert(`Error: ${result.error}`);
-                                            }
-                                        }}
-                                        disabled={isCreatingShipment}
-                                        className="btn btn-primary"
-                                        style={{ background: '#15803d', borderColor: '#15803d', flex: 1 }}
-                                    >
-                                        {isCreatingShipment ? 'Creating shipment...' : (
-                                            <>
-                                                <Truck size={18} />
-                                                EXPORT TO CATHEDIS
-                                            </>
-                                        )}
-                                    </button>
-                                ) : (
-                                    <>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {!order.shippingId ? (
                                         <button
                                             onClick={async () => {
-                                                if (!confirm('This will push your local modifications (Recipient, Address, Items, Settings) to Cathedis. Continue?')) return;
+                                                if (!order.customer.city || !order.customer.sector) {
+                                                    alert('Please select a City and Sector before shipping.');
+                                                    return;
+                                                }
+
+                                                const confirmed = confirm(
+                                                    `Confirm shipment to:\n\n` +
+                                                    `City: ${order.customer.city}\n` +
+                                                    `Sector: ${order.customer.sector}\n` +
+                                                    `Amount: ${order.total} MAD\n\n` +
+                                                    `Is this correct?`
+                                                );
+
+                                                if (!confirmed) return;
+
                                                 setIsCreatingShipment(true);
                                                 const result = await createShipmentAction(order);
                                                 setIsCreatingShipment(false);
                                                 if (result.success && result.order) {
                                                     setOrder(result.order);
-                                                    alert('Cathedis shipment updated successfully!');
+                                                    alert('Shipment created successfully!');
                                                     router.refresh();
                                                 } else {
                                                     alert(`Error: ${result.error}`);
                                                 }
                                             }}
                                             disabled={isCreatingShipment}
-                                            className="btn btn-sm"
-                                            style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }}
-                                            title="Push local changes to Cathedis"
+                                            className="btn btn-primary"
+                                            style={{ background: '#15803d', borderColor: '#15803d', flex: 1 }}
                                         >
-                                            <Truck size={16} />
-                                            Push Data Update
+                                            {isCreatingShipment ? 'Creating shipment...' : (
+                                                <>
+                                                    <Truck size={18} />
+                                                    EXPORT TO CATHEDIS
+                                                </>
+                                            )}
                                         </button>
-
-                                        <button
-                                            onClick={async () => {
-                                                const frame = document.getElementById('print-iframe') as HTMLIFrameElement;
-                                                if (frame) {
-                                                    frame.src = `/print/delivery/${order.id}`;
-                                                    // Track that it was printed
-                                                    const res = await markDeliveryNotePrintedAction(order.id);
-                                                    if (res.success && res.order) {
-                                                        setOrder(res.order);
-                                                        router.refresh(); // Sync with parent
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={async () => {
+                                                    if (!confirm('This will push your local modifications (Recipient, Address, Items, Settings) to Cathedis. Continue?')) return;
+                                                    setIsCreatingShipment(true);
+                                                    const result = await createShipmentAction(order);
+                                                    setIsCreatingShipment(false);
+                                                    if (result.success && result.order) {
+                                                        setOrder(result.order);
+                                                        alert('Cathedis shipment updated successfully!');
+                                                        router.refresh();
+                                                    } else {
+                                                        alert(`Error: ${result.error}`);
                                                     }
-                                                }
-                                            }}
-                                            className="btn btn-sm"
-                                            style={{ background: '#3b82f6', color: 'white', borderColor: '#3b82f6' }}
-                                            title="Print Delivery Note"
-                                        >
-                                            <Printer size={16} />
-                                            Delivery Note
-                                        </button>
+                                                }}
+                                                disabled={isCreatingShipment}
+                                                className="btn btn-sm"
+                                                style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }}
+                                                title="Push local changes to Cathedis"
+                                            >
+                                                <Truck size={16} />
+                                                Push Data Update
+                                            </button>
 
-                                    </>
-                                )}
+                                            <button
+                                                onClick={async () => {
+                                                    const frame = document.getElementById('print-iframe') as HTMLIFrameElement;
+                                                    if (frame) {
+                                                        frame.src = `/print/delivery/${order.id}`;
+                                                        // Track that it was printed
+                                                        const res = await markDeliveryNotePrintedAction(order.id);
+                                                        if (res.success && res.order) {
+                                                            setOrder(res.order);
+                                                            router.refresh(); // Sync with parent
+                                                        }
+                                                    }
+                                                }}
+                                                className="btn btn-sm"
+                                                style={{ background: '#3b82f6', color: 'white', borderColor: '#3b82f6' }}
+                                                title="Print Delivery Note"
+                                            >
+                                                <Printer size={16} />
+                                                Delivery Note
+                                            </button>
+
+                                        </>
+                                    )}
+                                </div>
+
+                                {/* Hidden Iframe for silent printing */}
+                                <iframe
+                                    id="print-iframe"
+                                    style={{ display: 'none' }}
+                                    title="print-frame"
+                                />
                             </div>
-
-                            {/* Hidden Iframe for silent printing */}
-                            <iframe
-                                id="print-iframe"
-                                style={{ display: 'none' }}
-                                title="print-frame"
-                            />
-                        </div>
-                    </section>
+                        </section>
+                    )}
                 </div>
 
                 <footer className={styles.modalFooter} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                     <div>
-                        {order.shippingId && (
+                        {showShippingInterface ? (
                             <button
                                 onClick={async () => {
-                                    if (!confirm('Are you sure you want to CANCEL this shipment and order? This action will mark it as canceled.')) return;
+                                    if (!confirm('Are you sure you want to CANCEL this shipment and order? This element will be marked as canceled.')) return;
                                     setIsCanceling(true);
                                     const result = await cancelShipmentAction(order.id);
                                     setIsCanceling(false);
                                     if (result.success && result.order) {
                                         setOrder(result.order);
-                                        alert('Order and shipment canceled.');
+                                        alert('Order and Shipment canceled.');
                                         onClose();
                                         router.refresh();
                                     } else {
@@ -351,10 +354,34 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose 
                                 disabled={isCanceling}
                                 className="btn btn-sm"
                                 style={{ background: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                title="Cancel Shipping and Order"
+                                title="Cancel Shipping"
                             >
                                 <Trash2 size={16} />
                                 Cancel Shipping
+                            </button>
+                        ) : (
+                            <button
+                                onClick={async () => {
+                                    if (!confirm('Are you sure you want to CANCEL this picking? The order will be canceled.')) return;
+                                    setIsCanceling(true);
+                                    const result = await cancelOrderAction(order.id);
+                                    setIsCanceling(false);
+                                    if (result.success && result.order) {
+                                        setOrder(result.order);
+                                        alert('Picking canceled.');
+                                        onClose();
+                                        router.refresh();
+                                    } else {
+                                        alert(`Error: ${result.error}`);
+                                    }
+                                }}
+                                disabled={isCanceling}
+                                className="btn btn-sm"
+                                style={{ background: 'white', color: '#ef4444', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                title="Cancel Picking"
+                            >
+                                <Trash2 size={16} />
+                                Cancel Picking
                             </button>
                         )}
                     </div>

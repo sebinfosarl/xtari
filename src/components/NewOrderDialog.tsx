@@ -141,7 +141,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                             <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><UserIcon size={16} /> Customer Details</h3>
                             <button
                                 onClick={() => {
-                                    if (businessInfo.companyName !== undefined) {
+                                    if (businessInfo.companyName !== undefined || businessInfo.ice !== undefined) {
                                         setBusinessInfo({});
                                     } else {
                                         setBusinessInfo({ companyName: '', ice: '' });

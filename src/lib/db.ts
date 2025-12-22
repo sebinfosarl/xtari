@@ -29,6 +29,7 @@ export interface Order {
     }[];
     total: number;
     status: 'pending' | 'sales_order' | 'canceled' | 'no_reply';
+    fulfillmentStatus?: 'to_pick' | 'picked';
     callResult?: 'Ligne Occupe' | 'Appel coupe' | 'Pas de reponse' | 'Rappel demande' | 'Boite vocal';
     cancellationMotif?: 'Mauvais numero' | 'Appel rejete' | 'commande en double' | 'Rupture de stock' | 'Pas de reponse' | 'Commande frauduleuse' | 'Annule sans reponse';
     cancellationComment?: string;
