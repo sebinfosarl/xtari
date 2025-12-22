@@ -163,23 +163,13 @@ export async function createShipmentAction(order: Order) {
         await updateOrder(order);
         console.log(`Order ${order.id} updated with shipping ID ${order.shippingId}`);
 
-        // Attempt to generate Voucher (Bon de Livraison)
-        try {
-            console.log(`Attempting to generate Voucher (BL) for delivery ${delivery.id}...`);
-            const voucherUrl = await generateCathedisVoucher([delivery.id], jsessionid);
-            if (voucherUrl) {
-                order.shippingVoucherUrl = voucherUrl;
-                order.shippingLabelUrl = voucherUrl; // Also use as label for now
-                await updateOrder(order);
-                console.log(`Voucher URL saved: ${voucherUrl}`);
-            }
-        } catch (voucherError) {
-            console.error('Voucher generation failed, but shipment was created:', voucherError);
-        }
+        // Voucher generation removed to speed up the process. 
+        // It's not currently used in the UI, and creates a significant delay.
+        // If needed later, implement as a separate async action or on-demand.
 
         revalidatePath('/admin');
         revalidatePath(`/admin/orders`);
-        return { success: true, order };
+        return { success: true, order: JSON.parse(JSON.stringify(order)) };
     } catch (error: any) {
         console.error('Shipment creation failed:', error);
         return { success: false, error: error.message || 'Failed to create shipment' };

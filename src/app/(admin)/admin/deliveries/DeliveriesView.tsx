@@ -1,11 +1,11 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson } from '@/lib/db';
 import { Eye, Truck, Calendar, Phone, Search, MapPin, Package } from 'lucide-react';
-import { } from '@/app/actions';
+import { createShipmentAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import DeliveryDialog from '@/components/DeliveryDialog';
 
@@ -19,9 +19,18 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [shippingStatusFilter, setShippingStatusFilter] = useState<'all' | 'shipped' | 'pending'>('all');
     const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
     const [isShippingBulk, setIsShippingBulk] = useState(false);
+
+    // Sync selectedOrder with updated orders prop (for router.refresh())
+    useEffect(() => {
+        if (selectedOrder) {
+            const fresh = orders.find(o => o.id === selectedOrder.id);
+            if (fresh && fresh !== selectedOrder) {
+                setSelectedOrder(fresh);
+            }
+        }
+    }, [orders, selectedOrder]);
 
     // Filter for Sales Orders only
     const deliveries = orders.filter(o => o.status === 'sales_order');
@@ -36,10 +45,6 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
             const matchesCity = o.customer.city?.toLowerCase().includes(q);
             if (!matchesId && !matchesName && !matchesPhone && !matchesCity) return false;
         }
-
-        // Shipping status filter
-        if (shippingStatusFilter === 'shipped' && !o.shippingId) return false;
-        if (shippingStatusFilter === 'pending' && o.shippingId) return false;
 
         return true;
     });
@@ -123,17 +128,7 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                             <Search size={16} />
                         </div>
                     </div>
-                    <div className="flex gap-2">
-                        {(['all', 'pending', 'shipped'] as const).map(f => (
-                            <button
-                                key={f}
-                                onClick={() => setShippingStatusFilter(f)}
-                                className={`btn btn-sm ${shippingStatusFilter === f ? 'btn-primary' : 'btn-outline'}`}
-                            >
-                                {f.toUpperCase()}
-                            </button>
-                        ))}
-                    </div>
+                    {/* Filter buttons removed as requested */}
                 </div>
             </div>
 
@@ -230,13 +225,15 @@ export default function DeliveriesView({ initialOrders: orders, products, salesP
                 </table>
             </div>
 
-            {selectedOrder && (
-                <DeliveryDialog
-                    order={selectedOrder}
-                    products={products}
-                    onClose={() => setSelectedOrder(null)}
-                />
-            )}
-        </div>
+            {
+                selectedOrder && (
+                    <DeliveryDialog
+                        order={selectedOrder}
+                        products={products}
+                        onClose={() => setSelectedOrder(null)}
+                    />
+                )
+            }
+        </div >
     );
 }

@@ -972,7 +972,7 @@
       }
     ],
     "total": 349,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T05:51:33.728Z",
     "customer": {
       "name": "hopa",
@@ -981,7 +981,16 @@
       "address": "Helloshippint",
       "city": "Agzirt",
       "sector": "Agzirt"
-    }
+    },
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:38:47.472Z",
+        "user": "Admin"
+      }
+    ]
   },
   {
     "id": "6WVX2W",
@@ -998,7 +1007,7 @@
       }
     ],
     "total": 948.99,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T05:58:01.291Z",
     "customer": {
       "name": "lastest",
@@ -1015,13 +1024,20 @@
     "shippingStatus": "En Attente Ramassage",
     "logs": [
       {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:38:37.912Z",
+        "user": "Admin"
+      },
+      {
         "type": "shipping",
         "message": "Shipment created with Cathedis. ID: 6152667",
         "timestamp": "2025-12-22T05:58:45.385Z",
         "user": "System"
       }
     ],
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/5091048121697456789?name=Delivery+voucher.pdf"
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/5091048121697456789?name=Delivery+voucher.pdf",
+    "callResult": "Appel confirmer"
   },
   {
     "id": "CNODQP",
@@ -1033,7 +1049,7 @@
       }
     ],
     "total": 899,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T06:02:13.180Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1051,13 +1067,20 @@
     "shippingStatus": "En Attente Ramassage",
     "logs": [
       {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:38:25.413Z",
+        "user": "Admin"
+      },
+      {
         "type": "shipping",
         "message": "Shipment created with Cathedis. ID: 6152668",
         "timestamp": "2025-12-22T06:02:38.270Z",
         "user": "System"
       }
     ],
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/7813035827761481598?name=Delivery+voucher.pdf"
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/7813035827761481598?name=Delivery+voucher.pdf",
+    "callResult": "Appel confirmer"
   },
   {
     "id": "KFHP6Q",
@@ -1069,7 +1092,7 @@
       }
     ],
     "total": 599.99,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T06:12:04.190Z",
     "customer": {
       "name": "NIZAR",
@@ -1081,7 +1104,16 @@
     },
     "salesPerson": "nizar sebaghi",
     "allowOpening": 1,
-    "packageCount": 1
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:38:15.813Z",
+        "user": "Admin"
+      }
+    ]
   },
   {
     "id": "MTVTEP",
@@ -1093,7 +1125,7 @@
       }
     ],
     "total": 349,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T06:12:45.756Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1105,7 +1137,16 @@
     },
     "salesPerson": "nizar sebaghi",
     "allowOpening": 1,
-    "packageCount": 1
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:37:42.205Z",
+        "user": "Admin"
+      }
+    ]
   },
   {
     "id": "UXIREV",
@@ -1117,7 +1158,7 @@
       }
     ],
     "total": 349,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T06:17:13.211Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -1129,7 +1170,16 @@
     },
     "salesPerson": "nizar sebaghi",
     "allowOpening": 1,
-    "packageCount": 1
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:37:17.790Z",
+        "user": "Admin"
+      }
+    ]
   },
   {
     "id": "SDSIMA",
@@ -1670,5 +1720,251 @@
     "shippingStatus": "En Attente Ramassage",
     "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/2329587963391787529?name=Delivery+voucher.pdf",
     "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/2329587963391787529?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "ACWR04",
+    "items": [
+      {
+        "productId": "p6",
+        "quantity": 1,
+        "price": 89.99
+      }
+    ],
+    "total": 89.99,
+    "status": "sales_order",
+    "date": "2025-12-22T11:20:08.021Z",
+    "customer": {
+      "name": "Hellomyfriend",
+      "email": "",
+      "phone": "0661182295",
+      "address": "agdz",
+      "city": "AGDZ",
+      "sector": "Centre Ville"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T11:20:23.437Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6156521",
+        "timestamp": "2025-12-22T11:20:47.871Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6157965",
+        "timestamp": "2025-12-22T11:52:58.110Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6157965",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "XNBZI1",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "canceled",
+    "date": "2025-12-22T11:54:08.453Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0665542270",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "aguelmouss",
+      "sector": "Autre"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T11:54:20.351Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6158013",
+        "timestamp": "2025-12-22T11:54:34.515Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6158876",
+        "timestamp": "2025-12-22T12:21:30.674Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6158885",
+        "timestamp": "2025-12-22T12:22:04.476Z",
+        "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T12:35:28.879Z",
+        "user": "Admin"
+      }
+    ],
+    "shippingId": "6158885",
+    "shippingStatus": "ANNULÉE",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/1061851736788625601?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/1061851736788625601?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "NHU7TF",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "canceled",
+    "date": "2025-12-22T12:23:22.083Z",
+    "customer": {
+      "name": "mzyan",
+      "email": "",
+      "phone": "0661182294",
+      "address": "adfasdf",
+      "city": "aguelmouss",
+      "sector": "aguelmouss-KHENIFRA"
+    },
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:23:37.685Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6158933",
+        "timestamp": "2025-12-22T12:23:55.037Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6158981",
+        "timestamp": "2025-12-22T12:26:36.989Z",
+        "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-22T12:35:10.709Z",
+        "user": "Admin"
+      }
+    ],
+    "shippingId": "6158981",
+    "shippingStatus": "ANNULÉE",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/16453714734298553098?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/16453714734298553098?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "NZOUNE",
+    "items": [
+      {
+        "productId": "p3",
+        "quantity": 1,
+        "price": 899
+      }
+    ],
+    "total": 899,
+    "status": "sales_order",
+    "date": "2025-12-22T12:36:58.275Z",
+    "customer": {
+      "name": "order1",
+      "email": "",
+      "phone": "0661182293",
+      "address": "asodjfjadsoif",
+      "city": "AIN AICHA- TAOUNATE-",
+      "sector": "AIN AICHA"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:37:28.726Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6159225",
+        "timestamp": "2025-12-22T12:40:14.151Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6159225",
+    "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "IBDBJ5",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T12:39:31.973Z",
+    "customer": {
+      "name": "order2",
+      "email": "",
+      "phone": "0661182273",
+      "address": "jaisjfaisfd",
+      "city": "Ahfir",
+      "sector": "Ahfir"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T12:39:41.276Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6159226",
+        "timestamp": "2025-12-22T12:40:14.875Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6159226",
+    "shippingStatus": "En Attente Ramassage"
   }
 ]

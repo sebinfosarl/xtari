@@ -310,29 +310,6 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose 
                                             Delivery Note
                                         </button>
 
-                                        <button
-                                            onClick={async () => {
-                                                if (!confirm('Are you sure you want to CANCEL this shipment and order? This action will mark it as canceled.')) return;
-                                                setIsCanceling(true);
-                                                const result = await cancelShipmentAction(order.id);
-                                                setIsCanceling(false);
-                                                if (result.success && result.order) {
-                                                    setOrder(result.order);
-                                                    alert('Order and shipment canceled.');
-                                                    onClose();
-                                                    router.refresh();
-                                                } else {
-                                                    alert(`Error: ${result.error}`);
-                                                }
-                                            }}
-                                            disabled={isCanceling}
-                                            className="btn btn-sm"
-                                            style={{ background: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca' }}
-                                            title="Cancel Shipping and Order"
-                                        >
-                                            <Trash2 size={16} />
-                                            Cancel Shipping
-                                        </button>
                                     </>
                                 )}
                             </div>
@@ -347,13 +324,42 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose 
                     </section>
                 </div>
 
-                <footer className={styles.modalFooter}>
-                    <button onClick={onClose} className="btn btn-outline">
-                        Cancel
-                    </button>
-                    <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
-                        {isSaving ? 'Updating...' : <><Save size={18} /> Update Recipient Details</>}
-                    </button>
+                <footer className={styles.modalFooter} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <div>
+                        {order.shippingId && (
+                            <button
+                                onClick={async () => {
+                                    if (!confirm('Are you sure you want to CANCEL this shipment and order? This action will mark it as canceled.')) return;
+                                    setIsCanceling(true);
+                                    const result = await cancelShipmentAction(order.id);
+                                    setIsCanceling(false);
+                                    if (result.success && result.order) {
+                                        setOrder(result.order);
+                                        alert('Order and shipment canceled.');
+                                        onClose();
+                                        router.refresh();
+                                    } else {
+                                        alert(`Error: ${result.error}`);
+                                    }
+                                }}
+                                disabled={isCanceling}
+                                className="btn btn-sm"
+                                style={{ background: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                title="Cancel Shipping and Order"
+                            >
+                                <Trash2 size={16} />
+                                Cancel Shipping
+                            </button>
+                        )}
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                        <button onClick={onClose} className="btn btn-outline">
+                            Close
+                        </button>
+                        <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
+                            {isSaving ? 'Updating...' : <><Save size={18} /> Update Recipient Details</>}
+                        </button>
+                    </div>
                 </footer>
             </div>
         </div>
