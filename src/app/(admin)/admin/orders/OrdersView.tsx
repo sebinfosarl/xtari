@@ -3,7 +3,8 @@
 
 import { useState } from 'react';
 import { Order, Product, SalesPerson } from '@/lib/db';
-import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus } from 'lucide-react';
+import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw } from 'lucide-react';
+import { requestPickupAction, refreshShipmentStatusAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import OrderDialog from '@/components/OrderDialog';
 import NewOrderDialog from '@/components/NewOrderDialog';
@@ -16,11 +17,13 @@ interface OrdersViewProps {
 
 export default function OrdersView({ initialOrders: orders, products, salesPeople }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
+    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [showNewOrderDialog, setShowNewOrderDialog] = useState(false);
+    const [isRequestingPickup, setIsRequestingPickup] = useState(false);
+    const [isSyncingShipping, setIsSyncingShipping] = useState(false);
 
     const filteredOrders = orders.filter(o => {
         // Status filter
@@ -47,7 +50,6 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                 if (orderDate > end) return false;
             }
         }
-
         return true;
     });
 
@@ -55,9 +57,11 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
         <div className={styles.tableSection}>
             <div className={styles.sectionHeader} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '1.5rem' }}>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                        <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
-                        <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
+                        <div>
+                            <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
+                            <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
+                        </div>
                     </div>
                 </div>
 

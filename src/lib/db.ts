@@ -38,6 +38,8 @@ export interface Order {
         email: string;
         address: string;
         phone: string;
+        city?: string;
+        sector?: string;
     };
     salesPerson?: string;
     invoiceDownloaded?: boolean;
@@ -51,6 +53,21 @@ export interface Order {
         timestamp: string;
         user?: string; // Optional: track who did it
     }[];
+    shippingId?: string;
+    shippingStatus?: string;
+    shippingLabelUrl?: string; // Physical label (A6/Stickers)
+    shippingVoucherUrl?: string; // Bon de Livraison (A5/Voucher)
+    paymentType?: string;
+    deliveryType?: string;
+    rangeWeight?: string;
+    weight?: number;
+    packageCount?: number;
+    allowOpening?: number;
+    width?: number;
+    length?: number;
+    height?: number;
+    fragile?: boolean;
+    insuranceValue?: number;
 }
 
 function ensureDataDir() {

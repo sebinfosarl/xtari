@@ -1,16 +1,15 @@
-
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson } from '@/lib/db';
-import { updateOrderAction } from '@/app/actions';
 import {
     X, Save, Trash2, Plus, Phone, MapPin,
-    User as UserIcon, ShoppingCart, History,
+    User as UserIcon, ShoppingCart, History as HistoryIcon,
     CheckCircle2, AlertCircle, MessageSquare, Ban,
-    Search, Clock, FileText, IdCard, Briefcase, Eye
+    Search, Clock, FileText, IdCard, Briefcase, Eye, Truck, Package, RefreshCw, Download, ChevronDown, ChevronUp
 } from 'lucide-react';
+import { updateOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface OrderDialogProps {
@@ -37,6 +36,18 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [newComment, setNewComment] = useState('');
+    const [cathedisCities, setCathedisCities] = useState<any[]>([]);
+    const [isLoadingCities, setIsLoadingCities] = useState(false);
+
+    useEffect(() => {
+        async function fetchCities() {
+            setIsLoadingCities(true);
+            const cities = await getCathedisCitiesAction();
+            setCathedisCities(cities);
+            setIsLoadingCities(false);
+        }
+        fetchCities();
+    }, []);
 
     const allCategories = useMemo(() => {
         const cats = new Set(products.map(p => p.category));
@@ -268,6 +279,48 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 </>
                             )}
 
+                            <div className={styles.inputGroup}>
+                                <label>City</label>
+                                <select
+                                    disabled={readOnly || isLoadingCities}
+                                    value={order.customer.city || ''}
+                                    onChange={(e) => {
+                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                        setOrder({
+                                            ...order,
+                                            customer: {
+                                                ...order.customer,
+                                                city: e.target.value,
+                                                sector: city?.sectors?.[0]?.name || ''
+                                            }
+                                        });
+                                    }}
+                                    className={styles.inlineInput}
+                                >
+                                    <option value="">Select City...</option>
+                                    {cathedisCities.map((c: any) => (
+                                        <option key={c.id} value={c.name}>{c.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Sector/Neighborhood</label>
+                                <select
+                                    disabled={readOnly || !order.customer.city}
+                                    value={order.customer.sector || ''}
+                                    onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
+                                    className={styles.inlineInput}
+                                >
+                                    <option value="">Select Sector...</option>
+                                    {cathedisCities.find(c => c.name === order.customer.city)?.sectors?.map((s: any) => (
+                                        <option key={s.id} value={s.name}>{s.name}</option>
+                                    ))}
+                                    {!cathedisCities.find(c => c.name === order.customer.city)?.sectors?.length && order.customer.city && (
+                                        <option value="Autre">Autre</option>
+                                    )}
+                                </select>
+                            </div>
+
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Shipping Address</label>
                                 <textarea disabled={readOnly} value={order.customer.address} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })} className={styles.inlineInput} rows={2} />
@@ -352,31 +405,51 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                     display: 'flex',
                                                     gap: '4px'
                                                 }}>
-                                                    {[1, 2, 3].map(day => (
-                                                        <button
-                                                            key={day}
-                                                            onClick={(e) => {
-                                                                setActiveTabDay(day);
-                                                            }}
-                                                            style={{
-                                                                flex: 1,
-                                                                padding: '10px 0',
-                                                                borderRadius: '10px',
-                                                                fontSize: '0.7rem',
-                                                                fontWeight: '800',
-                                                                letterSpacing: '0.05em',
-                                                                border: 'none',
-                                                                cursor: 'pointer',
-                                                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                                                background: activeTabDay === day ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : 'transparent',
-                                                                color: activeTabDay === day ? 'white' : '#64748b',
-                                                                boxShadow: activeTabDay === day ? '0 4px 12px rgba(37, 99, 235, 0.3)' : 'none',
-                                                                transform: activeTabDay === day ? 'scale(1.02)' : 'scale(1)'
-                                                            }}
-                                                        >
-                                                            DAY {day}
-                                                        </button>
-                                                    ))}
+                                                    {[1, 2, 3].map(day => {
+                                                        const prevDayAttempts = (order.callHistory || {})[day - 1] || 0;
+                                                        // Time-based logic: Day 2 requires 24h (1 day), Day 3 requires 48h (2 days)
+                                                        const orderDate = new Date(order.date);
+                                                        const now = new Date();
+                                                        const daysDiff = Math.floor((now.getTime() - orderDate.getTime()) / (1000 * 60 * 60 * 24));
+
+                                                        const isFinishedPrev = day === 1 || prevDayAttempts >= 5;
+                                                        const isTimeReady = day === 1 || daysDiff >= (day - 1);
+
+                                                        const isLocked = !isFinishedPrev || !isTimeReady;
+                                                        const lockReason = !isFinishedPrev ? 'Complete previous day first' : 'Wait until tomorrow';
+
+                                                        return (
+                                                            <button
+                                                                key={day}
+                                                                disabled={isLocked}
+                                                                onClick={(e) => {
+                                                                    if (!isLocked) setActiveTabDay(day);
+                                                                }}
+                                                                title={isLocked ? lockReason : `Switch to Day ${day}`}
+                                                                style={{
+                                                                    flex: 1,
+                                                                    padding: '10px 0',
+                                                                    borderRadius: '10px',
+                                                                    fontSize: '0.7rem',
+                                                                    fontWeight: '800',
+                                                                    letterSpacing: '0.05em',
+                                                                    border: 'none',
+                                                                    cursor: isLocked ? 'not-allowed' : 'pointer',
+                                                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                                    background: activeTabDay === day
+                                                                        ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)'
+                                                                        : 'transparent',
+                                                                    color: activeTabDay === day ? 'white' : '#64748b',
+                                                                    boxShadow: activeTabDay === day ? '0 4px 12px rgba(37, 99, 235, 0.3)' : 'none',
+                                                                    transform: activeTabDay === day ? 'scale(1.02)' : 'scale(1)',
+                                                                    opacity: isLocked ? 0.3 : 1,
+                                                                    filter: isLocked ? 'grayscale(1)' : 'none'
+                                                                }}
+                                                            >
+                                                                {isLocked ? '🔒 ' : ''}DAY {day}
+                                                            </button>
+                                                        );
+                                                    })}
                                                 </div>
 
                                                 {/* LED ATTEMPT DOTS */}
@@ -402,9 +475,40 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                                 <button
                                                                     key={attempt}
                                                                     onClick={() => {
+                                                                        // IMMUTABILITY: Cannot decrease attempts
+                                                                        if (attempt <= currentCount) {
+                                                                            alert('Attempts are final and cannot be removed.');
+                                                                            return;
+                                                                        }
+                                                                        // SEQUENTIAL: Must log one at a time
+                                                                        if (attempt !== currentCount + 1) {
+                                                                            alert(`Please log attempt ${currentCount + 1} first.`);
+                                                                            return;
+                                                                        }
+
+                                                                        // TEMPORAL: 10-minute cooldown
+                                                                        const lastCallLog = (order.logs || []).find(l => l.type === 'call_tracking');
+                                                                        if (lastCallLog) {
+                                                                            const lastTime = new Date(lastCallLog.timestamp).getTime();
+                                                                            const now = new Date().getTime();
+                                                                            const diffMin = (now - lastTime) / (1000 * 60);
+                                                                            if (diffMin < 10) {
+                                                                                const wait = Math.ceil(10 - diffMin);
+                                                                                alert(`Please wait at least 10 minutes between calls. Wait ${wait} more minute(s).`);
+                                                                                return;
+                                                                            }
+                                                                        }
+
                                                                         const history = { ...(order.callHistory || {}) };
                                                                         history[activeTabDay] = attempt;
-                                                                        setOrder({ ...order, callHistory: history, logs: addLog('call_tracking', `Logged attempt ${attempt} for Day ${activeTabDay}`) });
+                                                                        const newLogs = addLog('call_tracking', `Logged attempt ${attempt} for Day ${activeTabDay}`);
+                                                                        const updatedOrder = { ...order, callHistory: history, logs: newLogs };
+
+                                                                        // PERSIST IMMEDIATELY (Anti-bypass)
+                                                                        setOrder(updatedOrder);
+                                                                        updateOrderAction(updatedOrder).then(() => {
+                                                                            router.refresh();
+                                                                        });
                                                                     }}
                                                                     style={{
                                                                         width: '32px',
@@ -506,9 +610,10 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                         </table>
                     </section>
 
+
                     {/* SECTION 4: LOGS */}
                     <section className={styles.infoSection}>
-                        <h3 className={styles.sectionTitle}><History size={16} /> Activity & Comments</h3>
+                        <h3 className={styles.sectionTitle}><HistoryIcon size={16} /> Activity & Comments</h3>
                         {!readOnly && (
                             <div className="flex gap-2">
                                 <input

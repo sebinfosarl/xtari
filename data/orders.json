@@ -142,7 +142,9 @@
       "name": "Drogba",
       "email": "drogbamail@gamil.com",
       "phone": "+212661182295",
-      "address": "somewhere in the reainbow"
+      "address": "somewhere in the reainbow",
+      "city": "FOUM ZGUID",
+      "sector": "Centre Ville"
     },
     "callResult": "Appel confirmer",
     "logs": [
@@ -516,7 +518,9 @@
       "name": "moomo",
       "email": "admin@sebreachmarketingllc.pro",
       "phone": "0660015991",
-      "address": "nirvana"
+      "address": "nirvana",
+      "city": "Agourai",
+      "sector": "Agourai"
     },
     "callResult": "Appel confirmer",
     "logs": [
@@ -644,14 +648,46 @@
       }
     ],
     "total": 599.99,
-    "status": "pending",
+    "status": "no_reply",
     "date": "2025-12-22T04:18:27.148Z",
     "customer": {
       "name": "Test Bot",
       "email": "",
       "phone": "123456789",
-      "address": "123 Bot St"
-    }
+      "address": "123 Bot St",
+      "city": "AGLOU",
+      "sector": "Centre Ville"
+    },
+    "callResult": "Ligne Occupé",
+    "callHistory": {
+      "1": 5
+    },
+    "logs": [
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 5 for Day 1",
+        "timestamp": "2025-12-22T06:24:53.047Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 3 for Day 1",
+        "timestamp": "2025-12-22T06:10:57.370Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 1",
+        "timestamp": "2025-12-22T06:10:50.784Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
+        "timestamp": "2025-12-22T06:10:30.763Z",
+        "user": "Admin"
+      }
+    ]
   },
   {
     "id": "LXJE73",
@@ -668,13 +704,858 @@
       }
     ],
     "total": 369.96999999999997,
-    "status": "pending",
+    "status": "sales_order",
     "date": "2025-12-22T04:25:02.606Z",
     "customer": {
-      "name": "triniti",
+      "name": "triniti trotinit",
       "email": "sebaghinizar@sebinfo.ma",
       "phone": "0696489568",
-      "address": "somewhere"
+      "address": "somewhere",
+      "city": "Rabat",
+      "sector": "Hay Riad"
+    },
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to nizar sebaghi",
+        "timestamp": "2025-12-22T05:32:20.937Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T05:32:18.926Z",
+        "user": "Admin"
+      }
+    ],
+    "salesPerson": "nizar sebaghi",
+    "paymentType": "Virement"
+  },
+  {
+    "id": "CGGC8Z",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "no_reply",
+    "date": "2025-12-22T05:38:13.372Z",
+    "customer": {
+      "name": "Nizaron",
+      "email": "nizar@outlook.com",
+      "phone": "0661182295",
+      "address": "Full address 123 ",
+      "city": "AGDZ",
+      "sector": "Centre Ville"
+    },
+    "shippingStatus": "En Attente Ramassage",
+    "logs": [
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 1",
+        "timestamp": "2025-12-22T06:31:19.774Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Appel coupé | Initiative Day 1",
+        "timestamp": "2025-12-22T06:31:14.675Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: undefined",
+        "timestamp": "2025-12-22T05:38:42.768Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: undefined",
+        "timestamp": "2025-12-22T05:40:18.795Z",
+        "user": "System"
+      }
+    ],
+    "rangeWeight": "Plus de 30Kg",
+    "weight": 10,
+    "callResult": "Appel coupé",
+    "callHistory": {
+      "1": 2
     }
+  },
+  {
+    "id": "3LCEGM",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T05:41:29.806Z",
+    "customer": {
+      "name": "nizarsmart",
+      "email": "",
+      "phone": "0661182295",
+      "address": "isgood",
+      "city": "AGLOU",
+      "sector": "AGLOU-TIZNIT"
+    },
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to nizar sebaghi",
+        "timestamp": "2025-12-22T05:41:42.834Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T05:41:41.197Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: undefined",
+        "timestamp": "2025-12-22T05:42:18.481Z",
+        "user": "System"
+      }
+    ],
+    "salesPerson": "nizar sebaghi",
+    "rangeWeight": "Plus de 30Kg",
+    "weight": 10,
+    "allowOpening": 1,
+    "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "6KV1LI",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "no_reply",
+    "date": "2025-12-22T05:43:05.654Z",
+    "customer": {
+      "name": "nazorei",
+      "email": "",
+      "phone": "0661182295",
+      "address": "",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "shippingStatus": "En Attente Ramassage",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Updated Call Result to Pas de réponse",
+        "timestamp": "2025-12-22T06:32:49.442Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 1",
+        "timestamp": "2025-12-22T06:32:41.277Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to nizar sebaghi",
+        "timestamp": "2025-12-22T06:32:33.743Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Appel coupé | Initiative Day 1",
+        "timestamp": "2025-12-22T06:32:31.098Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: undefined",
+        "timestamp": "2025-12-22T05:43:18.620Z",
+        "user": "System"
+      }
+    ],
+    "callResult": "Pas de réponse",
+    "callHistory": {
+      "1": 2
+    },
+    "salesPerson": "nizar sebaghi"
+  },
+  {
+    "id": "2HL9T3",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "canceled",
+    "date": "2025-12-22T05:48:50.313Z",
+    "customer": {
+      "name": "completelynew",
+      "email": "",
+      "phone": "0661122345",
+      "address": "this is the shipping address",
+      "city": "AGLOU",
+      "sector": "Centre Ville"
+    },
+    "callResult": "Canceled",
+    "callHistory": {
+      "1": 1
+    },
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
+        "timestamp": "2025-12-22T06:35:24.798Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from sales_order to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
+        "timestamp": "2025-12-22T06:35:04.085Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T06:34:57.047Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 1",
+        "timestamp": "2025-12-22T06:34:44.434Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from sales_order to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
+        "timestamp": "2025-12-22T06:34:42.552Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T06:34:36.701Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Boite vocal | Initiative Day 1",
+        "timestamp": "2025-12-22T06:33:52.568Z",
+        "user": "Admin"
+      }
+    ],
+    "cancellationMotif": "Mauvais numero"
+  },
+  {
+    "id": "J459D9",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "pending",
+    "date": "2025-12-22T05:51:33.728Z",
+    "customer": {
+      "name": "hopa",
+      "email": "",
+      "phone": "0667748856",
+      "address": "Helloshippint",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    }
+  },
+  {
+    "id": "6WVX2W",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 948.99,
+    "status": "pending",
+    "date": "2025-12-22T05:58:01.291Z",
+    "customer": {
+      "name": "lastest",
+      "email": "",
+      "phone": "0661120090",
+      "address": "this is a ciity",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "shippingId": "6152667",
+    "shippingStatus": "En Attente Ramassage",
+    "logs": [
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152667",
+        "timestamp": "2025-12-22T05:58:45.385Z",
+        "user": "System"
+      }
+    ],
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/5091048121697456789?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "CNODQP",
+    "items": [
+      {
+        "productId": "p3",
+        "quantity": 1,
+        "price": 899
+      }
+    ],
+    "total": 899,
+    "status": "pending",
+    "date": "2025-12-22T06:02:13.180Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0666666666",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "Ahfir",
+      "sector": "Ahfir"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "fragile": true,
+    "shippingId": "6152668",
+    "shippingStatus": "En Attente Ramassage",
+    "logs": [
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152668",
+        "timestamp": "2025-12-22T06:02:38.270Z",
+        "user": "System"
+      }
+    ],
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/7813035827761481598?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "KFHP6Q",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "pending",
+    "date": "2025-12-22T06:12:04.190Z",
+    "customer": {
+      "name": "NIZAR",
+      "email": "",
+      "phone": "0661187777",
+      "address": "SAHAT BOBOBO",
+      "city": "AGOUIM",
+      "sector": "Centre Ville"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1
+  },
+  {
+    "id": "MTVTEP",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "pending",
+    "date": "2025-12-22T06:12:45.756Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0776678878",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1
+  },
+  {
+    "id": "UXIREV",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "pending",
+    "date": "2025-12-22T06:17:13.211Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0777777777",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "AIN AICHA- TAOUNATE-",
+      "sector": "AIN AICHA"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1
+  },
+  {
+    "id": "SDSIMA",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T06:43:11.571Z",
+    "customer": {
+      "name": "nohaaaaa",
+      "email": "",
+      "phone": "0665578898",
+      "address": "agourai",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T06:43:29.806Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152669",
+        "timestamp": "2025-12-22T06:43:46.936Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152669",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/3402473665841758837?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "7H0VDN",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T06:44:35.873Z",
+    "customer": {
+      "name": "nohooooaba",
+      "email": "",
+      "phone": "0665585594",
+      "address": "ahalghds",
+      "city": "aguelmouss",
+      "sector": "Autre"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T06:44:49.850Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152670",
+        "timestamp": "2025-12-22T06:45:04.969Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152670",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11140964204657153691?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "5QZLBR",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T06:46:47.997Z",
+    "customer": {
+      "name": "babamimouna",
+      "email": "",
+      "phone": "0661182296",
+      "address": "bibasokd",
+      "city": "Ahfir",
+      "sector": "Ahfir"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T06:47:02.497Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152671",
+        "timestamp": "2025-12-22T06:47:22.729Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152673",
+        "timestamp": "2025-12-22T06:51:47.465Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152673",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/860948199104212563?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "Q0HJ7V",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T06:55:58.061Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T06:56:14.380Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152676",
+        "timestamp": "2025-12-22T06:56:42.551Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152677",
+        "timestamp": "2025-12-22T06:57:28.038Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152678",
+        "timestamp": "2025-12-22T06:58:26.896Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152678",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11630348359339648434?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "DT2TND",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T07:12:28.097Z",
+    "customer": {
+      "name": "anothertest",
+      "email": "",
+      "phone": "0661182295",
+      "address": "agdiw",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T07:12:44.178Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152696",
+        "timestamp": "2025-12-22T07:13:03.023Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested via hub Rabat",
+        "timestamp": "2025-12-22T07:13:36.651Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested via hub Tanger",
+        "timestamp": "2025-12-22T07:16:48.212Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152696",
+    "shippingStatus": "Ramassage Demandé",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/6189993524876212207?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "56HTLJ",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T07:32:52.026Z",
+    "customer": {
+      "name": "comoestas",
+      "email": "",
+      "phone": "0661182295",
+      "address": "agdiz",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T07:33:08.985Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152717",
+        "timestamp": "2025-12-22T07:33:29.858Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152736",
+        "timestamp": "2025-12-22T07:45:58.038Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152736",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/372437319277892186?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/372437319277892186?name=Delivery+voucher.pdf"
+  },
+  {
+    "id": "Z8KXRD",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T07:47:11.965Z",
+    "customer": {
+      "name": "like a boss",
+      "email": "",
+      "phone": "0661182295",
+      "address": "agourai",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice (Issue Date: 12/22/2025, 8:52:09 AM)",
+        "timestamp": "2025-12-22T07:52:09.595Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T07:47:31.788Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152739",
+        "timestamp": "2025-12-22T07:47:54.567Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152739",
+    "shippingStatus": "En Attente Ramassage",
+    "invoiceDownloaded": true,
+    "invoiceDate": "2025-12-22T07:52:09.595Z"
+  },
+  {
+    "id": "Z5RE6D",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 599.99
+      }
+    ],
+    "total": 599.99,
+    "status": "sales_order",
+    "date": "2025-12-22T07:57:58.792Z",
+    "customer": {
+      "name": "soujack",
+      "email": "",
+      "phone": "0661182297",
+      "address": "heojisojdf",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T07:58:17.168Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152752",
+        "timestamp": "2025-12-22T07:58:35.485Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152760",
+        "timestamp": "2025-12-22T08:02:14.312Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152760",
+    "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "KRIOLY",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-22T08:06:36.812Z",
+    "customer": {
+      "name": "fadfadsf",
+      "email": "",
+      "phone": "0666666666",
+      "address": "dfasdfadsfadfs",
+      "city": "aguelmouss",
+      "sector": "Centre Ville"
+    },
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
+        "timestamp": "2025-12-22T08:06:55.738Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6152807",
+        "timestamp": "2025-12-22T08:10:46.722Z",
+        "user": "System"
+      }
+    ],
+    "shippingId": "6152807",
+    "shippingStatus": "En Attente Ramassage",
+    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/1897480368977172565?name=Delivery+voucher.pdf",
+    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/1897480368977172565?name=Delivery+voucher.pdf"
   }
 ]

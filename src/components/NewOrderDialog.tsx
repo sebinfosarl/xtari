@@ -1,14 +1,11 @@
-
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson } from '@/lib/db';
-import { createOrderAction } from '@/app/actions';
+import { createOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import {
-    X, Save, Trash2, Plus, Phone, MapPin,
-    User as UserIcon, ShoppingCart,
-    Search, Briefcase, PlusCircle, Eye
+    X, Search, Plus, ShoppingCart, User as UserIcon, Briefcase, ChevronRight, Eye, MapPin, Trash2, PlusCircle
 } from 'lucide-react';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
@@ -27,7 +24,9 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
         name: '',
         phone: '',
         email: '',
-        address: ''
+        address: '',
+        city: '',
+        sector: ''
     });
     const [items, setItems] = useState<{ productId: string; quantity: number; price: number }[]>([]);
     const [businessInfo, setBusinessInfo] = useState<{ companyName?: string; ice?: string }>({});
@@ -38,6 +37,18 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
     const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
+    const [cathedisCities, setCathedisCities] = useState<any[]>([]);
+    const [isLoadingCities, setIsLoadingCities] = useState(false);
+
+    useEffect(() => {
+        async function fetchCities() {
+            setIsLoadingCities(true);
+            const cities = await getCathedisCitiesAction();
+            setCathedisCities(cities);
+            setIsLoadingCities(false);
+        }
+        fetchCities();
+    }, []);
 
     const total = useMemo(() => {
         return items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -68,6 +79,8 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
         formData.append('phone', customer.phone);
         formData.append('email', customer.email);
         formData.append('address', customer.address);
+        formData.append('city', customer.city);
+        formData.append('sector', customer.sector);
         formData.append('total', total.toString());
         formData.append('items', JSON.stringify(items));
 
@@ -181,6 +194,44 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                                     className={styles.inlineInput}
                                     placeholder="Email (optional)"
                                 />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>City *</label>
+                                <select
+                                    value={customer.city}
+                                    onChange={(e) => {
+                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                        setCustomer({
+                                            ...customer,
+                                            city: e.target.value,
+                                            sector: city?.sectors?.[0]?.name || ''
+                                        });
+                                    }}
+                                    className={styles.inlineInput}
+                                    disabled={isLoadingCities}
+                                >
+                                    <option value="">Select City...</option>
+                                    {cathedisCities.map((c: any) => (
+                                        <option key={c.id} value={c.name}>{c.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Sector/Neighborhood *</label>
+                                <select
+                                    value={customer.sector}
+                                    onChange={(e) => setCustomer({ ...customer, sector: e.target.value })}
+                                    className={styles.inlineInput}
+                                    disabled={!customer.city}
+                                >
+                                    <option value="">Select Sector...</option>
+                                    {cathedisCities.find(c => c.name === customer.city)?.sectors?.map((s: any) => (
+                                        <option key={s.id} value={s.name}>{s.name}</option>
+                                    ))}
+                                    {!cathedisCities.find(c => c.name === customer.city)?.sectors?.length && customer.city && (
+                                        <option value="Autre">Autre</option>
+                                    )}
+                                </select>
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Sales Person</label>
@@ -329,7 +380,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
 
                         <div className={styles.galleryFilters}>
                             <button
-                                className={`${styles.filterPill} ${selectedCategory === 'all' ? styles.active : ''}`}
+                                className={`${styles.filterPill} ${selectedCategory === 'all' ? styles.active : ''} `}
                                 onClick={() => setSelectedCategory('all')}
                             >
                                 All Products
@@ -337,7 +388,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                             {allCategories.map((cat: string) => (
                                 <button
                                     key={cat}
-                                    className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''}`}
+                                    className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''} `}
                                     onClick={() => setSelectedCategory(cat)}
                                 >
                                     {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
