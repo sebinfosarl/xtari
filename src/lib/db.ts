@@ -109,6 +109,29 @@ export interface Order {
     deliveryNotePrinted?: boolean;
 }
 
+export interface Supplier {
+    id: string;
+    name: string;
+    contactPerson?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+}
+
+export interface PurchaseOrder {
+    id: string;
+    supplierId: string;
+    items: {
+        productId: string;
+        quantity: number;
+        buyPrice: number;
+    }[];
+    total: number;
+    status: 'draft' | 'sent' | 'received' | 'canceled';
+    date: string;
+    notes?: string;
+}
+
 function ensureDataDir() {
     if (!fs.existsSync(DATA_DIR)) {
         fs.mkdirSync(DATA_DIR);
@@ -318,4 +341,48 @@ export async function deleteSalesPerson(id: string) {
     const people = await getSalesPeople();
     const filtered = people.filter(p => p.id !== id);
     writeJson('salespeople.json', filtered);
+}
+
+// Suppliers
+export async function getSuppliers(): Promise<Supplier[]> {
+    return readJson<Supplier[]>('suppliers.json', []);
+}
+
+export async function saveSupplier(supplier: Supplier) {
+    const suppliers = await getSuppliers();
+    const index = suppliers.findIndex(s => s.id === supplier.id);
+    if (index >= 0) {
+        suppliers[index] = supplier;
+    } else {
+        suppliers.push(supplier);
+    }
+    writeJson('suppliers.json', suppliers);
+}
+
+export async function deleteSupplier(id: string) {
+    const suppliers = await getSuppliers();
+    const filtered = suppliers.filter(s => s.id !== id);
+    writeJson('suppliers.json', filtered);
+}
+
+// Purchase Orders
+export async function getPurchaseOrders(): Promise<PurchaseOrder[]> {
+    return readJson<PurchaseOrder[]>('purchase_orders.json', []);
+}
+
+export async function savePurchaseOrder(po: PurchaseOrder) {
+    const pos = await getPurchaseOrders();
+    const index = pos.findIndex(p => p.id === po.id);
+    if (index >= 0) {
+        pos[index] = po;
+    } else {
+        pos.push(po);
+    }
+    writeJson('purchase_orders.json', pos);
+}
+
+export async function deletePurchaseOrder(id: string) {
+    const pos = await getPurchaseOrders();
+    const filtered = pos.filter(p => p.id !== id);
+    writeJson('purchase_orders.json', filtered);
 }

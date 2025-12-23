@@ -2,11 +2,28 @@
   {
     "id": "p1",
     "title": "Canon PIXMA Pro-200 Wireless",
-    "description": "Professional photo printer with 8-color dye-based ink system for vibrant and accurate printing.",
-    "price": 599.99,
-    "category": "printers",
+    "description": "<p>Professional&nbsp;photo&nbsp;printer&nbsp;with&nbsp;8-color&nbsp;dye-based&nbsp;ink&nbsp;system&nbsp;for&nbsp;vibrant&nbsp;and&nbsp;accurate&nbsp;printing.</p>",
+    "price": null,
+    "categoryIds": [],
     "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&q=80&w=800",
-    "featured": true
+    "gallery": [],
+    "featured": true,
+    "sku": "bobta",
+    "location": "",
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "inventory_policy": "Strict",
+    "current_stock": 0
   },
   {
     "id": "p2",

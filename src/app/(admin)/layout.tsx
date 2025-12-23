@@ -18,6 +18,7 @@ import {
     UserCheck,
     Truck,
     ChevronDown,
+    ShoppingBag,
 } from 'lucide-react';
 import styles from './AdminLayout.module.css';
 
@@ -61,6 +62,7 @@ export default function AdminLayout({
         { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
         { name: 'Fulfillment', href: '/admin/fulfillment', icon: Truck },
         { name: 'Invoices', href: '/admin/invoices', icon: FileText },
+        { name: 'Purchase Orders', href: '/admin/purchase', icon: ShoppingBag },
         { name: 'Contacts', href: '/admin/contacts', icon: UserCheck },
         { name: 'Sales Team', href: '/admin/sales', icon: Users },
     ];

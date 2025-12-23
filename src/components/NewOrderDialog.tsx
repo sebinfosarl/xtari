@@ -55,8 +55,8 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
     }, [items]);
 
     const allCategories = useMemo(() => {
-        const cats = new Set(products.map(p => p.category));
-        return Array.from(cats);
+        const cats = new Set(products.map(p => p.category).filter(Boolean));
+        return Array.from(cats) as string[];
     }, [products]);
 
     const filteredProducts = useMemo(() => {
@@ -391,7 +391,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                                     className={`${styles.filterPill} ${selectedCategory === cat ? styles.active : ''} `}
                                     onClick={() => setSelectedCategory(cat)}
                                 >
-                                    {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+                                    {cat ? cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ') : 'General'}
                                 </button>
                             ))}
                         </div>
@@ -405,7 +405,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                                         </div>
                                         <div style={{ flex: 1, paddingRight: '2.5rem' }}>
                                             <div className={styles.galleryTitle}>{p.title}</div>
-                                            <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
+                                            <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
                                             <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                         </div>
                                         <button

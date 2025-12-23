@@ -7,12 +7,16 @@ import {
     saveSalesPerson, deleteSalesPerson,
     getUser, createUser, createOrder,
     saveCategory, deleteCategory,
+    saveAttribute,
     getBrands, saveBrand, deleteBrand, Brand,
     Attribute,
     deleteAttribute,
     getAttributes,
     deleteProduct,
-    getCategories
+    getCategories,
+    getSuppliers, saveSupplier, deleteSupplier,
+    getPurchaseOrders, savePurchaseOrder, deletePurchaseOrder,
+    Supplier, PurchaseOrder
 } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -474,4 +478,30 @@ export async function reorderCategoriesAction(items: { id: string; order: number
     }
 
     revalidatePath('/admin/products/categories');
+}
+
+// Purchase Order Actions
+export async function savePurchaseOrderAction(po: PurchaseOrder) {
+    await savePurchaseOrder(po);
+    revalidatePath('/admin/purchase');
+    return { success: true };
+}
+
+export async function deletePurchaseOrderAction(id: string) {
+    await deletePurchaseOrder(id);
+    revalidatePath('/admin/purchase');
+    return { success: true };
+}
+
+// Supplier Actions
+export async function saveSupplierAction(supplier: Supplier) {
+    await saveSupplier(supplier);
+    revalidatePath('/admin/purchase');
+    return { success: true };
+}
+
+export async function deleteSupplierAction(id: string) {
+    await deleteSupplier(id);
+    revalidatePath('/admin/purchase');
+    return { success: true };
 }

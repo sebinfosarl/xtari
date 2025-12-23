@@ -17,7 +17,7 @@ interface OrdersViewProps {
 
 export default function OrdersView({ initialOrders: orders, products, salesPeople }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('all');
+    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
