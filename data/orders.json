@@ -2711,5 +2711,56 @@
       "1": 2
     },
     "cancellationMotif": "Mauvais numero"
+  },
+  {
+    "id": "GKDCGC",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "eviglm437",
+        "quantity": 1,
+        "price": 100
+      }
+    ],
+    "total": 449,
+    "status": "sales_order",
+    "date": "2025-12-23T13:08:52.454Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0661192295",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "AGUERD TAMANART-TATA",
+      "sector": "TAMANART"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T13:09:21.539Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T13:08:57.907Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-23T13:09:18.625Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": false
   }
 ]
