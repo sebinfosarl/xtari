@@ -1,11 +1,6 @@
 
-import { getOrders, getProducts, getSalesPeople } from '@/lib/db';
-import ContactsView from './ContactsView';
+import { redirect } from 'next/navigation';
 
-export default async function ContactsPage() {
-    const orders = await getOrders();
-    const products = await getProducts();
-    const salesPeople = await getSalesPeople();
-
-    return <ContactsView orders={orders} products={products} salesPeople={salesPeople} />;
+export default function ContactsPage() {
+    redirect('/admin/contacts/customers');
 }

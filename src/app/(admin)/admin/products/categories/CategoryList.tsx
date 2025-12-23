@@ -157,7 +157,11 @@ export default function CategoryList({ categories, allCategories, onCategoriesCh
 
         if (!over) return;
 
-        if (active.id !== over.id) {
+        // Calculate drag depth change
+        const dragDepthChange = Math.round(delta.x / INDENTATION_WIDTH);
+
+        // Proceed if items reordered OR if there's a horizontal shift (indentation change)
+        if (active.id !== over.id || dragDepthChange !== 0) {
             // Use the VISUAL list for calculations
             const oldIndex = categories.findIndex((item) => item.id === active.id);
             const newIndex = categories.findIndex((item) => item.id === over.id);
@@ -167,7 +171,7 @@ export default function CategoryList({ categories, allCategories, onCategoriesCh
             // Calculate new depth
             const activeItemDisplay = categories[oldIndex];
             const originalDepth = activeItemDisplay?.level || 0;
-            const dragDepthChange = Math.round(delta.x / INDENTATION_WIDTH);
+
             let projectedDepth = originalDepth + dragDepthChange;
 
             // Constrain depth

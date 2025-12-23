@@ -50,8 +50,8 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     }, []);
 
     const allCategories = useMemo(() => {
-        const cats = new Set(products.map(p => p.category));
-        return Array.from(cats);
+        const cats = new Set(products.map(p => p.category).filter(Boolean));
+        return Array.from(cats) as string[];
     }, [products]);
 
     const filteredProducts = useMemo(() => {
@@ -79,9 +79,10 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
         setPendingStatus(status);
     };
 
-    const confirmUpdate = () => {
+    const confirmUpdate = async () => {
         if (!pendingStatus) return;
 
+        setIsSaving(true);
         const oldStatus = order.status;
         let logMsg = `Changed status from ${oldStatus} to ${pendingStatus}`;
         const updates: Partial<Order> = { status: pendingStatus };
@@ -102,15 +103,46 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
             logMsg += ` | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK`;
         }
 
-        setOrder({
+        const updatedOrder = {
             ...order,
             ...updates,
             logs: addLog('status_update', logMsg)
-        });
+        };
 
-        setPendingStatus(null);
-        setTempCallResult('' as any);
-        setTempReason('' as any);
+        setOrder(updatedOrder);
+
+        try {
+            await updateOrderAction(updatedOrder);
+            router.refresh();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to autosave status');
+        } finally {
+            setIsSaving(false);
+            setPendingStatus(null);
+            setTempCallResult('' as any);
+            setTempReason('' as any);
+        }
+    };
+
+    const handleSalesPersonChange = async (newPerson: string) => {
+        setIsSaving(true);
+        const updatedOrder = {
+            ...order,
+            salesPerson: newPerson,
+            logs: addLog('sales_person_assign', `Assigned to ${newPerson}`)
+        };
+        setOrder(updatedOrder);
+
+        try {
+            await updateOrderAction(updatedOrder);
+            router.refresh();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to autosave sales person attribution');
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const addComment = () => {
@@ -355,7 +387,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     disabled={readOnly}
                                     className={styles.inlineInput}
                                     value={order.salesPerson || ''}
-                                    onChange={(e) => setOrder({ ...order, salesPerson: e.target.value, logs: addLog('sales_person_assign', `Assigned to ${e.target.value}`) })}
+                                    onChange={(e) => handleSalesPersonChange(e.target.value)}
                                 >
                                     <option value="">Select Sales Person...</option>
                                     {salesPeople.map(p => (
@@ -591,10 +623,10 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="number" step="0.01" value={item.price} onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value))} className={styles.inlineInput} style={{ width: '90px' }} />
+                                                <input type="number" step="0.01" value={item.price ?? ''} onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value) || 0)} className={styles.inlineInput} style={{ width: '90px' }} />
                                             </td>
                                             <td>
-                                                <input type="number" value={item.quantity} onChange={(e) => updateItem(item.productId, parseInt(e.target.value), item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
+                                                <input type="number" value={item.quantity ?? ''} onChange={(e) => updateItem(item.productId, parseInt(e.target.value) || 1, item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
                                             </td>
                                             <td className="font-bold">${(item.price * item.quantity).toFixed(2)}</td>
                                             <td>
@@ -733,9 +765,9 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 return (
                                     <tr key={item.productId}>
                                         <td>{product?.title}</td>
-                                        <td>${item.price.toFixed(2)}</td>
+                                        <td>${(item.price || 0).toFixed(2)}</td>
                                         <td>{item.quantity}</td>
-                                        <td>${(item.price * item.quantity).toFixed(2)}</td>
+                                        <td>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
                                     </tr>
                                 );
                             })}
@@ -848,7 +880,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             </div>
                                             <div style={{ flex: 1, paddingRight: '2.5rem' }}>
                                                 <div className={styles.galleryTitle}>{p.title}</div>
-                                                <div className={styles.galleryPrice}>${p.price.toFixed(2)}</div>
+                                                <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
                                                 <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                             </div>
                                             <button

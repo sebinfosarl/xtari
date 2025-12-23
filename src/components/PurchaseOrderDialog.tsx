@@ -21,7 +21,7 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
     const [status, setStatus] = useState(po.status);
     const [notes, setNotes] = useState(po.notes || '');
 
-    const supplier = suppliers.find(s => s.id === po.supplierId);
+    const supplier = (suppliers || []).find(s => s.id === po.supplierId);
 
     const handleUpdate = async () => {
         setIsSaving(true);
@@ -72,7 +72,7 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
                             {getStatusIcon(status)}
                             <h2 className={styles.modalTitle}>Purchase Order #{po.id}</h2>
                         </div>
-                        <span className={styles.modalSubtitle}>Placed on {new Date(po.date).toLocaleDateString()}</span>
+                        <span className={styles.modalSubtitle}>Placed on {po.date ? new Date(po.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Unknown Date'}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={() => window.print()} className="btn btn-sm btn-outline"><Printer size={16} /> Print</button>

@@ -25,7 +25,7 @@ export default async function EnhancedNewProductPage() {
                 </div>
             </div>
 
-            <ProductForm categories={categories} brands={brands} products={products} globalAttributes={globalAttributes} />
+            <ProductForm categories={categories} brands={brands} products={products} globalAttributes={globalAttributes} hideBackButton={true} />
         </div>
     );
 }

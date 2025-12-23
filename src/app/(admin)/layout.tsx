@@ -28,13 +28,22 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
-    const [productsOpen, setProductsOpen] = useState(pathname.startsWith('/admin/products'));
+    const [openGroups, setOpenGroups] = useState<string[]>([]);
 
     useEffect(() => {
-        if (pathname.startsWith('/admin/products')) {
-            setProductsOpen(true);
-        }
+        const groups = [];
+        if (pathname.startsWith('/admin/products')) groups.push('Products');
+        if (pathname.startsWith('/admin/contacts')) groups.push('Contacts');
+        setOpenGroups(groups);
     }, [pathname]);
+
+    const toggleGroup = (groupName: string) => {
+        setOpenGroups(prev =>
+            prev.includes(groupName)
+                ? prev.filter(g => g !== groupName)
+                : [...prev, groupName]
+        );
+    };
 
     const isActive = (path: string) => {
         if (path === '/admin' && pathname === '/admin') return true;
@@ -63,7 +72,15 @@ export default function AdminLayout({
         { name: 'Fulfillment', href: '/admin/fulfillment', icon: Truck },
         { name: 'Invoices', href: '/admin/invoices', icon: FileText },
         { name: 'Purchase Orders', href: '/admin/purchase', icon: ShoppingBag },
-        { name: 'Contacts', href: '/admin/contacts', icon: UserCheck },
+        {
+            name: 'Contacts',
+            href: '/admin/contacts',
+            icon: UserCheck,
+            subItems: [
+                { name: 'Customers', href: '/admin/contacts/customers' },
+                { name: 'Suppliers', href: '/admin/contacts/suppliers' },
+            ]
+        },
         { name: 'Sales Team', href: '/admin/sales', icon: Users },
     ];
 
@@ -77,23 +94,24 @@ export default function AdminLayout({
                 <nav className={styles.nav}>
                     {navItems.map((item) => {
                         const Icon = item.icon;
+                        const isOpen = openGroups.includes(item.name);
 
                         if (item.subItems) {
                             return (
                                 <div key={item.name} className={styles.navGroup}>
                                     <button
-                                        onClick={() => setProductsOpen(!productsOpen)}
+                                        onClick={() => toggleGroup(item.name)}
                                         className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
                                         style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
                                     >
                                         <Icon size={20} /> {item.name}
                                         <ChevronDown
                                             size={16}
-                                            className={`${styles.dropdownIcon} ${productsOpen ? styles.dropdownIconOpen : ''}`}
+                                            className={`${styles.dropdownIcon} ${isOpen ? styles.dropdownIconOpen : ''}`}
                                         />
                                     </button>
 
-                                    {productsOpen && (
+                                    {isOpen && (
                                         <div className={styles.subMenu}>
                                             {item.subItems.map(subItem => (
                                                 <Link

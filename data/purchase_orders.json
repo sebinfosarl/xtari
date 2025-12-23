@@ -4,5 +4,65 @@
     "supplierName": "Chakib",
     "status": "Draft",
     "createdAt": "2025-12-23T00:16:11.210Z"
+  },
+  {
+    "id": "PO-A6WQJR",
+    "supplierId": "SUP-29Z7KY",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "buyPrice": 244.29999999999998
+      }
+    ],
+    "total": 244.29999999999998,
+    "status": "draft",
+    "date": "2025-12-23T11:08:49.176Z",
+    "notes": ""
+  },
+  {
+    "id": "PO-WKBRDR",
+    "supplierId": "SUP-29Z7KY",
+    "items": [
+      {
+        "productId": "p7",
+        "quantity": 1,
+        "buyPrice": 153.29999999999998
+      }
+    ],
+    "total": 153.29999999999998,
+    "status": "draft",
+    "date": "2025-12-23T11:09:16.525Z",
+    "notes": ""
+  },
+  {
+    "id": "PO-YZBSV2",
+    "supplierId": "SUP-29Z7KY",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "buyPrice": 244.29999999999998
+      }
+    ],
+    "total": 244.29999999999998,
+    "status": "draft",
+    "date": "2025-12-23T11:09:32.912Z",
+    "notes": ""
+  },
+  {
+    "id": "PO-5JO05H",
+    "supplierId": "SUP-QF1XXF",
+    "items": [
+      {
+        "productId": "vyoww2xrg",
+        "quantity": 1,
+        "buyPrice": 70
+      }
+    ],
+    "total": 70,
+    "status": "draft",
+    "date": "2025-12-23T11:36:32.684Z",
+    "notes": ""
   }
 ]

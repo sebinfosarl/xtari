@@ -2412,5 +2412,304 @@
         "user": "Admin"
       }
     ]
+  },
+  {
+    "id": "XBMQOU",
+    "items": [
+      {
+        "productId": "p3",
+        "quantity": 1,
+        "price": 899
+      }
+    ],
+    "total": 899,
+    "status": "sales_order",
+    "date": "2025-12-23T11:25:15.714Z",
+    "customer": {
+      "name": "Nassim Sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "hay nassim",
+      "city": "Rabat",
+      "sector": "Hay Nassim "
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice (Issue Date: 12/23/2025, 1:05:24 PM)",
+        "timestamp": "2025-12-23T12:05:24.382Z",
+        "user": "Admin"
+      },
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T11:58:41.184Z"
+      },
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice (Issue Date: 12/23/2025, 12:41:53 PM)",
+        "timestamp": "2025-12-23T11:41:53.552Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T11:41:39.273Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-23T11:58:36.048Z",
+        "user": "Admin"
+      }
+    ],
+    "invoiceDownloaded": true,
+    "invoiceDate": "2025-12-23T11:41:53.552Z",
+    "deliveryNotePrinted": false
+  },
+  {
+    "id": "R64OU1",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": null
+      },
+      {
+        "productId": "p7",
+        "quantity": 1,
+        "price": 219
+      }
+    ],
+    "total": 219,
+    "status": "sales_order",
+    "date": "2025-12-23T11:49:40.612Z",
+    "customer": {
+      "name": "hello",
+      "email": "",
+      "phone": "0661182295",
+      "address": "this is the address",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T11:58:41.470Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T11:54:17.265Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-23T11:58:36.054Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": false
+  },
+  {
+    "id": "XTP2VG",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "sales_order",
+    "date": "2025-12-23T12:01:59.928Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "aguelmouss",
+      "sector": "Autre"
+    },
+    "salesPerson": "hello world",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T13:01:19.126Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T12:54:09.206Z",
+        "user": "Admin"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to hello world",
+        "timestamp": "2025-12-23T12:53:43.804Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-23T13:01:15.837Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6172241",
+        "timestamp": "2025-12-23T13:01:35.196Z",
+        "user": "System"
+      }
+    ],
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "deliveryNotePrinted": false,
+    "shippingId": "6172241",
+    "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "BUOLRW",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 698,
+    "status": "sales_order",
+    "date": "2025-12-23T12:04:24.244Z",
+    "customer": {
+      "name": "Nizar Sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "shipping yes",
+      "city": "Agourai",
+      "sector": "Agourai"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "logs": [
+      {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice (Issue Date: 12/23/2025, 1:05:36 PM)",
+        "timestamp": "2025-12-23T12:05:36.261Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T12:05:02.471Z",
+        "user": "Admin"
+      },
+      {
+        "type": "business_mode",
+        "message": "Enabled Business/Company Info",
+        "timestamp": "2025-12-23T12:04:37.942Z",
+        "user": "Admin"
+      },
+      {
+        "type": "item_add",
+        "message": "Added Ergonomic Mesh Office Chair to order",
+        "timestamp": "2025-12-23T12:04:31.646Z",
+        "user": "Admin"
+      }
+    ],
+    "companyName": "perfect",
+    "ice": "34234234",
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "to_pick",
+    "invoiceDownloaded": true,
+    "invoiceDate": "2025-12-23T12:05:36.261Z"
+  },
+  {
+    "id": "5YIEE3",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "vyoww2xrg",
+        "quantity": 1,
+        "price": 100
+      }
+    ],
+    "total": 449,
+    "status": "canceled",
+    "date": "2025-12-23T12:54:52.995Z",
+    "customer": {
+      "name": "howblack",
+      "email": "",
+      "phone": "0661182295",
+      "address": "",
+      "city": "AGLOU",
+      "sector": "AGLOU-TIZNIT"
+    },
+    "salesPerson": "nizar sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
+        "timestamp": "2025-12-23T12:56:35.164Z",
+        "user": "Admin"
+      },
+      {
+        "type": "call_tracking",
+        "message": "Logged attempt 2 for Day 1",
+        "timestamp": "2025-12-23T12:56:13.540Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from sales_order to no_reply | Status: No Reply | Result: Appel coupé | Initiative Day 1",
+        "timestamp": "2025-12-23T12:55:56.644Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T12:55:07.046Z",
+        "user": "Admin"
+      },
+      {
+        "type": "item_add",
+        "message": "Added hola to order",
+        "timestamp": "2025-12-23T12:55:00.686Z",
+        "user": "Admin"
+      }
+    ],
+    "callResult": "Canceled",
+    "fulfillmentStatus": "to_pick",
+    "callHistory": {
+      "1": 2
+    },
+    "cancellationMotif": "Mauvais numero"
   }
 ]

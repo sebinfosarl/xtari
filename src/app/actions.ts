@@ -466,13 +466,19 @@ export async function bulkMarkDeliveryNotePrintedAction(orderIds: string[]) {
     }
 }
 
-export async function reorderCategoriesAction(items: { id: string; order: number }[]) {
+export async function reorderCategoriesAction(items: { id: string; order: number; parentId?: string }[]) {
     const categories = await getCategories();
 
     for (const item of items) {
         const category = categories.find(c => c.id === item.id);
         if (category) {
             category.order = item.order;
+            // Only update parentId if it's provided in the update object (undefined/null might mean root, so careful check)
+            // But here we're passing the full snapshot of parentId, so we should allow setting it.
+            // If item has parentId property, we update it.
+            if ('parentId' in item) {
+                category.parentId = item.parentId;
+            }
             await saveCategory(category);
         }
     }

@@ -19,9 +19,10 @@ interface ProductFormProps {
     products: any[];
     globalAttributes: any[];
     initialData?: any; // Add initialData prop
+    hideBackButton?: boolean;
 }
 
-export default function ProductForm({ categories, brands, products, globalAttributes, initialData }: ProductFormProps) {
+export default function ProductForm({ categories, brands, products, globalAttributes, initialData, hideBackButton = false }: ProductFormProps) {
     const [activeTab, setActiveTab] = useState('general');
     // Initialize state with initialData if available
     const [description, setDescription] = useState(initialData?.description || '');
@@ -147,11 +148,13 @@ export default function ProductForm({ categories, brands, products, globalAttrib
 
     return (
         <>
-            <div style={{ marginBottom: '1rem' }}>
-                <Link href="/admin/products" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 500 }}>
-                    <ArrowLeft size={16} /> Back to Products
-                </Link>
-            </div>
+            {!hideBackButton && (
+                <div style={{ marginBottom: '1rem' }}>
+                    <Link href="/admin/products" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 500 }}>
+                        <ArrowLeft size={16} /> Back to Products
+                    </Link>
+                </div>
+            )}
             <form action={addProductAction}>
                 <input type="hidden" name="id" value={initialData?.id || ''} /> {/* Hidden ID for updates */}
                 {/* Hidden Inputs for state-managed fields */}

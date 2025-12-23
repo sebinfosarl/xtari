@@ -316,12 +316,12 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="number" step="0.01" value={item.price} onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value))} className={styles.inlineInput} style={{ width: '90px' }} />
+                                                <input type="number" step="0.01" value={item.price ?? ''} onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value) || 0)} className={styles.inlineInput} style={{ width: '90px' }} />
                                             </td>
                                             <td>
-                                                <input type="number" value={item.quantity} onChange={(e) => updateItem(item.productId, parseInt(e.target.value), item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
+                                                <input type="number" value={item.quantity ?? ''} onChange={(e) => updateItem(item.productId, parseInt(e.target.value) || 1, item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
                                             </td>
-                                            <td className="font-bold">${(item.price * item.quantity).toFixed(2)}</td>
+                                            <td className="font-bold">${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
                                             <td>
                                                 <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
                                             </td>
@@ -477,7 +477,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                                 <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
                                 <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
                                 <div className="flex justify-between items-center">
-                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${(previewProduct.price || 0).toFixed(2)}</span>
                                     <button
                                         className="btn btn-primary"
                                         onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
