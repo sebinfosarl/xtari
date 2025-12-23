@@ -2467,11 +2467,25 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-23T11:58:36.048Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6176540",
+        "timestamp": "2025-12-23T17:15:03.094Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:15:05.462Z",
+        "user": "Admin"
       }
     ],
     "invoiceDownloaded": true,
     "invoiceDate": "2025-12-23T11:41:53.552Z",
-    "deliveryNotePrinted": false
+    "deliveryNotePrinted": true,
+    "shippingId": "6176540",
+    "shippingStatus": "En Attente Ramassage"
   },
   {
     "id": "R64OU1",
@@ -2502,7 +2516,7 @@
     "allowOpening": 1,
     "packageCount": 1,
     "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
+    "fulfillmentStatus": "returned",
     "logs": [
       {
         "type": "fulfillment",
@@ -2520,9 +2534,23 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-23T11:58:36.054Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6176538",
+        "timestamp": "2025-12-23T17:14:39.987Z",
+        "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order marked as Returned.",
+        "timestamp": "2025-12-23T17:14:45.797Z",
+        "user": "Admin"
       }
     ],
-    "deliveryNotePrinted": false
+    "deliveryNotePrinted": false,
+    "shippingId": "6176538",
+    "shippingStatus": "En Attente Ramassage"
   },
   {
     "id": "XTP2VG",
@@ -2576,10 +2604,16 @@
         "message": "Shipment created with Cathedis. ID: 6172241",
         "timestamp": "2025-12-23T13:01:35.196Z",
         "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order marked as Returned.",
+        "timestamp": "2025-12-23T17:06:40.949Z",
+        "user": "Admin"
       }
     ],
     "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
+    "fulfillmentStatus": "returned",
     "deliveryNotePrinted": false,
     "shippingId": "6172241",
     "shippingStatus": "En Attente Ramassage"
@@ -2614,6 +2648,11 @@
     "packageCount": 1,
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T16:40:09.854Z"
+      },
+      {
         "type": "invoice_download",
         "message": "Downloaded order invoice (Issue Date: 12/23/2025, 1:05:36 PM)",
         "timestamp": "2025-12-23T12:05:36.261Z",
@@ -2636,14 +2675,35 @@
         "message": "Added Ergonomic Mesh Office Chair to order",
         "timestamp": "2025-12-23T12:04:31.646Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-23T16:40:07.082Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6176241",
+        "timestamp": "2025-12-23T16:42:33.980Z",
+        "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order marked as Returned.",
+        "timestamp": "2025-12-23T16:59:34.856Z",
+        "user": "Admin"
       }
     ],
     "companyName": "perfect",
     "ice": "34234234",
     "callResult": "Appel confirmer",
-    "fulfillmentStatus": "to_pick",
+    "fulfillmentStatus": "returned",
     "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-23T12:05:36.261Z"
+    "invoiceDate": "2025-12-23T12:05:36.261Z",
+    "deliveryNotePrinted": false,
+    "shippingId": "6176241",
+    "shippingStatus": "En Attente Ramassage"
   },
   {
     "id": "5YIEE3",
@@ -2727,7 +2787,7 @@
       }
     ],
     "total": 449,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-23T13:08:52.454Z",
     "customer": {
       "name": "Nizar Sebaghi",
@@ -2741,7 +2801,7 @@
     "allowOpening": 1,
     "packageCount": 1,
     "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
+    "fulfillmentStatus": "returned",
     "logs": [
       {
         "type": "fulfillment",
@@ -2759,8 +2819,122 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-23T13:09:18.625Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6176218",
+        "timestamp": "2025-12-23T16:40:39.429Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T16:40:56.246Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order marked as Returned.",
+        "timestamp": "2025-12-23T16:42:03.807Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-23T16:43:36.482Z",
+        "user": "Admin"
       }
     ],
-    "deliveryNotePrinted": false
+    "deliveryNotePrinted": true,
+    "shippingId": "6176218",
+    "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "049PCI",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "pending",
+    "date": "2025-12-23T16:55:43.381Z",
+    "customer": {
+      "name": "Test User",
+      "email": "",
+      "phone": "0612345678",
+      "address": "",
+      "city": "",
+      "sector": ""
+    },
+    "allowOpening": 1,
+    "packageCount": 1
+  },
+  {
+    "id": "24KNBQ",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "p6",
+        "quantity": 1,
+        "price": 89.99
+      }
+    ],
+    "total": 438.99,
+    "status": "sales_order",
+    "date": "2025-12-23T17:19:43.293Z",
+    "customer": {
+      "name": "hello world this is me",
+      "email": "",
+      "phone": "0661182295",
+      "address": "This is the first address that you have to be very good in order to know that I am only testing this label\r\nThis is all good do not worry\r\nplease, Agdal\r\nMorocco",
+      "city": "BNI AHMED GHARBIA- CHEFCHAOUEN",
+      "sector": "BNI AHMED GHARBIA"
+    },
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T17:21:00.446Z"
+      },
+      {
+        "type": "sales_person_assign",
+        "message": "Assigned to Nizar Sebaghi",
+        "timestamp": "2025-12-23T17:20:41.266Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T17:19:52.054Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6176608",
+        "timestamp": "2025-12-23T17:21:09.312Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:21:13.963Z",
+        "user": "Admin"
+      }
+    ],
+    "salesPerson": "Nizar Sebaghi",
+    "deliveryNotePrinted": true,
+    "shippingId": "6176608",
+    "shippingStatus": "En Attente Ramassage"
   }
 ]

@@ -511,3 +511,68 @@ export async function deleteSupplierAction(id: string) {
     revalidatePath('/admin/purchase');
     return { success: true };
 }
+
+export async function returnOrderAction(orderId: string) {
+    try {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === orderId);
+
+        if (!order) {
+            return { success: false, error: 'Order not found' };
+        }
+
+        order.fulfillmentStatus = 'returned';
+
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'status',
+            message: 'Order marked as Returned.',
+            timestamp: new Date().toISOString(),
+            user: 'Admin'
+        });
+
+        await updateOrder(order);
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/fulfillment');
+
+        return { success: true, order };
+    } catch (error: any) {
+        console.error('Return failed:', error);
+        return { success: false, error: error.message || 'Failed to return order' };
+    }
+}
+
+export async function restoreOrderToShipmentAction(orderId: string) {
+    try {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === orderId);
+
+        if (!order) {
+            return { success: false, error: 'Order not found' };
+        }
+
+        // Restore to 'picked' which is the status for "Deliveries" / "Shipment"
+        order.fulfillmentStatus = 'picked';
+
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'status',
+            message: 'Order restored to Shipment (Deliveries).',
+            timestamp: new Date().toISOString(),
+            user: 'Admin'
+        });
+
+        await updateOrder(order);
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/fulfillment');
+
+        return { success: true, order };
+    } catch (error: any) {
+        console.error('Restore failed:', error);
+        return { success: false, error: error.message || 'Failed to restore order' };
+    }
+}

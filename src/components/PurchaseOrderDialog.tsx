@@ -12,9 +12,10 @@ interface PurchaseOrderDialogProps {
     products: Product[];
     suppliers: Supplier[];
     onClose: () => void;
+    context?: 'purchase' | 'fulfillment';
 }
 
-export default function PurchaseOrderDialog({ po, products, suppliers, onClose }: PurchaseOrderDialogProps) {
+export default function PurchaseOrderDialog({ po, products, suppliers, onClose, context = 'purchase' }: PurchaseOrderDialogProps) {
     const router = useRouter();
     const [isSaving, setIsSaving] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -23,12 +24,14 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
 
     const supplier = (suppliers || []).find(s => s.id === po.supplierId);
 
-    const handleUpdate = async () => {
+    const isLocked = po.status !== 'draft';
+
+    const handleUpdate = async (newStatus?: PurchaseOrder['status']) => {
         setIsSaving(true);
         try {
             await savePurchaseOrderAction({
                 ...po,
-                status,
+                status: newStatus || status,
                 notes
             });
             router.refresh();
@@ -40,9 +43,26 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
         }
     };
 
+    const handleCancel = async () => {
+        if (!confirm('Are you sure you want to cancel this order? This cannot be undone.')) return;
+
+        setIsDeleting(true);
+        try {
+            await savePurchaseOrderAction({
+                ...po,
+                status: 'canceled'
+            });
+            router.refresh();
+            onClose();
+        } catch (err) {
+            alert('Failed to delete purchase order');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     const handleDelete = async () => {
         if (!confirm('Are you sure you want to delete this purchase order?')) return;
-
         setIsDeleting(true);
         try {
             await deletePurchaseOrderAction(po.id);
@@ -59,7 +79,8 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
         switch (s) {
             case 'received': return <CheckCircle2 size={20} className="text-emerald-500" />;
             case 'canceled': return <AlertCircle size={20} className="text-red-500" />;
-            default: return <ShoppingBag size={20} className="text-blue-500" />;
+            case 'in_progress': return <ShoppingBag size={20} className="text-blue-500" />;
+            default: return <ShoppingBag size={20} className="text-slate-400" />;
         }
     };
 
@@ -97,29 +118,42 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
                         </div>
 
                         {/* STATUS AND NOTES */}
-                        <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200">
-                            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Order Status</h3>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                {(['draft', 'sent', 'received', 'canceled'] as const).map(s => (
-                                    <button
-                                        key={s}
-                                        onClick={() => setStatus(s)}
-                                        className={`btn btn-sm ${status === s ? 'btn-primary' : 'btn-outline'}`}
-                                        style={{ textTransform: 'capitalize' }}
-                                    >
-                                        {s}
-                                    </button>
-                                ))}
+                        {/* STATUS AND NOTES - HIDDEN FOR MOST STATES AS PER REQUEST */}
+                        {status === 'draft' ? (
+                            <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Order Status</h3>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    <span className="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-sm font-bold uppercase">
+                                        DRAFT
+                                    </span>
+                                </div>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase">Internal Notes</label>
+                                <textarea
+                                    value={notes}
+                                    onChange={e => setNotes(e.target.value)}
+                                    className={styles.inlineInput}
+                                    style={{ height: '60px', marginTop: '4px' }}
+                                    placeholder="Add notes here..."
+                                    disabled={isLocked}
+                                />
                             </div>
-                            <label className="text-[10px] font-bold text-slate-500 uppercase">Internal Notes</label>
-                            <textarea
-                                value={notes}
-                                onChange={e => setNotes(e.target.value)}
-                                className={styles.inlineInput}
-                                style={{ height: '60px', marginTop: '4px' }}
-                                placeholder="Add notes here..."
-                            />
-                        </div>
+                        ) : (
+                            // Just show status badge if needed, or hide completely? 
+                            // "Remove order status" implied removing the control. 
+                            // But maybe we should show the Badge at least?
+                            // The request says "Remove order status and internal note".
+                            // Let's hide the input/controls. But maybe show a readonly badge header?
+                            // Actually, line 92 already shows an icon. 
+                            // And line 122 matches specific statuses to chips.
+                            // Request: "Remove order status... remove internal note...".
+                            // I will hide the entire block for non-draft states as requested to "Remove" it.
+                            // If they want to see status they can see it in header or list.
+                            // Actually wait, for "in_progress", "received", "canceled", the request says "remove".
+                            // So I will just conditionally render this whole block.
+
+                            /* RENDER NOTHING FOR NON-DRAFT STATES for this specific block as requested */
+                            null
+                        )}
                     </div>
 
                     {/* ITEMS TABLE */}
@@ -164,23 +198,79 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose }
                     </div>
                 </div>
 
-                <footer className={styles.modalFooter}>
-                    <button
-                        onClick={handleDelete}
-                        className="btn btn-outline text-red-500 hover:bg-red-50"
-                        disabled={isDeleting}
-                    >
-                        <Trash2 size={18} /> {isDeleting ? 'Deleting...' : 'Delete PO'}
-                    </button>
-                    <div className="flex gap-2 ml-auto">
-                        <button onClick={onClose} className="btn btn-outline">Close</button>
+                <footer className={styles.modalFooter} style={{ justifyContent: 'space-between' }}>
+                    {/* LEFT SIDE: CANCEL BUTTON (Always bottom left) */}
+                    <div>
+                        {/* Only show Cancel button if NOT canceled and NOT received */}
+                        {status !== 'canceled' && status !== 'received' && (
+                            <button
+                                onClick={handleCancel}
+                                className="btn btn-outline text-red-500 hover:bg-red-50"
+                                disabled={isDeleting}
+                            >
+                                <Trash2 size={18} /> {isDeleting ? 'Canceling...' : (context === 'fulfillment' ? 'Cancel Shipment' : 'Cancel Order')}
+                            </button>
+                        )}
+                        {/* Hidden Delete Button */}
                         <button
-                            onClick={handleUpdate}
-                            className="btn btn-primary"
-                            disabled={isSaving}
+                            onClick={handleDelete}
+                            className="btn btn-outline text-red-500 hover:bg-red-50"
+                            disabled={isDeleting}
+                            style={{ display: 'none' }}
                         >
-                            <Save size={18} /> {isSaving ? 'Saving...' : 'Save Changes'}
+                            <Trash2 size={18} /> Delete PO
                         </button>
+                    </div>
+
+                    {/* RIGHT SIDE: ACTIONS */}
+                    <div className="flex gap-2">
+                        <button onClick={onClose} className="btn btn-outline">Close</button>
+
+                        {po.status === 'draft' && (
+                            <>
+                                {/* Hide Save Changes in Draft mode as requested?
+                                    Wait, "when status is Draft order... Remove order status and internal note and 'Save changes' button"
+                                    So in Draft, we hide Save Changes. But we KEEP Confirm Order.
+                                */}
+                                <button
+                                    onClick={() => handleUpdate('in_progress')}
+                                    className="btn btn-primary bg-emerald-600 hover:bg-emerald-700 border-emerald-600 text-white"
+                                    disabled={isSaving}
+                                >
+                                    <CheckCircle2 size={18} /> {isSaving ? 'Confirming...' : 'Confirm Order'}
+                                </button>
+                            </>
+                        )}
+
+                        {/* Save Changes: Hidden in Draft (as per request), Hidden if Locked (standard logic) 
+                            "when status is Draft order... Remove ... 'Save changes' button"
+                            "when order is IN_Progress ... remove ... internal notes and status"
+                            It seems 'Save Changes' essentially saves notes/status. If those are gone, Save Changes is useless.
+                            So we probably hide Save Changes in almost all these refined states if there's nothing to edit.
+                        */}
+                        {!isLocked && status !== 'draft' && (
+                            <button
+                                onClick={() => handleUpdate()}
+                                className="btn btn-primary"
+                                disabled={isSaving}
+                            >
+                                <Save size={18} /> {isSaving ? 'Saving...' : 'Save Changes'}
+                            </button>
+                        )}
+
+                        {/* "when order is IN_Progress ... remove the Mark as received button" 
+                             So we HIDE this button. 
+                        */}
+                        {/* "Mark as Received": Hidden for PO context in 'in_progress', but REQUIRED for Fulfillment context as "Receive Shipment" */}
+                        {status === 'in_progress' && context === 'fulfillment' && (
+                            <button
+                                onClick={() => handleUpdate('received')}
+                                className="btn btn-primary bg-emerald-600 hover:bg-emerald-700 border-emerald-600 text-white"
+                                disabled={isSaving}
+                            >
+                                <CheckCircle2 size={18} /> {isSaving ? 'Receiving...' : 'Receive Shipment'}
+                            </button>
+                        )}
                     </div>
                 </footer>
             </div>

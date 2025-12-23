@@ -17,7 +17,9 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
     const [selectedPO, setSelectedPO] = useState<PurchaseOrder | null>(null);
     const [showNewPODialog, setShowNewPODialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'sent' | 'received' | 'canceled'>('all');
+    const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'in_progress' | 'received' | 'canceled'>('all');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const filteredPOs = purchaseOrders.filter(po => {
         const matchesStatus = statusFilter === 'all' || po.status === statusFilter;
@@ -25,7 +27,21 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
         const matchesSearch = po.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (supplier?.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-        return matchesStatus && matchesSearch;
+        // Date range filter
+        let matchesDate = true;
+        if (startDate || endDate) {
+            const poDate = new Date(po.date).setHours(0, 0, 0, 0);
+            if (startDate) {
+                const start = new Date(startDate).setHours(0, 0, 0, 0);
+                if (poDate < start) matchesDate = false;
+            }
+            if (endDate && matchesDate) {
+                const end = new Date(endDate).setHours(23, 59, 59, 999);
+                if (poDate > end) matchesDate = false;
+            }
+        }
+
+        return matchesStatus && matchesSearch && matchesDate;
     });
 
     const getStatusColor = (status: string) => {
@@ -46,17 +62,11 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
                         <h2 className={styles.sectionTitle}>Purchase Orders</h2>
                         <div className={styles.statTrend}>{filteredPOs.length} purchase orders found</div>
                     </div>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => setShowNewPODialog(true)}
-                    >
-                        <Plus size={18} /> New Purchase Order
-                    </button>
                 </div>
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr auto',
+                    gridTemplateColumns: '1fr auto auto auto',
                     gap: '1rem',
                     background: '#f8fafc',
                     padding: '1rem',
@@ -84,15 +94,45 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
                         </div>
                     </div>
 
+                    <div className="flex items-center gap-2">
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>From:</span>
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            style={{
+                                padding: '0.6rem',
+                                borderRadius: '8px',
+                                border: '1px solid #cbd5e1',
+                                fontSize: '0.85rem'
+                            }}
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>To:</span>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            style={{
+                                padding: '0.6rem',
+                                borderRadius: '8px',
+                                border: '1px solid #cbd5e1',
+                                fontSize: '0.85rem'
+                            }}
+                        />
+                    </div>
+
                     <div className="flex gap-2">
-                        {(['all', 'draft', 'sent', 'received', 'canceled'] as const).map(status => (
+                        {(['all', 'draft', 'in_progress', 'received', 'canceled'] as const).map(status => (
                             <button
                                 key={status}
                                 onClick={() => setStatusFilter(status)}
                                 className={`btn btn-sm ${statusFilter === status ? 'btn-primary' : 'btn-outline'}`}
                                 style={{ textTransform: 'capitalize' }}
                             >
-                                {status}
+                                {status.replace('_', ' ')}
                             </button>
                         ))}
                     </div>
@@ -132,7 +172,7 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
                                             className={styles.statusBadge}
                                             style={{ backgroundColor: `${getStatusColor(po.status)}20`, color: getStatusColor(po.status), border: `1px solid ${getStatusColor(po.status)}40` }}
                                         >
-                                            {po.status.toUpperCase()}
+                                            {po.status.replace('_', ' ').toUpperCase()}
                                         </span>
                                     </td>
                                     <td>
@@ -173,6 +213,15 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
                     onClose={() => setShowNewPODialog(false)}
                 />
             )}
+
+            {/* Floating Action Button for New PO */}
+            <button
+                className={styles.fab}
+                onClick={() => setShowNewPODialog(true)}
+                title="Create New Order"
+            >
+                <Plus size={32} />
+            </button>
         </div>
     );
 }

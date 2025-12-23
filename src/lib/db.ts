@@ -66,7 +66,7 @@ export interface Order {
     }[];
     total: number;
     status: 'pending' | 'sales_order' | 'canceled' | 'no_reply';
-    fulfillmentStatus?: 'to_pick' | 'picked';
+    fulfillmentStatus?: 'to_pick' | 'picked' | 'returned';
     callResult?: 'Ligne Occupe' | 'Appel coupe' | 'Pas de reponse' | 'Rappel demande' | 'Boite vocal';
     cancellationMotif?: 'Mauvais numero' | 'Appel rejete' | 'commande en double' | 'Rupture de stock' | 'Pas de reponse' | 'Commande frauduleuse' | 'Annule sans reponse';
     cancellationComment?: string;
@@ -127,7 +127,7 @@ export interface PurchaseOrder {
         buyPrice: number;
     }[];
     total: number;
-    status: 'draft' | 'sent' | 'received' | 'canceled';
+    status: 'draft' | 'in_progress' | 'received' | 'canceled';
     date: string;
     notes?: string;
 }

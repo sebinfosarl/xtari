@@ -2,23 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Order, Product, SalesPerson } from '@/lib/db';
-import { Eye, Truck, Calendar, Phone, Search, MapPin, Package, CheckCircle, Circle, X, ClipboardList, Printer, CheckCircle2 } from 'lucide-react';
+import { Order, Product, SalesPerson, PurchaseOrder, Supplier } from '@/lib/db';
+import { Eye, Truck, Calendar, Phone, Search, MapPin, Package, CheckCircle, Circle, X, ClipboardList, Printer, CheckCircle2, Receipt, ArrowDownToLine, XCircle, RotateCcw } from 'lucide-react';
+import sc from './SegmentedControl.module.css';
 import { createShipmentAction, updateOrderAction, bulkMarkDeliveryNotePrintedAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import DeliveryDialog from '@/components/DeliveryDialog';
 import PickingLabel from '@/components/PickingLabel';
+import PurchaseOrderDialog from '@/components/PurchaseOrderDialog';
 
 interface FulfillmentViewProps {
     initialOrders: Order[];
     products: Product[];
     salesPeople: SalesPerson[];
+    purchaseOrders: PurchaseOrder[];
+    suppliers: Supplier[];
 }
 
-export default function FulfillmentView({ initialOrders: orders, products, salesPeople }: FulfillmentViewProps) {
+export default function FulfillmentView({ initialOrders: orders, products, salesPeople, purchaseOrders, suppliers }: FulfillmentViewProps) {
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<'pick' | 'deliveries'>('pick');
+    const [activeTab, setActiveTab] = useState<'pick' | 'deliveries' | 'receipts' | 'returns'>('pick');
+    const [receiptFilter, setReceiptFilter] = useState<'pending' | 'done' | 'canceled'>('pending');
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [selectedPO, setSelectedPO] = useState<PurchaseOrder | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
     const [isShippingBulk, setIsShippingBulk] = useState(false);
@@ -38,8 +44,33 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
     // Filters
     const pickOrders = orders.filter(o => o.status === 'sales_order' && (!o.fulfillmentStatus || o.fulfillmentStatus === 'to_pick'));
     const deliveryOrders = orders.filter(o => o.status === 'sales_order' && o.fulfillmentStatus === 'picked');
+    const returnedOrders = orders.filter(o => o.fulfillmentStatus === 'returned');
+    const receiptOrders = purchaseOrders.filter(p => p.status === 'in_progress');
+    const doneOrders = purchaseOrders.filter(p => p.status === 'received');
+    const canceledOrders = purchaseOrders.filter(p => p.status === 'canceled');
 
-    const currentOrders = activeTab === 'pick' ? pickOrders : deliveryOrders;
+    const currentOrders = activeTab === 'pick' ? pickOrders :
+        (activeTab === 'deliveries' ? deliveryOrders :
+            (activeTab === 'returns' ? returnedOrders : []));
+
+    // Determine which set of purchase orders to show based on tab and sub-filter
+    const currentPurchaseOrders = activeTab === 'receipts' ? (
+        receiptFilter === 'pending' ? receiptOrders :
+            receiptFilter === 'done' ? doneOrders :
+                receiptFilter === 'canceled' ? canceledOrders : []
+    ) : [];
+
+    // Receipt/PO filtering
+    const filteredReceipts = currentPurchaseOrders.filter(p => {
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            const supplierName = suppliers.find(s => s.id === p.supplierId)?.name.toLowerCase() || '';
+            const matchesId = p.id.toLowerCase().includes(q);
+            const matchesSupplier = supplierName.includes(q);
+            if (!matchesId && !matchesSupplier) return false;
+        }
+        return true;
+    });
 
     const filteredOrders = currentOrders.filter(o => {
         if (searchQuery) {
@@ -143,7 +174,9 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 className={styles.sectionTitle}>Fulfillment Management</h2>
-                            <div className={styles.statTrend}>{filteredOrders.length} orders to process</div>
+                            <div className={styles.statTrend}>
+                                {activeTab === 'receipts' ? filteredReceipts.length : filteredOrders.length} orders to process
+                            </div>
                         </div>
 
                         <div style={{ display: 'flex', gap: '8px', padding: '6px', borderRadius: '9999px', background: 'rgba(241, 245, 249, 0.8)', border: '1px solid #e2e8f0', backdropFilter: 'blur(4px)' }}>
@@ -211,6 +244,70 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                     {deliveryOrders.length}
                                 </span>
                             </button>
+                            <button
+                                onClick={() => { setActiveTab('receipts'); setSelectedOrderIds([]); }}
+                                style={{
+                                    padding: '0.5rem 1.25rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 700,
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    background: activeTab === 'receipts' ? '#8b5cf6' : 'transparent',
+                                    color: activeTab === 'receipts' ? 'white' : '#64748b',
+                                    boxShadow: activeTab === 'receipts' ? '0 4px 6px -1px rgba(139, 92, 246, 0.3)' : 'none',
+                                    transform: activeTab === 'receipts' ? 'scale(1.02)' : 'none'
+                                }}
+                            >
+                                <ArrowDownToLine size={18} strokeWidth={2.5} />
+                                <span>Receipts</span>
+                                <span style={{
+                                    marginLeft: '0.25rem',
+                                    padding: '0.125rem 0.375rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.625rem',
+                                    background: activeTab === 'receipts' ? 'rgba(255,255,255,0.2)' : '#e2e8f0',
+                                    color: activeTab === 'receipts' ? 'white' : '#475569'
+                                }}>
+                                    {receiptOrders.length}
+                                </span>
+                            </button>
+                            <button
+                                onClick={() => { setActiveTab('returns'); setSelectedOrderIds([]); }}
+                                style={{
+                                    padding: '0.5rem 1.25rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 700,
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    background: activeTab === 'returns' ? '#f59e0b' : 'transparent',
+                                    color: activeTab === 'returns' ? 'white' : '#64748b',
+                                    boxShadow: activeTab === 'returns' ? '0 4px 6px -1px rgba(245, 158, 11, 0.3)' : 'none',
+                                    transform: activeTab === 'returns' ? 'scale(1.02)' : 'none'
+                                }}
+                            >
+                                <RotateCcw size={18} strokeWidth={2.5} />
+                                <span>Returns</span>
+                                <span style={{
+                                    marginLeft: '0.25rem',
+                                    padding: '0.125rem 0.375rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.625rem',
+                                    background: activeTab === 'returns' ? 'rgba(255,255,255,0.2)' : '#e2e8f0',
+                                    color: activeTab === 'returns' ? 'white' : '#475569'
+                                }}>
+                                    {returnedOrders.length}
+                                </span>
+                            </button>
                         </div>
                     </div>
 
@@ -237,119 +334,233 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                     </div>
                 </div>
 
+                {activeTab === 'receipts' && (
+                    <div className="flex gap-2 mb-6 px-4">
+                        <div className={sc.container}>
+                            {(['pending', 'done', 'canceled'] as const).map(f => (
+                                <button
+                                    key={f}
+                                    onClick={() => setReceiptFilter(f)}
+                                    className={`${sc.button} ${receiptFilter === f ? sc.active : ''}`}
+                                >
+                                    {f === 'pending' && <Package size={16} strokeWidth={2.5} />}
+                                    {f === 'done' && <CheckCircle2 size={16} strokeWidth={2.5} />}
+                                    {f === 'canceled' && <XCircle size={16} strokeWidth={2.5} />}
+
+                                    <span>{f.charAt(0).toUpperCase() + f.slice(1)}</span>
+
+                                    <span className={sc.badge}>
+                                        {f === 'pending' ? receiptOrders.length :
+                                            f === 'done' ? doneOrders.length :
+                                                canceledOrders.length}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 <div className={styles.tableWrapper}>
                     <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedOrderIds.length === filteredOrders.length && filteredOrders.length > 0}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                setSelectedOrderIds(filteredOrders.map(d => d.id));
-                                            } else {
-                                                setSelectedOrderIds([]);
-                                            }
-                                        }}
-                                    />
-                                </th>
-                                <th>Order ID</th>
-                                <th>Date</th>
-                                <th>Customer</th>
-                                <th>Destination</th>
-                                <th>{activeTab === 'pick' ? 'Status' : 'Shipping Status'}</th>
-                                <th>{activeTab === 'pick' ? 'Picking List' : 'Label'}</th>
-                                <th>Manage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredOrders.map(order => (
-                                <tr key={order.id}>
-                                    <td>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedOrderIds.includes(order.id)}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setSelectedOrderIds([...selectedOrderIds, order.id]);
-                                                } else {
-                                                    setSelectedOrderIds(selectedOrderIds.filter(id => id !== order.id));
-                                                }
-                                            }}
-                                        />
-                                    </td>
-                                    <td className={styles.bold}>#{order.id}</td>
-                                    <td>
-                                        <div className={styles.resultBadge}><Calendar size={12} /> {new Date(order.date).toLocaleDateString()}</div>
-                                    </td>
-                                    <td>
-                                        <div style={{ fontWeight: 600 }}>{order.customer.name}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#64748b' }}><Phone size={10} style={{ display: 'inline', marginRight: '2px' }} /> {order.customer.phone || 'No phone'}</div>
-                                    </td>
-                                    <td>
-                                        <div style={{ fontWeight: 600 }}><MapPin size={12} style={{ display: 'inline', marginRight: '4px' }} /> {order.customer.city || 'No City'}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{order.customer.sector || 'No sector'}</div>
-                                    </td>
-                                    <td>
-                                        {activeTab === 'pick' ? (
-                                            <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase letter-spacing-wider">
-                                                Awaiting Picking
-                                            </span>
-                                        ) : (
-                                            order.shippingId ? (
-                                                <div className="flex flex-col gap-1">
-                                                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
-                                                        ID: {order.shippingId}
-                                                    </span>
-                                                    <span className="text-xs font-semibold text-slate-600">
-                                                        {order.shippingStatus || 'SHIPPED'}
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100 uppercase">
-                                                    Awaiting Export
-                                                </span>
-                                            )
-                                        )}
-                                    </td>
-                                    <td>
-                                        <div className="flex justify-center">
-                                            {order.deliveryNotePrinted ? (
-                                                <div className={`${styles.indicator} ${styles.indicatorPrinted}`} title="Label Printed">
-                                                    <CheckCircle size={14} />
-                                                    <span className="text-[10px]">PRINTED</span>
-                                                </div>
-                                            ) : (
-                                                <div className={`${styles.indicator} ${styles.indicatorPending}`} title="Not Printed">
-                                                    <Circle size={14} className="opacity-50" />
-                                                    <span className="text-[10px] italic">PENDING</span>
-                                                </div>
+                        {activeTab === 'receipts' ? (
+                            <>
+                                <thead>
+                                    <tr>
+                                        <th>PO ID</th>
+                                        <th>Date</th>
+                                        <th>Supplier</th>
+                                        <th>Items</th>
+                                        <th>Total cost</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredReceipts.map(po => {
+                                        const supplier = suppliers.find(s => s.id === po.supplierId);
+                                        const totalItems = po.items.reduce((acc, i) => acc + i.quantity, 0);
+                                        return (
+                                            <tr key={po.id}>
+                                                <td className={styles.bold}>#{po.id}</td>
+                                                <td>
+                                                    <div className={styles.resultBadge}><Calendar size={12} /> {new Date(po.date).toLocaleDateString()}</div>
+                                                </td>
+                                                <td>
+                                                    <div style={{ fontWeight: 600 }}>{supplier?.name || 'Unknown'}</div>
+                                                </td>
+                                                <td>
+                                                    <div className="font-bold text-slate-600">{totalItems} units</div>
+                                                    <div className="text-xs text-slate-400">{po.items.length} SKUs</div>
+                                                </td>
+                                                <td className="font-bold text-slate-700">
+                                                    ${po.total.toFixed(2)}
+                                                </td>
+                                                <td>
+                                                    {receiptFilter === 'pending' && (
+                                                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase">
+                                                            Awaiting Receipt
+                                                        </span>
+                                                    )}
+                                                    {receiptFilter === 'done' && (
+                                                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 uppercase">
+                                                            Received
+                                                        </span>
+                                                    )}
+                                                    {receiptFilter === 'canceled' && (
+                                                        <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-full border border-red-100 uppercase">
+                                                            Canceled
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        onClick={() => setSelectedPO(po)}
+                                                        className={styles.eyeBtn}
+                                                        title="Manage Receipt"
+                                                        style={{ background: '#f8fafc', color: '#64748b', border: '1px solid #e2e8f0' }}
+                                                    >
+                                                        <Eye size={20} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                    {filteredReceipts.length === 0 && (
+                                        <tr>
+                                            <td colSpan={7} style={{ textAlign: 'center', padding: '4rem', color: '#94a3b8' }}>
+                                                <Package size={48} style={{ margin: '0 auto 1rem', opacity: 0.2 }} />
+                                                <p className="font-bold text-lg">
+                                                    {receiptFilter === 'pending' ? 'No Pending Receipts' :
+                                                        receiptFilter === 'done' ? 'No Completed Receipts' :
+                                                            'No Canceled Receipts'}
+                                                </p>
+                                                <p className="text-sm">
+                                                    {receiptFilter === 'pending' ? 'Confirm a purchase order to see it here.' : ''}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </>
+                        ) : (
+                            <>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedOrderIds.length === filteredOrders.length && filteredOrders.length > 0}
+                                                onChange={(e) => {
+                                                    if (e.target.checked) {
+                                                        setSelectedOrderIds(filteredOrders.map(d => d.id));
+                                                    } else {
+                                                        setSelectedOrderIds([]);
+                                                    }
+                                                }}
+                                            />
+                                        </th>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Destination</th>
+                                        {activeTab !== 'returns' && <th>{activeTab === 'pick' ? 'Status' : 'Shipping Status'}</th>}
+                                        {activeTab !== 'returns' && <th>{activeTab === 'pick' ? 'Picking List' : 'Label'}</th>}
+                                        <th>{activeTab === 'returns' ? 'View' : 'Manage'}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredOrders.map(order => (
+                                        <tr key={order.id}>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedOrderIds.includes(order.id)}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            setSelectedOrderIds([...selectedOrderIds, order.id]);
+                                                        } else {
+                                                            setSelectedOrderIds(selectedOrderIds.filter(id => id !== order.id));
+                                                        }
+                                                    }}
+                                                />
+                                            </td>
+                                            <td className={styles.bold}>#{order.id}</td>
+                                            <td>
+                                                <div className={styles.resultBadge}><Calendar size={12} /> {new Date(order.date).toLocaleDateString()}</div>
+                                            </td>
+                                            <td>
+                                                <div style={{ fontWeight: 600 }}>{order.customer.name}</div>
+                                                <div style={{ fontSize: '0.8rem', color: '#64748b' }}><Phone size={10} style={{ display: 'inline', marginRight: '2px' }} /> {order.customer.phone || 'No phone'}</div>
+                                            </td>
+                                            <td>
+                                                <div style={{ fontWeight: 600 }}><MapPin size={12} style={{ display: 'inline', marginRight: '4px' }} /> {order.customer.city || 'No City'}</div>
+                                                <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{order.customer.sector || 'No sector'}</div>
+                                            </td>
+                                            {activeTab !== 'returns' && (
+                                                <td>
+                                                    {activeTab === 'pick' ? (
+                                                        <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase letter-spacing-wider">
+                                                            Awaiting Picking
+                                                        </span>
+                                                    ) : (
+                                                        order.shippingId ? (
+                                                            <div className="flex flex-col gap-1">
+                                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
+                                                                    ID: {order.shippingId}
+                                                                </span>
+                                                                <span className="text-xs font-semibold text-slate-600">
+                                                                    {order.shippingStatus || 'SHIPPED'}
+                                                                </span>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100 uppercase">
+                                                                Awaiting Export
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </td>
                                             )}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() => setSelectedOrder(order)}
-                                            className={styles.eyeBtn}
-                                            title="View Details"
-                                            style={{ background: '#f8fafc', color: '#64748b', border: '1px solid #e2e8f0' }}
-                                        >
-                                            <Eye size={20} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {filteredOrders.length === 0 && (
-                                <tr>
-                                    <td colSpan={8} style={{ textAlign: 'center', padding: '4rem', color: '#94a3b8' }}>
-                                        <Package size={48} style={{ margin: '0 auto 1rem', opacity: 0.2 }} />
-                                        <p className="font-bold text-lg">Empty Queue</p>
-                                        <p className="text-sm">No orders currently match this status.</p>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
+                                            {activeTab !== 'returns' && (
+                                                <td>
+                                                    <div className="flex justify-center">
+                                                        {order.deliveryNotePrinted ? (
+                                                            <div className={`${styles.indicator} ${styles.indicatorPrinted}`} title="Label Printed">
+                                                                <CheckCircle size={14} />
+                                                                <span className="text-[10px]">PRINTED</span>
+                                                            </div>
+                                                        ) : (
+                                                            <div className={`${styles.indicator} ${styles.indicatorPending}`} title="Not Printed">
+                                                                <Circle size={14} className="opacity-50" />
+                                                                <span className="text-[10px] italic">PENDING</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            )}
+                                            <td>
+                                                <button
+                                                    onClick={() => setSelectedOrder(order)}
+                                                    className={styles.eyeBtn}
+                                                    title="View Details"
+                                                    style={{ background: '#f8fafc', color: '#64748b', border: '1px solid #e2e8f0' }}
+                                                >
+                                                    <Eye size={20} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {filteredOrders.length === 0 && (
+                                        <tr>
+                                            <td colSpan={8} style={{ textAlign: 'center', padding: '4rem', color: '#94a3b8' }}>
+                                                <Package size={48} style={{ margin: '0 auto 1rem', opacity: 0.2 }} />
+                                                <p className="font-bold text-lg">Empty Queue</p>
+                                                <p className="text-sm">No orders currently match this status.</p>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </>
+                        )}
                     </table>
                     {selectedOrderIds.length > 0 && (
                         <div className={styles.tableSpacer} />
@@ -362,6 +573,16 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                         products={products}
                         onClose={() => setSelectedOrder(null)}
                         showShippingInterface={activeTab === 'deliveries'}
+                    />
+                )}
+
+                {selectedPO && (
+                    <PurchaseOrderDialog
+                        po={selectedPO}
+                        products={products}
+                        suppliers={suppliers}
+                        onClose={() => setSelectedPO(null)}
+                        context="fulfillment"
                     />
                 )}
 
@@ -435,6 +656,6 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                     />
                 )}
             </div>
-        </div>
+        </div >
     );
 }

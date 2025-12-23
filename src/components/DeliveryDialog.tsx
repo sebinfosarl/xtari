@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson } from '@/lib/db';
 import {
     X, Save, Phone, MapPin,
-    User as UserIcon, ShoppingCart, Truck, Package, ChevronDown, ChevronUp, Printer, Trash2
+    User as UserIcon, ShoppingCart, Truck, Package, ChevronDown, ChevronUp, Printer, Trash2, RotateCcw
 } from 'lucide-react';
-import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction } from '@/app/actions';
+import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction, returnOrderAction, restoreOrderToShipmentAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface DeliveryDialogProps {
@@ -53,6 +53,8 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
         }
     };
 
+    const isReturned = order.fulfillmentStatus === 'returned';
+
     return (
         <div className={styles.modalOverlay} style={{ zIndex: 1500 }}>
             <div className={styles.orderModal}>
@@ -71,16 +73,16 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         <div className="grid grid-cols-2 gap-6">
                             <div className={styles.inputGroup}>
                                 <label>Full Name</label>
-                                <input value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
+                                <input disabled={isReturned} value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Phone Number</label>
-                                <input value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
+                                <input disabled={isReturned} value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>City</label>
                                 <select
-                                    disabled={isLoadingCities}
+                                    disabled={isLoadingCities || isReturned}
                                     value={order.customer.city || ''}
                                     onChange={(e) => {
                                         const city = cathedisCities.find(c => c.name === e.target.value);
@@ -104,10 +106,11 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             <div className={styles.inputGroup}>
                                 <label>Sector/Neighborhood</label>
                                 <select
-                                    disabled={!order.customer.city}
+                                    disabled={!order.customer.city || isReturned}
                                     value={order.customer.sector || ''}
                                     onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
                                     className={styles.inlineInput}
+                                    style={{ opacity: isReturned ? 0.6 : 1 }}
                                 >
                                     <option value="">Select Sector...</option>
                                     {cathedisCities.find(c => c.name === order.customer.city)?.sectors?.map((s: any) => (
@@ -117,7 +120,14 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             </div>
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Exact Shipping Address</label>
-                                <textarea value={order.customer.address} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })} className={styles.inlineInput} rows={2} />
+                                <textarea
+                                    disabled={isReturned}
+                                    value={order.customer.address}
+                                    onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })}
+                                    className={styles.inlineInput}
+                                    rows={2}
+                                    style={{ opacity: isReturned ? 0.6 : 1 }}
+                                />
                             </div>
                         </div>
                     </section>
@@ -146,8 +156,8 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                                 </div>
                                             </td>
                                             <td className="font-bold">{item.quantity}</td>
-                                            <td>${item.price.toFixed(2)}</td>
-                                            <td className="font-bold">${(item.price * item.quantity).toFixed(2)}</td>
+                                            <td>${(item.price || 0).toFixed(2)}</td>
+                                            <td className="font-bold">${((item.price || 0) * item.quantity).toFixed(2)}</td>
                                         </tr>
                                     );
                                 })}
@@ -334,54 +344,78 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                 </div>
 
                 <footer className={styles.modalFooter} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                    <div>
-                        {showShippingInterface ? (
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        {/* Hide Cancel buttons if returned */}
+                        {order.fulfillmentStatus !== 'returned' && (
+                            showShippingInterface ? (
+                                <button
+                                    onClick={async () => {
+                                        if (!confirm('Are you sure you want to CANCEL this shipment and order? This element will be marked as canceled.')) return;
+                                        setIsCanceling(true);
+                                        const result = await cancelShipmentAction(order.id);
+                                        setIsCanceling(false);
+                                        if (result.success && result.order) {
+                                            setOrder(result.order);
+                                            alert('Order and Shipment canceled.');
+                                            onClose();
+                                            router.refresh();
+                                        } else {
+                                            alert(`Error: ${result.error}`);
+                                        }
+                                    }}
+                                    disabled={isCanceling}
+                                    className="btn btn-sm"
+                                    style={{ background: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                    title="Cancel Shipping"
+                                >
+                                    <Trash2 size={16} />
+                                    Cancel Shipment
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={async () => {
+                                        if (!confirm('Are you sure you want to CANCEL this picking? The order will be canceled.')) return;
+                                        setIsCanceling(true);
+                                        const result = await cancelOrderAction(order.id);
+                                        setIsCanceling(false);
+                                        if (result.success && result.order) {
+                                            setOrder(result.order);
+                                            alert('Picking canceled.');
+                                            onClose();
+                                            router.refresh();
+                                        } else {
+                                            alert(`Error: ${result.error}`);
+                                        }
+                                    }}
+                                    disabled={isCanceling}
+                                    className="btn btn-sm"
+                                    style={{ background: 'white', color: '#ef4444', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                    title="Cancel Picking"
+                                >
+                                    <Trash2 size={16} />
+                                    Cancel Picking
+                                </button>
+                            )
+                        )}
+
+                        {/* Return Action only (Restore removed as per request) */}
+                        {order.fulfillmentStatus !== 'returned' && order.shippingId && order.status !== 'canceled' && (
                             <button
                                 onClick={async () => {
-                                    if (!confirm('Are you sure you want to CANCEL this shipment and order? This element will be marked as canceled.')) return;
-                                    setIsCanceling(true);
-                                    const result = await cancelShipmentAction(order.id);
-                                    setIsCanceling(false);
-                                    if (result.success && result.order) {
-                                        setOrder(result.order);
-                                        alert('Order and Shipment canceled.');
-                                        onClose();
-                                        router.refresh();
-                                    } else {
-                                        alert(`Error: ${result.error}`);
-                                    }
+                                    if (!confirm('Mark this order as RETURNED? It will be moved to the Returns tab.')) return;
+                                    setIsSaving(true);
+                                    await returnOrderAction(order.id);
+                                    setIsSaving(false);
+                                    alert('Order marked as returned.');
+                                    onClose();
+                                    router.refresh();
                                 }}
-                                disabled={isCanceling}
                                 className="btn btn-sm"
-                                style={{ background: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                title="Cancel Shipping"
+                                style={{ background: '#fff7ed', color: '#9a3412', border: '1px solid #fed7aa', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                title="Return Order"
                             >
-                                <Trash2 size={16} />
-                                Cancel Shipping
-                            </button>
-                        ) : (
-                            <button
-                                onClick={async () => {
-                                    if (!confirm('Are you sure you want to CANCEL this picking? The order will be canceled.')) return;
-                                    setIsCanceling(true);
-                                    const result = await cancelOrderAction(order.id);
-                                    setIsCanceling(false);
-                                    if (result.success && result.order) {
-                                        setOrder(result.order);
-                                        alert('Picking canceled.');
-                                        onClose();
-                                        router.refresh();
-                                    } else {
-                                        alert(`Error: ${result.error}`);
-                                    }
-                                }}
-                                disabled={isCanceling}
-                                className="btn btn-sm"
-                                style={{ background: 'white', color: '#ef4444', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                title="Cancel Picking"
-                            >
-                                <Trash2 size={16} />
-                                Cancel Picking
+                                <RotateCcw size={16} />
+                                Mark as Returned
                             </button>
                         )}
                     </div>
@@ -389,9 +423,11 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         <button onClick={onClose} className="btn btn-outline">
                             Close
                         </button>
-                        <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
-                            {isSaving ? 'Updating...' : <><Save size={18} /> Update Recipient Details</>}
-                        </button>
+                        {!isReturned && (
+                            <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
+                                {isSaving ? 'Updating...' : <><Save size={18} /> Update Recipient Details</>}
+                            </button>
+                        )}
                     </div>
                 </footer>
             </div>

@@ -1,0 +1,77 @@
+.container {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f1f5f9;
+    /* slate-100 */
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    gap: 4px;
+    user-select: none;
+}
+
+.button {
+    display: flex !important;
+    /* Force flex */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    /* 14px */
+    font-weight: 600;
+    color: #64748b;
+    /* slate-500 */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    white-space: nowrap;
+    position: relative;
+}
+
+.button:hover {
+    color: #334155;
+    /* slate-700 */
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.active {
+    background-color: white !important;
+    color: #0f172a !important;
+    /* slate-900 */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+}
+
+.badge {
+    font-size: 11px;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background-color: #e2e8f0;
+    color: #64748b;
+    transition: all 0.2s ease;
+}
+
+.active .badge {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+    box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure icons inherit color */
+.button svg {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.active svg {
+    opacity: 1;
+    color: inherit;
+}

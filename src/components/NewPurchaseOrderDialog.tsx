@@ -52,7 +52,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
         });
     }, [products, searchQuery, selectedCategory]);
 
-    const handleCreatePO = async () => {
+    const handleCreatePO = async (initialStatus: PurchaseOrder['status']) => {
         if (!supplierId || items.length === 0) {
             alert('Please select a supplier and add at least one product.');
             return;
@@ -64,7 +64,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
             supplierId,
             items,
             total,
-            status: 'draft',
+            status: initialStatus,
             date: new Date().toISOString(),
             notes
         };
@@ -288,11 +288,18 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
                 </div>
 
                 <footer className={styles.modalFooter}>
-                    <button onClick={onClose} className="btn btn-outline" style={{ marginLeft: 'auto' }}>
+                    <button onClick={onClose} className="btn btn-outline" style={{ marginRight: 'auto' }}>
                         Cancel
                     </button>
                     <button
-                        onClick={handleCreatePO}
+                        onClick={() => handleCreatePO('draft')}
+                        disabled={isSaving || items.length === 0 || !supplierId}
+                        className="btn btn-outline"
+                    >
+                        Create Draft PO
+                    </button>
+                    <button
+                        onClick={() => handleCreatePO('in_progress')}
                         disabled={isSaving || items.length === 0 || !supplierId}
                         className="btn btn-primary"
                         style={{ minWidth: '160px' }}
