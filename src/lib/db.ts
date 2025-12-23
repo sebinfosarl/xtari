@@ -9,6 +9,7 @@ export interface Product {
     title: string;
     description: string;
     price: number;
+    stock?: number; // Added stock field
     salePrice?: number;
     categoryIds: string[]; // Changed from category: string
     category?: string; // Legacy support

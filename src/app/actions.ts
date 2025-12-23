@@ -126,6 +126,7 @@ export async function addProductAction(formData: FormData) {
         gallery: gallery,
         featured: formData.get('featured') === 'on',
         sku: formData.get('sku') as string,
+        stock: parseInt(formData.get('stock') as string) || 0, // Handle stock
         location: formData.get('location') as string,
         weight: parseFloat(formData.get('weight') as string) || undefined,
         dimensions: dimensions,
@@ -522,6 +523,7 @@ export async function returnOrderAction(orderId: string) {
         }
 
         order.fulfillmentStatus = 'returned';
+        order.status = 'canceled'; // User request: Cancel order when returned
 
         if (!order.logs) order.logs = [];
         order.logs.push({

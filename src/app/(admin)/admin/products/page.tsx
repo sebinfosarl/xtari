@@ -36,7 +36,7 @@ export default async function AdminProductsPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((product) => (
+                            {products.map((product, index) => (
                                 <tr key={product.id}>
                                     <td>
                                         <div style={{ width: '48px', height: '48px', borderRadius: '0.5rem', overflow: 'hidden', backgroundColor: '#f1f5f9' }}>
@@ -53,16 +53,22 @@ export default async function AdminProductsPage() {
                                     </td>
                                     <td><code>{product.sku || 'N/A'}</code></td>
                                     <td>
-                                        <div className={styles.bold}>${product.price}</div>
-                                        {product.salePrice && <div style={{ fontSize: '0.75rem', color: '#ef4444', textDecoration: 'line-through' }}>${product.salePrice}</div>}
+                                        {product.salePrice ? (
+                                            <>
+                                                <div className={styles.bold} style={{ color: '#15803d' }}>${product.salePrice}</div>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748b', textDecoration: 'line-through' }}>${product.price}</div>
+                                            </>
+                                        ) : (
+                                            <div className={styles.bold}>${product.price}</div>
+                                        )}
                                     </td>
-                                    <td>{Math.floor(Math.random() * 100)} units</td>
+                                    <td>{product.stock || 0} units</td>
                                     <td>
                                         <span className={`${styles.statusBadge} ${styles.sales_order}`}>Live</span>
                                     </td>
                                     <td>
                                         <div className={styles.actions}>
-                                            <ProductActions productId={product.id} />
+                                            <ProductActions productId={product.id} isLast={index === products.length - 1} />
                                         </div>
                                     </td>
                                 </tr>

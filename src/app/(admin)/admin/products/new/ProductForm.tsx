@@ -244,7 +244,7 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                             </div>
 
                             <div style={{ padding: '1.5rem' }}>
-                                {activeTab === 'general' && (
+                                <div style={{ display: activeTab === 'general' ? 'block' : 'none' }}>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                                         <div className={styles.formGroup}>
                                             <label className={styles.label}>Regular Price ($)</label>
@@ -255,12 +255,13 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                             <input name="salePrice" type="number" step="0.01" className={styles.input} defaultValue={initialData?.salePrice} />
                                         </div>
                                     </div>
-                                )}
+                                </div>
 
-                                {activeTab === 'inventory' && (
+                                <div style={{ display: activeTab === 'inventory' ? 'block' : 'none' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                                             <div className={styles.formGroup}><label className={styles.label}>SKU</label><input name="sku" className={styles.input} defaultValue={initialData?.sku} /></div>
+                                            <div className={styles.formGroup}><label className={styles.label}>Stock Quantity</label><input name="stock" type="number" className={styles.input} defaultValue={initialData?.stock || 0} /></div>
                                             <div className={styles.formGroup}><label className={styles.label}>Location</label><input name="location" className={styles.input} defaultValue={initialData?.location} /></div>
                                         </div>
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '1rem' }}>
@@ -270,9 +271,9 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                             <div className={styles.formGroup}><label className={styles.label}>Height (cm)</label><input name="height" type="number" className={styles.input} defaultValue={initialData?.dimensions?.height} /></div>
                                         </div>
                                     </div>
-                                )}
+                                </div>
 
-                                {activeTab === 'linked' && (
+                                <div style={{ display: activeTab === 'linked' ? 'block' : 'none' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                         {['upsells', 'crossSells', 'frequentlyBoughtTogether'].map(type => (
                                             <div key={type} className={styles.formGroup}>
@@ -299,9 +300,9 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                             </div>
                                         ))}
                                     </div>
-                                )}
+                                </div>
 
-                                {activeTab === 'attributes' && (
+                                <div style={{ display: activeTab === 'attributes' ? 'block' : 'none' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                         {attributes.length === 0 && (
                                             <div className={styles.empty} style={{ padding: '2rem', fontSize: '0.9rem' }}>
@@ -382,7 +383,7 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                             <Plus size={16} style={{ marginRight: '0.5rem' }} /> Add Attribute
                                         </button>
                                     </div>
-                                )}
+                                </div>
                             </div>
                         </div>
                     </div>

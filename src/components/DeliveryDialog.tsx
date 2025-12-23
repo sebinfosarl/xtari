@@ -402,7 +402,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         {order.fulfillmentStatus !== 'returned' && order.shippingId && order.status !== 'canceled' && (
                             <button
                                 onClick={async () => {
-                                    if (!confirm('Mark this order as RETURNED? It will be moved to the Returns tab.')) return;
+                                    if (!confirm('Mark this order as RETURNED? It will be CANCELED and moved to the Returns tab.')) return;
                                     setIsSaving(true);
                                     await returnOrderAction(order.id);
                                     setIsSaving(false);

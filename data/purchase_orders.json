@@ -223,5 +223,35 @@
     "status": "received",
     "date": "2025-12-23T15:41:23.151Z",
     "notes": ""
+  },
+  {
+    "id": "PO-LTC0IC",
+    "supplierId": "SUP-K2Q9CI",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "buyPrice": 70
+      }
+    ],
+    "total": 70,
+    "status": "in_progress",
+    "date": "2025-12-23T19:26:38.041Z",
+    "notes": ""
+  },
+  {
+    "id": "PO-HR2SGQ",
+    "supplierId": "SUP-29Z7KY",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 9,
+        "buyPrice": 70
+      }
+    ],
+    "total": 630,
+    "status": "received",
+    "date": "2025-12-23T19:27:01.152Z",
+    "notes": ""
   }
 ]

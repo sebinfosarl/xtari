@@ -6,26 +6,19 @@ import Link from 'next/link';
 import { deleteProductAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 
-export default function ProductActions({ productId }: { productId: string }) {
+export default function ProductActions({ productId, isLast }: { productId: string, isLast?: boolean }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const [position, setPosition] = useState<'bottom' | 'top'>('bottom');
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
     const toggleOpen = () => {
-        if (!isOpen && buttonRef.current) {
-            const rect = buttonRef.current.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - rect.bottom;
-            // If less than 150px below, show on top
-            setPosition(spaceBelow < 150 ? 'top' : 'bottom');
-        }
         setIsOpen(!isOpen);
     };
+
+    const position = isLast ? 'top' : 'bottom';
 
     return (
         <div style={{ position: 'relative' }}>
             <button
-                ref={buttonRef}
+                // ref={buttonRef} // Ref no longer needed for position calc
                 onClick={toggleOpen}
                 className={styles.eyeBtn}
                 onBlur={() => setTimeout(() => setIsOpen(false), 200)}
@@ -37,8 +30,8 @@ export default function ProductActions({ productId }: { productId: string }) {
                 <div style={{
                     position: 'absolute',
                     right: 0,
-                    top: position === 'bottom' ? '100%' : 'auto',
-                    bottom: position === 'top' ? '100%' : 'auto',
+                    top: position === 'bottom' ? 'calc(100% + 5px)' : 'auto',
+                    bottom: position === 'top' ? 'calc(100% + 5px)' : 'auto',
                     background: 'white',
                     border: '1px solid #e2e8f0',
                     borderRadius: '0.5rem',

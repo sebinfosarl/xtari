@@ -2883,18 +2883,34 @@
       }
     ],
     "total": 349,
-    "status": "pending",
+    "status": "canceled",
     "date": "2025-12-23T16:55:43.381Z",
     "customer": {
       "name": "Test User",
       "email": "",
       "phone": "0612345678",
-      "address": "",
-      "city": "",
-      "sector": ""
+      "address": "gggggggg",
+      "city": "AGAFAY",
+      "sector": "AGAFAY-MARRAKECH"
     },
     "allowOpening": 1,
-    "packageCount": 1
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "to_pick",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T19:06:04.445Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order canceled by admin (Pre-shipping).",
+        "timestamp": "2025-12-23T19:06:27.768Z",
+        "user": "Admin"
+      }
+    ]
   },
   {
     "id": "24KNBQ",
@@ -3012,7 +3028,7 @@
       }
     ],
     "total": 438.99,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-23T17:44:48.192Z",
     "customer": {
       "name": "Nizar Sebaghi Nizar Sebaghi",
@@ -3127,11 +3143,77 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-23T18:32:08.707Z",
         "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order and Shipment canceled by admin.",
+        "timestamp": "2025-12-23T18:43:32.344Z",
+        "user": "Admin"
       }
     ],
     "deliveryNotePrinted": true,
     "shippingId": "6177152",
-    "shippingStatus": "En Attente Ramassage",
+    "shippingStatus": "ANNULÉE",
     "fragile": true
+  },
+  {
+    "id": "OM5GTV",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      }
+    ],
+    "total": 349,
+    "status": "canceled",
+    "date": "2025-12-23T19:08:10.287Z",
+    "customer": {
+      "name": "hello",
+      "email": "",
+      "phone": "0661182295",
+      "address": "hello",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "Nizar Sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "returned",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T19:08:25.020Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T19:08:14.930Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6177437",
+        "timestamp": "2025-12-23T19:09:00.830Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T19:09:06.630Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status",
+        "message": "Order marked as Returned.",
+        "timestamp": "2025-12-23T19:09:32.847Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": true,
+    "shippingId": "6177437",
+    "shippingStatus": "En Attente Ramassage"
   }
 ]
