@@ -1,279 +1,202 @@
-import { getOrderById } from '@/lib/db';
+import { getOrderById, getProducts } from '@/lib/db';
 import { notFound } from 'next/navigation';
 
 export default async function DeliveryNotePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const order = await getOrderById(id);
+    const products = await getProducts();
 
     if (!order) {
         notFound();
     }
 
-    // Standard Cathedis format: LD00 + numeric ID
     const rawId = order.shippingId || order.id;
     const trackingId = rawId.toString().startsWith('LD') ? rawId : `LD00${rawId}`;
     const dateStr = new Date().toLocaleDateString('fr-FR');
+
+    const cityCode = order.customer.city?.substring(0, 2).toUpperCase() || 'XX';
+    const numericPart = (parseInt(order.id.replace(/\D/g, '')) % 999).toString().padStart(3, '0');
+    const sortCode = `${cityCode}-${numericPart}`;
 
     return (
         <>
             <style dangerouslySetInnerHTML={{
                 __html: `
-                @page {
-                    size: 100mm 100mm;
-                    margin: 0;
-                }
-                body {
-                    margin: 0;
-                    padding: 0;
-                    font-family: 'Arial Narrow', Arial, sans-serif; /* Condensed font for better fit */
-                    background: white;
-                    color: black;
-                    width: 100mm;
-                    height: 100mm;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+                @page { size: 100mm 100mm; margin: 0; }
+                body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: white; color: black; width: 100mm; height: 100mm; display: flex; justify-content: center; align-items: center; }
+
                 .label-container {
-                    width: 98mm; /* Slightly smaller to ensure fit */
-                    height: 98mm;
+                    width: 98mm;
+                    height: 98mm; /* Keep total height fixed to 10cm */
                     border: 2px solid black;
-                    padding: 2mm;
+                    display: flex;
+                    flex-direction: column;
+                    background: white;
                     box-sizing: border-box;
-                    display: flex;
-                    flex-direction: column;
-                    position: relative;
-                    overflow: hidden; /* Prevent spillover */
+                    overflow: hidden; /* Prevents long text from pushing content to page 2 */
                 }
+                
+                /* 1. HEADER */
                 .header {
+                    flex: 0 0 auto; /* Don't shrink */
+                    min-height: 20mm;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    height: 22mm;
-                    border-bottom: 1px solid #ccc;
-                    padding-bottom: 2px;
+                    padding: 1mm 2mm;
+                    border-bottom: 2px solid black;
                 }
-                .logo-section {
-                    width: 30%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-                .info-section {
-                    width: 45%;
-                    text-align: center;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
+                .logo-area { width: 30%; display: flex; flex-direction: column; justify-content: center; }
+                .logo-area img { max-height: 12mm; object-fit: contain; }
+                .header-info { flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+                .edit-date { font-size: 8px; }
+                .tracking-id { font-size: 18px; font-weight: 900; }
+                .cmd-ref { font-size: 10px; font-weight: bold; }
+                .qr-area { width: 22mm; display: flex; justify-content: flex-end; align-items: center; }
+                
+                /* 2. PRODUCT SECTION - Now Auto-Expands */
+                .product-row {
+                    flex: 0 0 auto;
+                    min-height: 8mm;
+                    padding: 1mm 2mm;
+                    border-bottom: 2px solid black;
+                    font-size: 9px;
                     line-height: 1.1;
-                }
-                .qr-section {
-                    width: 25%;
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
+                    word-wrap: break-word; /* Allows long product names to wrap */
                 }
                 
-                .product-line {
-                    font-size: 0.75rem;
-                    border-bottom: 2px solid black;
-                    padding: 3px 0;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    font-weight: bold;
-                }
-
-                .mid-section {
+                /* 3. ADDRESS SECTION - Flexible height */
+                .address-section {
+                    flex: 1 1 auto; /* This section takes up available space */
                     display: flex;
-                    flex: 1; /* Allow to grow */
                     border-bottom: 2px solid black;
-                    margin-top: 2px;
+                    min-height: 25mm; 
                 }
-                .sender-col {
-                    width: 40%;
-                    border-right: 2px solid black;
-                    padding: 4px;
-                    font-size: 0.7rem;
-                    display: flex;
-                    flex-direction: column;
-                }
-                .receiver-col {
-                    width: 60%;
-                    padding: 4px 6px;
-                    font-size: 0.8rem;
-                    position: relative;
-                }
+                .sender-col { width: 35%; border-right: 2px solid black; padding: 1.5mm; font-size: 8px; }
+                .receiver-col { width: 65%; padding: 1.5mm; position: relative; display: flex; flex-direction: column; }
+                .col-label { text-decoration: underline; font-weight: bold; font-size: 9px; margin-bottom: 2px; }
+                .sender-name { font-weight: 800; font-size: 11px; }
                 
-                .col-title {
-                    text-decoration: underline;
-                    font-weight: bold;
-                    margin-bottom: 4px;
-                    font-size: 0.7rem;
-                    text-transform: uppercase;
-                }
-                .s-icon {
-                    background: black;
-                    color: white;
-                    width: 16px;
-                    height: 16px;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: bold;
-                    font-size: 0.7rem;
-                    margin-right: 4px;
-                    border-radius: 2px;
+                /* Receiver specific fixes */
+                .receiver-name { font-weight: 800; font-size: 11px; margin-bottom: 1px; }
+                .receiver-address { 
+                    font-size: 9px; 
+                    font-weight: bold; 
+                    text-transform: uppercase; 
+                    line-height: 1.1; 
+                    word-break: break-all; /* Prevents overflow of very long words */
                 }
 
-                .price-bar {
+                /* 4. PRICE & SORT CODE */
+                .price-strip {
+                    flex: 0 0 auto;
+                    height: 12mm;
                     display: flex;
+                    align-items: center;
                     justify-content: space-between;
-                    align-items: center;
+                    padding: 0 4mm;
                     border-bottom: 2px solid black;
-                    padding: 6px 8px;
-                    height: 14mm;
-                    background: #f9f9f9;
                 }
-                .price-main {
-                    font-size: 1.8rem;
-                    font-weight: 800;
-                }
-                .routing-code {
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    border: 2px solid black;
-                    padding: 0 4px;
-                }
+                .price-box { font-size: 20px; font-weight: 900; }
+                .sort-code { font-size: 22px; font-weight: 900; }
 
-                .barcode-section {
-                    height: 16mm;
+                /* 5. BARCODE SECTION */
+                .barcode-strip {
+                    flex: 0 0 auto;
+                    height: 15mm;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    border-bottom: 1px solid black;
-                    padding: 2px 0;
                 }
+                .barcode-img { height: 10mm; width: auto; max-width: 80%; object-fit: contain; }
+                .barcode-text { font-size: 9px; font-weight: bold; margin-top: 1px; }
 
-                .footer {
-                    height: 18mm;
-                    padding: 4px 0;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .footer-text {
-                    font-size: 0.75rem;
-                }
-                .footer-icons {
-                    display: flex;
-                    gap: 8px;
-                }
-                .icon-box {
-                   border: 1px solid black;
-                   padding: 2px;
-                   border-radius: 4px;
-                   display: flex;
-                   align-items: center;
-                   justify-content: center;
-                   width: 24px;
-                   height: 24px;
-                }
-
-                @media print {
-                    .no-print { display: none; }
-                }
-            `}} />
+                /* FOOTER */
+                .footer { flex: 0 0 auto; height: 7mm; padding: 0 2mm; display: flex; justify-content: space-between; align-items: center; font-size: 8px; border-top: 1px solid black; }
+                
+                @media print { .no-print { display: none; } }
+                `
+            }} />
 
             <div className="label-container">
-
                 <div className="header">
-                    <div className="logo-section">
-                        <img
-                            src="/xtari-logo.png"
-                            alt="XTARI"
-                            style={{
-                                maxWidth: '100%',
-                                maxHeight: '18mm',
-                                objectFit: 'contain'
-                            }}
-                        />
+                    <div className="logo-area">
+                        <img src="/xtari-logo.png" alt="XTARI.SHOP" />
+                        <span style={{ fontSize: '7px', fontWeight: 'bold' }}>livraison express</span>
                     </div>
-                    <div className="info-section">
-                        <div className="edit-date" style={{ fontSize: '0.6rem' }}>{dateStr}</div>
-                        <div className="tracking-big" style={{ fontSize: '1.25rem' }}>{trackingId}</div>
+                    <div className="header-info">
+                        <div className="edit-date">Edité le: {dateStr}</div>
+                        <div className="tracking-id">{trackingId}</div>
+                        <div className="cmd-ref">#CMD {order.id}#</div>
                     </div>
-                    <div className="qr-section">
+                    <div className="qr-area">
                         <img
-                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${rawId}`}
-                            style={{ width: '16mm', height: '16mm', marginRight: '2mm' }}
+                            src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${rawId}`}
+                            style={{ height: '16mm', width: '16mm' }}
                             alt="QR"
                         />
                     </div>
                 </div>
 
-                <div className="product-line">
-                    📦 {order.items.map(i => `${i.productId} (x${i.quantity})`).join(', ')}
+                <div className="product-row">
+                    {order.items.map(i => {
+                        const pName = products.find(p => p.id === i.productId)?.title || i.productId;
+                        return `${pName} (x${i.quantity})`;
+                    }).join(', ')}
                 </div>
 
-                <div className="mid-section">
+                <div className="address-section">
                     <div className="sender-col">
-                        <div className="col-title">Expéditeur</div>
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                            <strong style={{ fontSize: '0.9rem' }}>XTARI.SHOP</strong>
+                        <div className="col-label">Expéditeur</div>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1mm' }}>
+                            <span className="sender-name">XTARI.SHOP</span>
                         </div>
-                        <div style={{ fontSize: '0.65rem', lineHeight: '1.2' }}>
+                        <div>
                             contact@xtari.shop<br />
-                            TANGER, Maroc
+                            TANGER
                         </div>
                     </div>
+
                     <div className="receiver-col">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div className="col-title">Destinataire</div>
-                        </div>
-
-                        <div style={{ fontWeight: 'bold', fontSize: '0.95rem', marginBottom: '2px' }}>{order.customer.name}</div>
-                        <div style={{ fontSize: '0.8rem', marginBottom: '4px' }}>{order.customer.phone}</div>
-                        <div style={{ fontSize: '0.75rem', lineHeight: '1.2', height: '2.4em', overflow: 'hidden' }}>
-                            {order.customer.address}
-                        </div>
-                        <div style={{ fontWeight: 'bold', marginTop: 'auto', fontSize: '1.1rem', textAlign: 'right' }}>
-                            {order.customer.city}
+                        <div className="col-label">Destinataire</div>
+                        <div className="receiver-name">{order.customer.name}</div>
+                        <div className="receiver-phone" style={{ fontSize: '10px', marginBottom: '2px' }}>{order.customer.phone}</div>
+                        <div className="receiver-address">
+                            {order.customer.address} <br />
+                            {order.customer.city} - {order.customer.sector?.toUpperCase()}
                         </div>
                     </div>
                 </div>
 
-                <div className="price-bar">
-                    <div className="price-main">
-                        {order.total?.toFixed(2).replace('.', ',')} <span style={{ fontSize: '0.8rem' }}>MAD</span>
+                <div className="price-strip">
+                    <div className="price-box">
+                        {order.total?.toFixed(2).replace('.', ',')} <span style={{ fontSize: '12px' }}>MAD</span>
                     </div>
-                    <div className="routing-code">KF-084</div>
+                    <div className="sort-code">{sortCode}</div>
                 </div>
 
-                <div className="barcode-section">
+                <div className="barcode-strip">
                     <img
-                        src={`https://bwipjs-api.metafloor.com/?bcid=code128&text=${rawId}&scale=1.2&height=7&includetext=false`}
-                        style={{ height: '7mm', width: '75%' }}
+                        src={`https://bwipjs-api.metafloor.com/?bcid=code128&text=${rawId}&scale=2&height=12&includetext=false`}
+                        className="barcode-img"
                         alt="Barcode"
                     />
-                    <div style={{ fontSize: '0.75rem', marginTop: '1px', fontWeight: 'bold' }}>{trackingId}</div>
+                    <div className="barcode-text">{trackingId}</div>
                 </div>
 
                 <div className="footer">
-                    <div className="footer-text">
-                        <strong style={{ textDecoration: 'underline' }}>Commentaire</strong>
-                        <div style={{ marginTop: '2px' }}>Livraison standard</div>
+                    <div>
+                        <div style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Commentaire</div>
+                        <div>Livraison standard</div>
                     </div>
-                    <div className="footer-icons" style={{ display: 'flex', gap: '8px' }}>
+                    <div style={{ display: 'flex', gap: '5px' }}>
                         {order.allowOpening === 1 && (
-                            <div className="icon-box" title="Ouvrir Colis" style={{ width: '24px', height: '24px' }}>
-                                <img src="/openbox-icon.png" alt="Box" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            <div style={{ border: '1px solid black', padding: '1px', borderRadius: '3px', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} title="Ouvrir Colis">
+                                <img src="/openbox-icon.png" alt="Open" style={{ width: '14px', height: '14px', objectFit: 'contain' }} />
                             </div>
                         )}
                         {order.fragile && (
-                            <div className="icon-box" title="Fragile" style={{ width: '24px', height: '24px' }}>
-                                <img src="/fragile-icon.png" alt="Fragile" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            <div style={{ border: '1px solid black', padding: '1px', borderRadius: '3px', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} title="Fragile">
+                                <img src="/fragile-icon.png" alt="Fragile" style={{ width: '14px', height: '14px', objectFit: 'contain' }} />
                             </div>
                         )}
                     </div>

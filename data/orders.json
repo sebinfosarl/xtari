@@ -2479,6 +2479,30 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-23T17:15:05.462Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:50:06.276Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:00:37.905Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:01:30.025Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:02:41.688Z",
+        "user": "Admin"
       }
     ],
     "invoiceDownloaded": true,
@@ -2930,11 +2954,184 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-23T17:21:13.963Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:27:44.465Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:28:37.817Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:29:12.796Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:43:34.239Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:02:33.490Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:03:01.569Z",
+        "user": "Admin"
       }
     ],
     "salesPerson": "Nizar Sebaghi",
     "deliveryNotePrinted": true,
     "shippingId": "6176608",
     "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "ARY2H2",
+    "items": [
+      {
+        "productId": "p2",
+        "quantity": 1,
+        "price": 349
+      },
+      {
+        "productId": "p6",
+        "quantity": 1,
+        "price": 89.99
+      }
+    ],
+    "total": 438.99,
+    "status": "sales_order",
+    "date": "2025-12-23T17:44:48.192Z",
+    "customer": {
+      "name": "Nizar Sebaghi Nizar Sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "05, Rue de Dakar, appt. n° 1, Océan, 05, Rue de Dakar, appt. n° 1, Océan\r\n05, Rue de Dakar, appt. n° 1, Océan\r\n05, Rue de Dakar, appt. n° 1, Océan",
+      "city": "BNI AHMED GHARBIA- CHEFCHAOUEN",
+      "sector": "BNI AHMED GHARBIA"
+    },
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-23T17:45:16.801Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-23T17:44:58.432Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-23T17:45:14.278Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6176728",
+        "timestamp": "2025-12-23T17:45:30.669Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:45:33.522Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:48:15.459Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:50:14.110Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:54:44.672Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T17:58:47.138Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:00:54.014Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:02:25.575Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:02:57.022Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:05:14.015Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:30:45.052Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:31:48.641Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6177152",
+        "timestamp": "2025-12-23T18:32:00.733Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-23T18:32:08.707Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": true,
+    "shippingId": "6177152",
+    "shippingStatus": "En Attente Ramassage",
+    "fragile": true
   }
 ]
