@@ -19,6 +19,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
     const [showProductGallery, setShowProductGallery] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
+    const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
 
     // PO State
     const [supplierId, setSupplierId] = useState('');
@@ -275,16 +276,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
                         </table>
                     </section>
 
-                    <section className={styles.infoSection}>
-                        <h3 className={styles.sectionTitle}><X size={16} /> Notes / Instructions</h3>
-                        <textarea
-                            value={notes}
-                            onChange={e => setNotes(e.target.value)}
-                            className={styles.inlineInput}
-                            style={{ height: '80px' }}
-                            placeholder="Add any specific instructions for the supplier..."
-                        />
-                    </section>
+
                 </div>
 
                 <footer className={styles.modalFooter}>
@@ -348,19 +340,90 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
 
                         <div className={styles.galleryBody}>
                             {filteredProducts.map(p => (
-                                <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)}>
+                                <div key={p.id} className={styles.galleryItem} onClick={() => addItem(p.id)} style={{ position: 'relative' }}>
                                     {p.image && <img src={p.image} className={styles.galleryThumb} alt="" />}
-                                    <div style={{ flex: 1 }}>
+                                    <div style={{ flex: 1, paddingRight: '2rem' }}>
                                         <div className={styles.galleryTitle}>{p.title}</div>
                                         <div className={styles.galleryPrice}>Sell: ${(p.price || 0).toFixed(2)}</div>
                                     </div>
-                                    <Plus size={16} className="text-primary" />
+
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
+                                        className={styles.previewBtn}
+                                        style={{
+                                            position: 'absolute',
+                                            bottom: '12px',
+                                            right: '12px',
+                                            padding: '4px',
+                                            background: 'white',
+                                            borderRadius: '6px',
+                                            border: '1px solid #e2e8f0',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                                            zIndex: 10
+                                        }}
+                                        title="View Details"
+                                    >
+                                        <Eye size={14} color="var(--color-primary)" />
+                                    </button>
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
             </div>
+
+            {/* IMAGE PREVIEW LIGHTBOX */}
+            {previewProduct && (
+                <div className={styles.confirmOverlay} style={{ zIndex: 2000 }} onClick={() => setPreviewProduct(null)}>
+                    <div
+                        className={styles.confirmCard}
+                        style={{
+                            maxWidth: '600px',
+                            padding: 0,
+                            overflow: 'hidden',
+                            background: 'white'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div style={{ position: 'relative' }}>
+                            <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
+                            <button
+                                onClick={() => setPreviewProduct(null)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '10px',
+                                    top: '10px',
+                                    background: 'rgba(0,0,0,0.5)',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    padding: '4px',
+                                    border: 'none',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div style={{ padding: '1.5rem', background: 'white' }}>
+                            <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
+                            <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
+                            <div className="flex justify-between items-center">
+                                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${(previewProduct.price || 0).toFixed(2)} <span className="text-sm text-slate-400 font-normal">(Sell Price)</span></span>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                >
+                                    Add to Purchase Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -3334,27 +3334,71 @@
       }
     ],
     "total": 100,
-    "status": "sales_order",
+    "status": "canceled",
     "date": "2025-12-24T01:15:16.179Z",
     "customer": {
       "name": "asdfsadfasdf",
       "email": "",
-      "phone": "898798798",
-      "address": "",
+      "phone": "0661182295",
+      "address": "ihiuhiuhhuhuhi",
       "city": "Ahfir",
       "sector": "Ahfir"
     },
     "allowOpening": 1,
     "packageCount": 1,
     "callResult": "Appel confirmer",
-    "fulfillmentStatus": "to_pick",
+    "fulfillmentStatus": "returned",
     "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-24T09:40:47.152Z"
+      },
       {
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
         "timestamp": "2025-12-24T01:15:22.880Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T09:39:58.058Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178940",
+        "timestamp": "2025-12-24T09:41:13.324Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T09:45:59.479Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat",
+        "timestamp": "2025-12-24T09:46:14.687Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Marked as Delivered based on document analysis: ramassage-22-12-2025.pdf (5).pdf",
+        "timestamp": "2025-12-24T09:49:10.157Z",
+        "user": "System"
+      },
+      {
+        "type": "status",
+        "message": "Order marked as Returned.",
+        "timestamp": "2025-12-24T09:59:43.618Z",
+        "user": "Admin"
       }
-    ]
+    ],
+    "deliveryNotePrinted": true,
+    "shippingId": "6178940",
+    "shippingStatus": "Livré (Via PDF Scan)"
   }
 ]

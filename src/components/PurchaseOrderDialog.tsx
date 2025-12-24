@@ -117,43 +117,7 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose, 
                             </div>
                         </div>
 
-                        {/* STATUS AND NOTES */}
-                        {/* STATUS AND NOTES - HIDDEN FOR MOST STATES AS PER REQUEST */}
-                        {status === 'draft' ? (
-                            <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200">
-                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Order Status</h3>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    <span className="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-sm font-bold uppercase">
-                                        DRAFT
-                                    </span>
-                                </div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase">Internal Notes</label>
-                                <textarea
-                                    value={notes}
-                                    onChange={e => setNotes(e.target.value)}
-                                    className={styles.inlineInput}
-                                    style={{ height: '60px', marginTop: '4px' }}
-                                    placeholder="Add notes here..."
-                                    disabled={isLocked}
-                                />
-                            </div>
-                        ) : (
-                            // Just show status badge if needed, or hide completely? 
-                            // "Remove order status" implied removing the control. 
-                            // But maybe we should show the Badge at least?
-                            // The request says "Remove order status and internal note".
-                            // Let's hide the input/controls. But maybe show a readonly badge header?
-                            // Actually, line 92 already shows an icon. 
-                            // And line 122 matches specific statuses to chips.
-                            // Request: "Remove order status... remove internal note...".
-                            // I will hide the entire block for non-draft states as requested to "Remove" it.
-                            // If they want to see status they can see it in header or list.
-                            // Actually wait, for "in_progress", "received", "canceled", the request says "remove".
-                            // So I will just conditionally render this whole block.
 
-                            /* RENDER NOTHING FOR NON-DRAFT STATES for this specific block as requested */
-                            null
-                        )}
                     </div>
 
                     {/* ITEMS TABLE */}

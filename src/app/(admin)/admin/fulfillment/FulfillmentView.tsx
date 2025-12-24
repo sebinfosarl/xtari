@@ -579,7 +579,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                             <>
                                 <thead>
                                     <tr>
-                                        {!(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
+                                        {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
                                             <th>
                                                 <input
                                                     type="checkbox"
@@ -598,7 +598,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                         <th>Date</th>
                                         <th>Customer</th>
                                         <th>Destination</th>
-                                        {activeTab !== 'returns' && <th>{activeTab === 'pick' ? 'Status' : 'Shipping Status'}</th>}
+                                        <th>{activeTab === 'pick' ? 'Status' : ((deliveryFilter === 'done' || activeTab === 'returns') ? 'Shipping ID' : 'Shipping Status')}</th>
                                         {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && <th>{activeTab === 'pick' ? 'Picking List' : 'Label'}</th>}
                                         <th>{activeTab === 'returns' || (activeTab === 'deliveries' && deliveryFilter === 'done') ? 'View' : 'Manage'}</th>
                                     </tr>
@@ -606,7 +606,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                 <tbody>
                                     {filteredOrders.map(order => (
                                         <tr key={order.id}>
-                                            {!(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
+                                            {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
                                                 <td>
                                                     <input
                                                         type="checkbox"
@@ -633,19 +633,19 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                                 <div style={{ fontWeight: 600 }}><MapPin size={12} style={{ display: 'inline', marginRight: '4px' }} /> {order.customer.city || 'No City'}</div>
                                                 <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{order.customer.sector || 'No sector'}</div>
                                             </td>
-                                            {activeTab !== 'returns' && (
-                                                <td>
-                                                    {activeTab === 'pick' ? (
-                                                        <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase letter-spacing-wider">
-                                                            Awaiting Picking
-                                                        </span>
-                                                    ) : (
-                                                        order.shippingId ? (
-                                                            <div className="flex flex-col gap-1">
-                                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
-                                                                    ID: {order.shippingId}
-                                                                </span>
-                                                                {order.shippingStatus && order.shippingStatus.startsWith('Pickup:') ? (
+                                            <td>
+                                                {activeTab === 'pick' ? (
+                                                    <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase letter-spacing-wider">
+                                                        Awaiting Picking
+                                                    </span>
+                                                ) : (
+                                                    order.shippingId ? (
+                                                        <div className="flex flex-col gap-1">
+                                                            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
+                                                                ID: {order.shippingId}
+                                                            </span>
+                                                            {deliveryFilter !== 'done' && activeTab !== 'returns' && (
+                                                                order.shippingStatus && order.shippingStatus.startsWith('Pickup:') ? (
                                                                     <span className="text-[10px] font-bold text-purple-600 uppercase tracking-tight">
                                                                         {order.shippingStatus}
                                                                     </span>
@@ -653,16 +653,16 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                                                     <span className="text-xs font-semibold text-slate-600">
                                                                         {order.shippingStatus || 'SHIPPED'}
                                                                     </span>
-                                                                )}
-                                                            </div>
-                                                        ) : (
-                                                            <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100 uppercase">
-                                                                Awaiting Export
-                                                            </span>
-                                                        )
-                                                    )}
-                                                </td>
-                                            )}
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100 uppercase">
+                                                            Awaiting Export
+                                                        </span>
+                                                    )
+                                                )}
+                                            </td>
                                             {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
                                                 <td>
                                                     <div className="flex justify-center">
@@ -717,7 +717,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                             order={selectedOrder}
                             products={products}
                             onClose={() => setSelectedOrder(null)}
-                            showShippingInterface={activeTab === 'deliveries'}
+                            showShippingInterface={activeTab === 'deliveries' && deliveryFilter !== 'done'}
                             readonly={activeTab === 'deliveries' && deliveryFilter === 'done'}
                         />
                     )

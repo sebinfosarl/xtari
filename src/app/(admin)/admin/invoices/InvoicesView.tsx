@@ -131,7 +131,7 @@ export default function InvoicesView({ initialOrders: orders, products, salesPeo
                             <th>Name / Company</th>
                             <th>Total</th>
                             <th>Print Status</th>
-                            <th>Actions</th>
+                            <th>View</th>
                         </tr>
                     </thead>
                     <tbody>

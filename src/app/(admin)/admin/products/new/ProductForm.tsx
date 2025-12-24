@@ -262,7 +262,7 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                                             <div className={styles.formGroup}><label className={styles.label}>SKU</label><input name="sku" className={styles.input} defaultValue={initialData?.sku} /></div>
                                             <div className={styles.formGroup}><label className={styles.label}>Stock Quantity</label><input name="stock" type="number" className={styles.input} defaultValue={initialData?.stock || 0} /></div>
-                                            <div className={styles.formGroup}><label className={styles.label}>Location</label><input name="location" className={styles.input} defaultValue={initialData?.location} /></div>
+
                                         </div>
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '1rem' }}>
                                             <div className={styles.formGroup}><label className={styles.label}>Weight (kg)</label><input name="weight" type="number" className={styles.input} defaultValue={initialData?.weight} /></div>

@@ -56,6 +56,10 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
 
     const isReturned = order.fulfillmentStatus === 'returned';
 
+    const s = order.shippingStatus?.toLowerCase() || '';
+    const isAwaitingPickup = order.shippingId && !s.includes('livr') && !s.includes('expédi') && !order.shippingStatus?.includes('Pickup:');
+    const isPickedUp = order.shippingId && ((s.includes('expédi') || s.includes('pickup done') || order.shippingStatus?.includes('Pickup:')) && !s.includes('livr'));
+
     return (
         <div className={styles.modalOverlay} style={{ zIndex: 1500 }}>
             <div className={styles.orderModal}>
@@ -400,7 +404,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         )}
 
                         {/* Return Action only (Restore removed as per request) */}
-                        {order.fulfillmentStatus !== 'returned' && order.shippingId && order.status !== 'canceled' && !readonly && (
+                        {order.fulfillmentStatus !== 'returned' && order.shippingId && order.status !== 'canceled' && !isAwaitingPickup && !isPickedUp && (
                             <button
                                 onClick={async () => {
                                     if (!confirm('Mark this order as RETURNED? It will be CANCELED and moved to the Returns tab.')) return;
