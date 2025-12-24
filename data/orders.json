@@ -3712,10 +3712,16 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-24T18:31:11.868Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188796",
+        "timestamp": "2025-12-24T22:39:41.806Z",
+        "user": "System"
       }
     ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6188073",
+    "deliveryNotePrinted": false,
+    "shippingId": "6188796",
     "shippingStatus": "En Attente Ramassage"
   },
   {
@@ -3856,8 +3862,16 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-24T18:17:04.225Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188790",
+        "timestamp": "2025-12-24T22:38:01.617Z",
+        "user": "System"
       }
     ],
-    "deliveryNotePrinted": false
+    "deliveryNotePrinted": false,
+    "shippingId": "6188790",
+    "shippingStatus": "En Attente Ramassage"
   }
 ]

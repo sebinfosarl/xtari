@@ -781,38 +781,42 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                     </>
                                 ) : (
                                     <>
-                                        <button
-                                            onClick={handleBulkShip}
-                                            disabled={isShippingBulk}
-                                            className={styles.bulkShipBtn}
-                                        >
-                                            <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
-                                            <span>{isShippingBulk ? 'Exporting...' : 'Export to Cathedis'}</span>
-                                        </button>
-                                        <button
-                                            onClick={async () => {
-                                                const selectedShipped = deliveryOrders.filter(o => selectedOrderIds.includes(o.id) && o.shippingId);
-                                                if (selectedShipped.length === 0) {
-                                                    alert('No shipped orders selected for pickup.');
-                                                    return;
-                                                }
+                                        {deliveryFilter === 'awaiting_export' && (
+                                            <button
+                                                onClick={handleBulkShip}
+                                                disabled={isShippingBulk}
+                                                className={styles.bulkShipBtn}
+                                            >
+                                                <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
+                                                <span>{isShippingBulk ? 'Exporting...' : 'Export to Cathedis'}</span>
+                                            </button>
+                                        )}
+                                        {deliveryFilter !== 'awaiting_export' && (
+                                            <button
+                                                onClick={async () => {
+                                                    const selectedShipped = deliveryOrders.filter(o => selectedOrderIds.includes(o.id) && o.shippingId);
+                                                    if (selectedShipped.length === 0) {
+                                                        alert('No shipped orders selected for pickup.');
+                                                        return;
+                                                    }
 
-                                                // Check if all selected orders have been printed
-                                                const unprintedOrders = selectedShipped.filter(o => !o.deliveryNotePrinted);
-                                                if (unprintedOrders.length > 0) {
-                                                    alert(`Cannot request pickup: ${unprintedOrders.length} orders have not had their labels printed yet.\nPlease print labels first.`);
-                                                    return;
-                                                }
+                                                    // Check if all selected orders have been printed
+                                                    const unprintedOrders = selectedShipped.filter(o => !o.deliveryNotePrinted);
+                                                    if (unprintedOrders.length > 0) {
+                                                        alert(`Cannot request pickup: ${unprintedOrders.length} orders have not had their labels printed yet.\nPlease print labels first.`);
+                                                        return;
+                                                    }
 
-                                                setIsPickupModalOpen(true);
-                                            }}
-                                            disabled={isShippingBulk}
-                                            className={styles.bulkShipBtn}
-                                            style={{ background: '#7c3aed' }} // Violet color
-                                        >
-                                            <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
-                                            <span>Request Pickup</span>
-                                        </button>
+                                                    setIsPickupModalOpen(true);
+                                                }}
+                                                disabled={isShippingBulk}
+                                                className={styles.bulkShipBtn}
+                                                style={{ background: '#7c3aed' }} // Violet color
+                                            >
+                                                <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
+                                                <span>Request Pickup</span>
+                                            </button>
+                                        )}
                                     </>
                                 )}
 
