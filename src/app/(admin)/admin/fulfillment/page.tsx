@@ -1,4 +1,4 @@
-import { getOrders, getProducts, getSalesPeople, getPurchaseOrders, getSuppliers } from "@/lib/db";
+import { getOrders, getProducts, getSalesPeople, getPurchaseOrders, getSuppliers, getSettings } from "@/lib/db";
 import FulfillmentView from "./FulfillmentView";
 
 export default async function AdminFulfillmentPage() {
@@ -7,6 +7,7 @@ export default async function AdminFulfillmentPage() {
     const salesPeople = await getSalesPeople();
     const purchaseOrders = await getPurchaseOrders();
     const suppliers = await getSuppliers();
+    const settings = await getSettings();
 
     return (
         <FulfillmentView
@@ -15,6 +16,7 @@ export default async function AdminFulfillmentPage() {
             salesPeople={salesPeople}
             purchaseOrders={purchaseOrders}
             suppliers={suppliers}
+            pickupLocationsRaw={settings.pickupLocations || ''}
         />
     );
 }

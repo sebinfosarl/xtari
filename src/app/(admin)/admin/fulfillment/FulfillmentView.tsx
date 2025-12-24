@@ -18,10 +18,12 @@ interface FulfillmentViewProps {
     salesPeople: SalesPerson[];
     purchaseOrders: PurchaseOrder[];
     suppliers: Supplier[];
+    pickupLocationsRaw: string;
 }
 
-export default function FulfillmentView({ initialOrders: orders, products, salesPeople, purchaseOrders, suppliers }: FulfillmentViewProps) {
+export default function FulfillmentView({ initialOrders: orders, products, salesPeople, purchaseOrders, suppliers, pickupLocationsRaw }: FulfillmentViewProps) {
     const router = useRouter();
+    // ... existing state ...
     const [activeTab, setActiveTab] = useState<'pick' | 'deliveries' | 'receipts' | 'returns'>('pick');
     const [receiptFilter, setReceiptFilter] = useState<'pending' | 'done' | 'canceled'>('pending');
     const [pickFilter, setPickFilter] = useState<'pending' | 'printed'>('pending');
@@ -34,6 +36,41 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
 
     const [isUpdatingBulk, setIsUpdatingBulk] = useState(false);
     const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
+
+    // Parse pickup locations
+    const pickupLocations = pickupLocationsRaw.split('\n')
+        .map(line => {
+            const parts = line.split(/[-:]/);
+            const id = parts[parts.length - 1]?.trim();
+            const label = parts.slice(0, parts.length - 1).join('-').trim();
+            // Try to handle user's specific format "Rabat-AAKKARI-6322" where 6322 is potentially the ID?
+            // If the user inputs "Label - ID", the above logic works.
+            // If user inputs "Rabat-AAKKARI-6322", last part is 6322.
+
+            if (id && label) {
+                return { id: parseInt(id), label };
+            }
+            // Add default fallback if string is valid but simpler?
+            return null;
+        })
+        .filter(x => x !== null && !isNaN(x.id)) as { id: number; label: string }[];
+
+    // Fallback defaults if no locations defined
+    const effectivePickupLocations = pickupLocations.length > 0 ? pickupLocations : [
+        { id: 26301, label: 'Rabat (Default)' },
+        { id: 36407, label: 'Tanger (Default)' },
+        { id: 0, label: 'Bureau (Default)' } // ID 0 is placebo/example
+    ];
+
+    // ... rest of the file ...
+    // ... inside the return statement ...
+    // ... inside the sticky bar -> request pickup button logic ...
+
+    // Scroll down to find lines ~810 where the modal is rendered or the button is clicked. 
+    // Wait, the modal is rendered at the bottom of the file (I need to view it or just append it).
+    // The previous view_file showed up to line 800. I need to see the modal code to replace it.
+    // I will execute a view_file for the bottom of FulfillmentView.tsx first.
+
 
     // ... handlePickupRequest ...
 
@@ -841,35 +878,24 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>Select Pickup Point</h3>
                             <p style={{ marginBottom: '1.5rem', color: '#64748b' }}>Where should the driver pick up these {selectedOrderIds.length} orders?</p>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
-                                <button
-                                    onClick={() => handlePickupRequest(26301)}
-                                    disabled={isShippingBulk}
-                                    style={{
-                                        padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '0.5rem',
-                                        background: isShippingBulk ? '#f1f5f9' : 'white', cursor: isShippingBulk ? 'not-allowed' : 'pointer',
-                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    className="hover:border-blue-500 hover:bg-blue-50"
-                                >
-                                    <MapPin size={24} className="text-blue-600" />
-                                    <span style={{ fontWeight: 600 }}>Rabat</span>
-                                </button>
-                                <button
-                                    onClick={() => handlePickupRequest(36407)}
-                                    disabled={isShippingBulk}
-                                    style={{
-                                        padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '0.5rem',
-                                        background: isShippingBulk ? '#f1f5f9' : 'white', cursor: isShippingBulk ? 'not-allowed' : 'pointer',
-                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    className="hover:border-blue-500 hover:bg-blue-50"
-                                >
-                                    <MapPin size={24} className="text-blue-600" />
-                                    <span style={{ fontWeight: 600 }}>Tanger</span>
-                                </button>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                                {effectivePickupLocations.map((loc) => (
+                                    <button
+                                        key={loc.id}
+                                        onClick={() => handlePickupRequest(loc.id)}
+                                        disabled={isShippingBulk}
+                                        style={{
+                                            padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '0.5rem',
+                                            background: isShippingBulk ? '#f1f5f9' : 'white', cursor: isShippingBulk ? 'not-allowed' : 'pointer',
+                                            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+                                            transition: 'all 0.2s'
+                                        }}
+                                        className="hover:border-blue-500 hover:bg-blue-50"
+                                    >
+                                        <MapPin size={24} className="text-blue-600" />
+                                        <span style={{ fontWeight: 600, textAlign: 'center' }}>{loc.label}</span>
+                                    </button>
+                                ))}
                             </div>
 
                             <button

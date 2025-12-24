@@ -435,3 +435,28 @@ export async function deleteKit(id: string) {
     const filtered = kits.filter(k => k.id !== id);
     writeJson('kits.json', filtered);
 }
+
+// Settings
+export interface Settings {
+    cathedis: {
+        username: string;
+        password: string;
+        isConnected: boolean;
+    };
+    pickupLocations?: string; // Multiline string: "Label - ID"
+}
+
+export async function getSettings(): Promise<Settings> {
+    return readJson<Settings>('settings.json', {
+        cathedis: {
+            username: '',
+            password: '',
+            isConnected: false
+        },
+        pickupLocations: ''
+    });
+}
+
+export async function saveSettings(settings: Settings) {
+    writeJson('settings.json', settings);
+}

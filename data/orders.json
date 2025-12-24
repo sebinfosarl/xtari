@@ -3431,6 +3431,11 @@
     "packageCount": 1,
     "logs": [
       {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-24T23:04:09.545Z"
+      },
+      {
         "type": "invoice_download",
         "message": "Downloaded order invoice (Issue Date: 12/24/2025, 7:33:36 PM)",
         "timestamp": "2025-12-24T18:33:36.555Z",
@@ -3453,15 +3458,42 @@
         "message": "Hello",
         "timestamp": "2025-12-24T11:46:09.762Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T23:04:00.122Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188849",
+        "timestamp": "2025-12-24T23:05:47.358Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T23:06:28.259Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat-AAKKARI-6322 (ID: 6322)",
+        "timestamp": "2025-12-24T23:13:27.391Z",
+        "user": "Admin"
       }
     ],
     "callResult": "Appel confirmer",
     "callHistory": {
       "1": 1
     },
-    "fulfillmentStatus": "to_pick",
+    "fulfillmentStatus": "picked",
     "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-24T18:33:36.555Z"
+    "invoiceDate": "2025-12-24T18:33:36.555Z",
+    "deliveryNotePrinted": true,
+    "shippingId": "6188849",
+    "shippingStatus": "Pickup: Rabat-AAKKARI-6322"
   },
   {
     "id": "IN6WT9",
@@ -3718,11 +3750,29 @@
         "message": "Shipment created with Cathedis. ID: 6188796",
         "timestamp": "2025-12-24T22:39:41.806Z",
         "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188864",
+        "timestamp": "2025-12-24T23:15:15.510Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T23:15:17.926Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat-CENTRE VILLE-26301 (ID: 26301)",
+        "timestamp": "2025-12-24T23:16:39.426Z",
+        "user": "Admin"
       }
     ],
-    "deliveryNotePrinted": false,
-    "shippingId": "6188796",
-    "shippingStatus": "En Attente Ramassage"
+    "deliveryNotePrinted": true,
+    "shippingId": "6188864",
+    "shippingStatus": "Pickup: Rabat-CENTRE VILLE-26301"
   },
   {
     "id": "LV03FI",
@@ -3868,10 +3918,211 @@
         "message": "Shipment created with Cathedis. ID: 6188790",
         "timestamp": "2025-12-24T22:38:01.617Z",
         "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188887",
+        "timestamp": "2025-12-24T23:24:56.346Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T23:25:23.465Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat-CENTRE VILLE-26301 (ID: 26301)",
+        "timestamp": "2025-12-24T23:25:35.968Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": true,
+    "shippingId": "6188887",
+    "shippingStatus": "Pickup: Rabat-CENTRE VILLE-26301"
+  },
+  {
+    "id": "DJLLFT",
+    "items": [
+      {
+        "productId": "zlt59rqx8",
+        "quantity": 1,
+        "price": 20
+      }
+    ],
+    "total": 20,
+    "status": "sales_order",
+    "date": "2025-12-24T23:27:51.013Z",
+    "customer": {
+      "name": "adsfasdfsadf",
+      "email": "",
+      "phone": "0661182295",
+      "address": "dsafsadfsafsafsadf",
+      "city": "Ahfir",
+      "sector": "Ahfir"
+    },
+    "salesPerson": "Nizar Sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-24T23:28:13.678Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-24T23:27:56.983Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T23:28:07.375Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188895",
+        "timestamp": "2025-12-24T23:28:19.156Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T23:28:47.432Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188898",
+        "timestamp": "2025-12-24T23:29:06.452Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188902",
+        "timestamp": "2025-12-24T23:29:57.040Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T23:30:16.292Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat-AAKKARI-6322 (ID: 6322)",
+        "timestamp": "2025-12-24T23:30:22.939Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": true,
+    "shippingId": "6188902",
+    "shippingStatus": "Pickup: Rabat-AAKKARI-6322",
+    "fragile": false
+  },
+  {
+    "id": "21JCJM",
+    "items": [
+      {
+        "productId": "k0asfljps",
+        "quantity": 1,
+        "price": 20
+      }
+    ],
+    "total": 20,
+    "status": "sales_order",
+    "date": "2025-12-24T23:33:28.358Z",
+    "customer": {
+      "name": "ewfidsafhdsuff",
+      "email": "",
+      "phone": "0661182295",
+      "address": "asdfasdfsafdsaf",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "Nizar Sebaghi",
+    "allowOpening": 1,
+    "packageCount": 5,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-24T23:33:46.878Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-24T23:33:33.056Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T23:33:39.459Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188918",
+        "timestamp": "2025-12-24T23:42:37.477Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188920",
+        "timestamp": "2025-12-24T23:43:30.814Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188922",
+        "timestamp": "2025-12-24T23:45:09.047Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188923",
+        "timestamp": "2025-12-24T23:45:35.859Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188924",
+        "timestamp": "2025-12-24T23:45:54.566Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T23:46:30.764Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188926",
+        "timestamp": "2025-12-24T23:47:34.207Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188927",
+        "timestamp": "2025-12-24T23:48:16.241Z",
+        "user": "System"
       }
     ],
     "deliveryNotePrinted": false,
-    "shippingId": "6188790",
-    "shippingStatus": "En Attente Ramassage"
+    "weight": 5,
+    "shippingId": "6188927",
+    "shippingStatus": "En Attente Ramassage",
+    "rangeWeight": "Entre 1.2 Kg et 5 Kg"
   }
 ]

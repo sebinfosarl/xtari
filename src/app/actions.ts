@@ -18,7 +18,8 @@ import {
     getPurchaseOrders, savePurchaseOrder, deletePurchaseOrder,
     Supplier, PurchaseOrder,
     getKits, saveKit, deleteKit, Kit,
-    updateProductStatus
+    updateProductStatus,
+    getSettings, saveSettings
 } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -220,7 +221,7 @@ export async function createOrderAction(formData: FormData) {
             sector: formData.get('sector') as string,
         },
         salesPerson: formData.get('salesPerson') as string || undefined,
-        allowOpening: 1, // Yes by default
+        allowOpening: 0, // No by default
         packageCount: 1, // 1 by default
     };
 
@@ -692,7 +693,35 @@ export async function requestPickupAction(orderIds: string[], pickupPointId: num
 
         // Update local statuses
         let updatedCount = 0;
-        const cityName = pickupPointId === 26301 ? 'Rabat' : pickupPointId === 36407 ? 'Tanger' : 'Bureau';
+
+        // Resolve City Name / Location Label
+        let cityName = 'Unknown Location';
+
+        // 1. Try hardcoded defaults first (legacy)
+        if (pickupPointId === 26301) cityName = 'Rabat';
+        else if (pickupPointId === 36407) cityName = 'Tanger';
+        else if (pickupPointId === 0) cityName = 'Bureau';
+
+        // 2. Try dynamic settings (override)
+        try {
+            const settings = await getSettings();
+            if (settings.pickupLocations) {
+                const locations = settings.pickupLocations.split('\n')
+                    .map(line => {
+                        const parts = line.split(/[-:]/);
+                        const id = parseInt(parts[parts.length - 1]?.trim());
+                        const label = parts.slice(0, parts.length - 1).join('-').trim();
+                        return { id, label };
+                    });
+                const match = locations.find(l => l.id === pickupPointId);
+                if (match && match.label) {
+                    cityName = match.label;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to resolve dynamic pickup location name', e);
+        }
+
         const newStatus = `Pickup: ${cityName}`;
 
         for (const order of ordersToRequest) {
@@ -701,7 +730,7 @@ export async function requestPickupAction(orderIds: string[], pickupPointId: num
                 if (!order.logs) order.logs = [];
                 order.logs.push({
                     type: 'shipping',
-                    message: `Pickup requested at ${cityName}`,
+                    message: `Pickup requested at ${cityName} (ID: ${pickupPointId})`,
                     timestamp: new Date().toISOString(),
                     user: 'Admin'
                 });
@@ -764,4 +793,84 @@ export async function deleteKitAction(id: string) {
 // Stub for refreshing shipment status to prevent build errors
 export async function refreshShipmentStatusAction() {
     return { success: false, error: 'Not implemented' };
+}
+
+// Settings Actions
+export async function getCathedisSettingsAction() {
+    const settings = await getSettings();
+    return {
+        username: settings.cathedis?.username || '',
+        // Don't modify the password logic here. If it's saved, we might want to return a placeholder or empty
+        // returning empty means input will be empty.
+        isConnected: settings.cathedis?.isConnected || false,
+        pickupLocations: settings.pickupLocations || ''
+    };
+}
+
+export async function saveCathedisSettingsAction(formData: FormData) {
+    const username = formData.get('username') as string;
+    const password = formData.get('password') as string;
+
+    if (!username || !password) {
+        return { success: false, error: 'Username and password are required' };
+    }
+
+    try {
+        const settings = await getSettings();
+
+        // 1. Save credentials temporarily
+        settings.cathedis = {
+            username,
+            password,
+            isConnected: false
+        };
+        await saveSettings(settings);
+
+        // 2. Verify by attempting to login
+        // loginCathedis now reads from the DB, so it will use the credentials we just saved.
+        try {
+            await loginCathedis();
+        } catch (loginError: any) {
+            // Login failed - revert isConnected (it's already false, but good to be explicit)
+            // We keep the username/password so user doesn't have to retype them, but they remain "disconnected"
+            // Actually, usually we might want to clear them if invalid, but better UX to let them fix it.
+            return { success: false, error: 'Invalid credentials or connection failed. Please check your username and password.' };
+        }
+
+        // 3. Login successful - mark as connected
+        settings.cathedis.isConnected = true;
+        await saveSettings(settings);
+
+        revalidatePath('/admin/settings');
+        return { success: true };
+
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+
+export async function savePickupLocationsAction(formData: FormData) {
+    const pickupLocations = formData.get('pickupLocations') as string;
+    try {
+        const settings = await getSettings();
+        settings.pickupLocations = pickupLocations;
+        await saveSettings(settings);
+        revalidatePath('/admin/settings');
+        revalidatePath('/admin/fulfillment');
+        return { success: true };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+
+export async function disconnectCathedisAction() {
+    const settings = await getSettings();
+    settings.cathedis = {
+        username: '',
+        password: '',
+        isConnected: false
+    };
+    await saveSettings(settings);
+    revalidatePath('/admin/settings');
+    return { success: true };
 }

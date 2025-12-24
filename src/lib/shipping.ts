@@ -1,12 +1,13 @@
+import { getSettings } from './db';
 
 const API_URL = process.env.CATHEDIS_API_URL || 'https://v1.cathedis.delivery';
 
 export async function loginCathedis() {
-    const username = process.env.CATHEDIS_USERNAME;
-    const password = process.env.CATHEDIS_PASSWORD;
+    const settings = await getSettings();
+    const { username, password } = settings.cathedis;
 
-    if (!username || !password || username === 'your_username_here' || password === 'your_password_here') {
-        throw new Error('Cathedis credentials not configured. Please update .env.local with your actual credentials.');
+    if (!username || !password) {
+        throw new Error('Cathedis credentials not configured. Please go to Settings to connect your account.');
     }
 
     const response = await fetch(`${API_URL}/login.jsp`, {
@@ -59,7 +60,7 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
                     paymentType: order.paymentType || "ESPECES",
                     deliveryType: order.deliveryType || "Livraison CRBT",
                     packageCount: order.packageCount?.toString() || "1",
-                    allowOpening: order.allowOpening?.toString() || "0"
+                    allowOpening: "0" // Forced to 0 as the account does not support opening
                 }
             }
         }
@@ -150,16 +151,16 @@ export async function requestCathedisPickup(deliveryIds: number[], pickupPointId
     const jsessionid = await loginCathedis();
     const payload = {
         action: "action-refresh-pickup-request",
+        model: "com.tracker.pickup.db.PickupRequest",
         data: {
             context: {
-                _model: "com.tracker.delivery.db.Delivery",
-                _ids: deliveryIds,
-                pickupPoint: {
-                    id: pickupPointId
-                }
+                ids: deliveryIds,
+                pickupPointId: pickupPointId
             }
         }
     };
+
+    console.log('Pickup Payload:', JSON.stringify(payload, null, 2));
 
     const response = await fetch(`${API_URL}/ws/action`, {
         method: 'POST',
@@ -172,6 +173,8 @@ export async function requestCathedisPickup(deliveryIds: number[], pickupPointId
     });
 
     const result = await response.json();
+    console.log('Pickup Response:', JSON.stringify(result, null, 2));
+
     if (result.status !== 0) {
         throw new Error(result.message || 'Failed to request pickup');
     }
