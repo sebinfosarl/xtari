@@ -16,6 +16,7 @@ export interface Product {
     image: string;
     gallery?: string[];
     featured?: boolean;
+    isVisible?: boolean;
     sku?: string;
     location?: string;
     weight?: number;
@@ -386,4 +387,39 @@ export async function deletePurchaseOrder(id: string) {
     const pos = await getPurchaseOrders();
     const filtered = pos.filter(p => p.id !== id);
     writeJson('purchase_orders.json', filtered);
+}
+
+// Kits
+export interface KitComponent {
+    productId: string;
+    quantity: number;
+}
+
+export interface Kit {
+    id: string;
+    targetProductId: string;
+    reference: string;
+    outputQuantity: number;
+    components: KitComponent[];
+}
+
+export async function getKits(): Promise<Kit[]> {
+    return readJson<Kit[]>('kits.json', []);
+}
+
+export async function saveKit(kit: Kit) {
+    const kits = await getKits();
+    const index = kits.findIndex(k => k.id === kit.id);
+    if (index >= 0) {
+        kits[index] = kit;
+    } else {
+        kits.push(kit);
+    }
+    writeJson('kits.json', kits);
+}
+
+export async function deleteKit(id: string) {
+    const kits = await getKits();
+    const filtered = kits.filter(k => k.id !== id);
+    writeJson('kits.json', filtered);
 }

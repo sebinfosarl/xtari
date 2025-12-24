@@ -16,7 +16,8 @@ import {
     getCategories,
     getSuppliers, saveSupplier, deleteSupplier,
     getPurchaseOrders, savePurchaseOrder, deletePurchaseOrder,
-    Supplier, PurchaseOrder
+    Supplier, PurchaseOrder,
+    getKits, saveKit, deleteKit, Kit
 } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -125,6 +126,7 @@ export async function addProductAction(formData: FormData) {
         image: formData.get('image') as string || 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1',
         gallery: gallery,
         featured: formData.get('featured') === 'on',
+        isVisible: formData.get('isHidden') !== 'on', // Inverted logic: if hidden is checked (on), visible is false
         sku: formData.get('sku') as string,
         stock: parseInt(formData.get('stock') as string) || 0, // Handle stock
         location: formData.get('location') as string,
@@ -149,7 +151,51 @@ export async function addProductAction(formData: FormData) {
 
 export async function createOrderAction(formData: FormData) {
     const rawItems = formData.get('items') as string;
-    const items = JSON.parse(rawItems);
+    let items = JSON.parse(rawItems);
+
+    // Kit Expansion Logic
+    const kits = await getKits();
+    if (kits.length > 0) {
+        const products = await getProducts();
+        const expandedItems: any[] = [];
+
+        for (const item of items) {
+            const kit = kits.find(k => k.targetProductId === item.productId);
+            if (kit) {
+                // Calculate how many kits are ordered relative to the output quantity
+                // e.g. Kit makes 1 unit. User ordered 5 units. Factor = 5 / 1 = 5.
+                // e.g. Kit makes 10 units. User ordered 20 units. Factor = 2.
+                // We use Math.ceil to ensure we have enough components if it doesn't divide evenly, 
+                // or just simple division if we treat it as continuous. 
+                // Given physical items, usually it's integer multiples of the kit "output".
+                // But if the user sells "100ml Ink" (Output=1) and "Kit" has "1 Liter Bottle" (Component),
+                // it might be tricky.
+                // Assuming "Output Quantity" is 1 for most simple bundles.
+
+                const ratio = item.quantity / (kit.outputQuantity || 1);
+
+                for (const comp of kit.components) {
+                    const compProduct = products.find(p => p.id === comp.productId);
+                    const qtyNeeded = comp.quantity * ratio;
+
+                    // Check if we already have this component in our expanded list (merge)
+                    const existingIndex = expandedItems.findIndex(ei => ei.productId === comp.productId);
+                    if (existingIndex >= 0) {
+                        expandedItems[existingIndex].quantity += qtyNeeded;
+                    } else {
+                        expandedItems.push({
+                            productId: comp.productId,
+                            quantity: qtyNeeded,
+                            price: compProduct?.price || 0 // Use catalogue price for component
+                        });
+                    }
+                }
+            } else {
+                expandedItems.push(item);
+            }
+        }
+        items = expandedItems;
+    }
 
     const order: Order = {
         id: Math.random().toString(36).substr(2, 6).toUpperCase(),
@@ -657,4 +703,17 @@ export async function markOrderAsDeliveredAction(orderId: string, deliveryNoteNa
         console.error('Marking as delivered failed:', error);
         return { success: false, error: error.message };
     }
+}
+
+// Kit Actions
+export async function saveKitAction(kit: Kit) {
+    await saveKit(kit);
+    revalidatePath('/admin/products/kits');
+    return { success: true };
+}
+
+export async function deleteKitAction(id: string) {
+    await deleteKit(id);
+    revalidatePath('/admin/products/kits');
+    return { success: true };
 }

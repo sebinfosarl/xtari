@@ -215,12 +215,47 @@ export default function PurchaseOrdersView({ initialPurchaseOrders: purchaseOrde
             )}
 
             {/* Floating Action Button for New PO */}
+
+            {/* Floating Action Button for New PO */}
+            <style jsx>{`
+                @keyframes pulse-blue {
+                    0% {
+                        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+                    }
+                    70% {
+                        box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);
+                    }
+                    100% {
+                        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+                    }
+                }
+            `}</style>
             <button
-                className={styles.fab}
                 onClick={() => setShowNewPODialog(true)}
                 title="Create New Order"
+                style={{
+                    position: 'fixed',
+                    bottom: '2rem',
+                    right: '2rem',
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                    color: 'white',
+                    border: 'none',
+                    // boxShadow: '0 10px 25px -5px rgba(37, 99, 235, 0.5), 0 8px 10px -6px rgba(37, 99, 235, 0.1)', // Replaced by animation
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000,
+                    transition: 'transform 0.3s ease',
+                    animation: 'pulse-blue 2s infinite'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
-                <Plus size={32} />
+                <Plus size={28} strokeWidth={2.5} />
             </button>
         </div>
     );

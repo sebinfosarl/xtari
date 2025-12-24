@@ -66,6 +66,7 @@ export default function AdminLayout({
                 { name: 'Categories', href: '/admin/products/categories' },
                 { name: 'Brands', href: '/admin/products/brands' },
                 { name: 'Attributes', href: '/admin/products/attributes' },
+                { name: 'Kit Manager', href: '/admin/products/kits' },
             ]
         },
         { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },

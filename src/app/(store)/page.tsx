@@ -24,9 +24,12 @@ export default async function Home({
   });
 
   // Filter logic
+  // Filter logic
+  const visibleProducts = enrichedProducts.filter(p => p.isVisible !== false);
+
   const products = cat
-    ? enrichedProducts.filter((p: Product) => p.category === cat || (p.categoryIds && p.categoryIds.includes(cat)))
-    : enrichedProducts;
+    ? visibleProducts.filter((p: Product) => p.category === cat || (p.categoryIds && p.categoryIds.includes(cat)))
+    : visibleProducts;
 
   const title = cat
     ? `${cat.replace('-', ' ')} Collection`

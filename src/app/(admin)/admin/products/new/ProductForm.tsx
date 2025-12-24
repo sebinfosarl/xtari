@@ -396,6 +396,10 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                 <input type="checkbox" name="featured" id="featured" defaultChecked={initialData?.featured} />
                                 <label htmlFor="featured">Featured Product</label>
                             </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                                <input type="checkbox" name="isHidden" id="isHidden" defaultChecked={initialData ? !initialData.isVisible : false} />
+                                <label htmlFor="isHidden">Hide from Website</label>
+                            </div>
                             <button type="submit" className={styles.submitBtn} style={{ width: '100%' }}>
                                 <Plus size={18} style={{ marginRight: '0.5rem' }} /> {initialData ? 'Update Product' : 'Create Product'}
                             </button>

@@ -1,17 +1,117 @@
 [
   {
-    "id": "p1",
-    "title": "Canon PIXMA Pro-200 Wireless",
-    "description": "<p>Professional&nbsp;photo&nbsp;printer&nbsp;with&nbsp;8-color&nbsp;dye-based&nbsp;ink&nbsp;system&nbsp;for&nbsp;vibrant&nbsp;and&nbsp;accurate&nbsp;printing.</p>",
-    "price": 100,
-    "salePrice": 60,
+    "id": "zlt59rqx8",
+    "title": "Refill ink - Black",
+    "description": "<p></p>",
+    "price": 20,
     "categoryIds": [],
-    "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&q=80&w=800",
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
     "gallery": [],
-    "featured": true,
-    "sku": "CORECT",
+    "featured": false,
+    "isVisible": true,
+    "sku": "",
     "stock": 0,
-    "location": "",
+    "location": null,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    }
+  },
+  {
+    "id": "k0asfljps",
+    "title": "Refill Ink - Cyan",
+    "description": "<p></p>",
+    "price": 20,
+    "categoryIds": [],
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
+    "gallery": [],
+    "featured": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    }
+  },
+  {
+    "id": "gets19buh",
+    "title": "Refill Ink - Magenta ",
+    "description": "<p></p>",
+    "price": 20,
+    "categoryIds": [],
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
+    "gallery": [],
+    "featured": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    }
+  },
+  {
+    "id": "bklgok9wt",
+    "title": "Refill Ink - Yellow",
+    "description": "<p></p>",
+    "price": 20,
+    "categoryIds": [],
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
+    "gallery": [],
+    "featured": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    }
+  },
+  {
+    "id": "df5fndc4a",
+    "title": "Bundle - Refill Ink",
+    "description": "<p></p>",
+    "price": 80,
+    "categoryIds": [],
+    "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
+    "gallery": [],
+    "featured": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
     "dimensions": {
       "length": 0,
       "width": 0,
