@@ -2503,12 +2503,60 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-23T18:02:41.688Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178261",
+        "timestamp": "2025-12-24T01:00:16.870Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178263",
+        "timestamp": "2025-12-24T01:01:53.641Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178269",
+        "timestamp": "2025-12-24T01:09:54.491Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat",
+        "timestamp": "2025-12-24T01:10:19.883Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178270",
+        "timestamp": "2025-12-24T01:11:53.376Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178271",
+        "timestamp": "2025-12-24T01:13:35.010Z",
+        "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Tanger",
+        "timestamp": "2025-12-24T01:16:01.642Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178275",
+        "timestamp": "2025-12-24T01:17:37.810Z",
+        "user": "System"
       }
     ],
     "invoiceDownloaded": true,
     "invoiceDate": "2025-12-23T11:41:53.552Z",
-    "deliveryNotePrinted": true,
-    "shippingId": "6176540",
+    "deliveryNotePrinted": false,
+    "shippingId": "6178275",
     "shippingStatus": "En Attente Ramassage"
   },
   {
@@ -3006,11 +3054,23 @@
         "message": "Delivery note printed.",
         "timestamp": "2025-12-23T18:03:01.569Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T01:10:33.674Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178274",
+        "timestamp": "2025-12-24T01:16:22.351Z",
+        "user": "System"
       }
     ],
     "salesPerson": "Nizar Sebaghi",
-    "deliveryNotePrinted": true,
-    "shippingId": "6176608",
+    "deliveryNotePrinted": false,
+    "shippingId": "6178274",
     "shippingStatus": "En Attente Ramassage"
   },
   {
@@ -3215,5 +3275,38 @@
     "deliveryNotePrinted": true,
     "shippingId": "6177437",
     "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "ZU7535",
+    "items": [
+      {
+        "productId": "p1",
+        "quantity": 1,
+        "price": 100
+      }
+    ],
+    "total": 100,
+    "status": "sales_order",
+    "date": "2025-12-24T01:15:16.179Z",
+    "customer": {
+      "name": "asdfsadfasdf",
+      "email": "",
+      "phone": "898798798",
+      "address": "",
+      "city": "Ahfir",
+      "sector": "Ahfir"
+    },
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "to_pick",
+    "logs": [
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-24T01:15:22.880Z",
+        "user": "Admin"
+      }
+    ]
   }
 ]

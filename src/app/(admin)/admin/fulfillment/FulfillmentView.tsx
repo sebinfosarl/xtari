@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson, PurchaseOrder, Supplier } from '@/lib/db';
 import { Eye, Truck, Calendar, Phone, Search, MapPin, Package, CheckCircle, Circle, X, ClipboardList, Printer, CheckCircle2, Receipt, ArrowDownToLine, XCircle, RotateCcw } from 'lucide-react';
 import sc from './SegmentedControl.module.css';
-import { createShipmentAction, updateOrderAction, bulkMarkDeliveryNotePrintedAction } from '@/app/actions';
+import { createShipmentAction, updateOrderAction, bulkMarkDeliveryNotePrintedAction, requestPickupAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import DeliveryDialog from '@/components/DeliveryDialog';
 import PickingLabel from '@/components/PickingLabel';
@@ -23,6 +23,8 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<'pick' | 'deliveries' | 'receipts' | 'returns'>('pick');
     const [receiptFilter, setReceiptFilter] = useState<'pending' | 'done' | 'canceled'>('pending');
+    const [pickFilter, setPickFilter] = useState<'pending' | 'printed'>('pending');
+    const [deliveryFilter, setDeliveryFilter] = useState<'awaiting_export' | 'awaiting_pickup' | 'picked_up' | 'done'>('awaiting_export');
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [selectedPO, setSelectedPO] = useState<PurchaseOrder | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +32,9 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
     const [isShippingBulk, setIsShippingBulk] = useState(false);
     const [isPrinting, setIsPrinting] = useState(false);
     const [isUpdatingBulk, setIsUpdatingBulk] = useState(false);
+    const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
+
+    // ... handlePickupRequest ...
 
     // Sync selectedOrder with updated orders prop
     useEffect(() => {
@@ -49,9 +54,33 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
     const doneOrders = purchaseOrders.filter(p => p.status === 'received');
     const canceledOrders = purchaseOrders.filter(p => p.status === 'canceled');
 
-    const currentOrders = activeTab === 'pick' ? pickOrders :
-        (activeTab === 'deliveries' ? deliveryOrders :
-            (activeTab === 'returns' ? returnedOrders : []));
+    const currentOrders = activeTab === 'pick'
+        ? pickOrders.filter(o => pickFilter === 'pending' ? !o.deliveryNotePrinted : o.deliveryNotePrinted)
+        : (activeTab === 'deliveries' ? deliveryOrders.filter(o => {
+            if (deliveryFilter === 'awaiting_export') return !o.shippingId;
+            if (deliveryFilter === 'awaiting_pickup') {
+                // Has ID and status is NOT one of the 'picked up' indicators
+                // We now also exclude 'Pickup:' statuses as the user treats "Pickup Requested" as "Picked Up" (workflow done)
+                return !!o.shippingId &&
+                    !o.shippingStatus?.toLowerCase().includes('livr') &&
+                    !o.shippingStatus?.toLowerCase().includes('expédi') &&
+                    !o.shippingStatus?.includes('Pickup:');
+            }
+            if (deliveryFilter === 'picked_up') {
+                return !!o.shippingId && (
+                    (o.shippingStatus?.toLowerCase().includes('expédi') ||
+                        o.shippingStatus?.toLowerCase().includes('pickup done') ||
+                        o.shippingStatus?.includes('Pickup:')) &&
+                    !o.shippingStatus?.toLowerCase().includes('livr')
+                );
+            }
+            if (deliveryFilter === 'done') {
+                return !!o.shippingId && (
+                    o.shippingStatus?.toLowerCase().includes('livr')
+                );
+            }
+            return true;
+        }) : (activeTab === 'returns' ? returnedOrders : []));
 
     // Determine which set of purchase orders to show based on tab and sub-filter
     const currentPurchaseOrders = activeTab === 'receipts' ? (
@@ -118,6 +147,41 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
         }
         setSelectedOrderIds([]);
         router.refresh();
+    };
+
+    const handlePickupRequest = async (pickupPointId: number) => {
+        setIsPickupModalOpen(false);
+
+        // Filter for orders that correspond to the selection AND have a shippingId
+        // We need to pass the INTERNAL Order IDs to the server action, not the shipping IDs.
+        const ordersToRequest = deliveryOrders.filter(o => selectedOrderIds.includes(o.id) && o.shippingId);
+
+        if (ordersToRequest.length === 0) {
+            alert('No shipped orders found in selection.');
+            return;
+        }
+
+        const orderIdsToProcess = ordersToRequest.map(o => o.id);
+
+        setIsShippingBulk(true);
+        try {
+            // We pass the list of Order IDs. The server action will look up their shipping IDs.
+            const res = await requestPickupAction(orderIdsToProcess, pickupPointId);
+
+            if (res.success) {
+                alert(`Pickup requested successfully for ${res.count} orders.`);
+                setSelectedOrderIds([]);
+                router.refresh();
+            } else {
+                console.error('Pickup request error:', res.error);
+                alert(`Failed to request pickup: ${res.error}`);
+            }
+        } catch (err: any) {
+            console.error('Pickup request exception:', err);
+            alert(`An error occurred: ${err.message}`);
+        } finally {
+            setIsShippingBulk(false);
+        }
     };
 
     const handlePrintPickingLabels = async () => {
@@ -334,6 +398,70 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                     </div>
                 </div>
 
+                {activeTab === 'pick' && (
+                    <div className="flex gap-2 mb-6 px-4">
+                        <div className={sc.container}>
+                            {(['pending', 'printed'] as const).map(f => (
+                                <button
+                                    key={f}
+                                    onClick={() => { setPickFilter(f); setSelectedOrderIds([]); }}
+                                    className={`${sc.button} ${pickFilter === f ? sc.active : ''}`}
+                                >
+                                    {f === 'pending' && <Printer size={16} strokeWidth={2.5} className="opacity-50" />}
+                                    {f === 'printed' && <CheckCircle2 size={16} strokeWidth={2.5} />}
+
+                                    <span>{f === 'pending' ? 'To Print' : 'Printed'}</span>
+
+                                    <span className={sc.badge}>
+                                        {f === 'pending'
+                                            ? pickOrders.filter(o => !o.deliveryNotePrinted).length
+                                            : pickOrders.filter(o => o.deliveryNotePrinted).length}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'deliveries' && (
+                    <div className="flex gap-2 mb-6 px-4">
+                        <div className={sc.container}>
+                            <button onClick={() => { setDeliveryFilter('awaiting_export'); setSelectedOrderIds([]); }} className={`${sc.button} ${deliveryFilter === 'awaiting_export' ? sc.active : ''}`}>
+                                Awaiting Export
+                                <span className={sc.badge}>{deliveryOrders.filter(o => !o.shippingId).length}</span>
+                            </button>
+                            <button onClick={() => { setDeliveryFilter('awaiting_pickup'); setSelectedOrderIds([]); }} className={`${sc.button} ${deliveryFilter === 'awaiting_pickup' ? sc.active : ''}`}>
+                                Awaiting Pickup
+                                <span className={sc.badge}>{deliveryOrders.filter(o =>
+                                    !!o.shippingId &&
+                                    !o.shippingStatus?.toLowerCase().includes('livr') &&
+                                    !o.shippingStatus?.toLowerCase().includes('expédi') &&
+                                    !o.shippingStatus?.includes('Pickup:')
+                                ).length}</span>
+                            </button>
+                            <button onClick={() => { setDeliveryFilter('picked_up'); setSelectedOrderIds([]); }} className={`${sc.button} ${deliveryFilter === 'picked_up' ? sc.active : ''}`}>
+                                Picked Up
+                                <span className={sc.badge}>{deliveryOrders.filter(o =>
+                                    !!o.shippingId && (
+                                        (o.shippingStatus?.toLowerCase().includes('expédi') ||
+                                            o.shippingStatus?.toLowerCase().includes('pickup done') ||
+                                            o.shippingStatus?.includes('Pickup:')) &&
+                                        !o.shippingStatus?.toLowerCase().includes('livr')
+                                    )
+                                ).length}</span>
+                            </button>
+                            <button onClick={() => { setDeliveryFilter('done'); setSelectedOrderIds([]); }} className={`${sc.button} ${deliveryFilter === 'done' ? sc.active : ''}`}>
+                                Done
+                                <span className={sc.badge}>{deliveryOrders.filter(o =>
+                                    !!o.shippingId && (
+                                        o.shippingStatus?.toLowerCase().includes('livr')
+                                    )
+                                ).length}</span>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 {activeTab === 'receipts' && (
                     <div className="flex gap-2 mb-6 px-4">
                         <div className={sc.container}>
@@ -446,44 +574,48 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                             <>
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedOrderIds.length === filteredOrders.length && filteredOrders.length > 0}
-                                                onChange={(e) => {
-                                                    if (e.target.checked) {
-                                                        setSelectedOrderIds(filteredOrders.map(d => d.id));
-                                                    } else {
-                                                        setSelectedOrderIds([]);
-                                                    }
-                                                }}
-                                            />
-                                        </th>
+                                        {!(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
+                                            <th>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedOrderIds.length === filteredOrders.length && filteredOrders.length > 0}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            setSelectedOrderIds(filteredOrders.map(d => d.id));
+                                                        } else {
+                                                            setSelectedOrderIds([]);
+                                                        }
+                                                    }}
+                                                />
+                                            </th>
+                                        )}
                                         <th>Order ID</th>
                                         <th>Date</th>
                                         <th>Customer</th>
                                         <th>Destination</th>
                                         {activeTab !== 'returns' && <th>{activeTab === 'pick' ? 'Status' : 'Shipping Status'}</th>}
-                                        {activeTab !== 'returns' && <th>{activeTab === 'pick' ? 'Picking List' : 'Label'}</th>}
-                                        <th>{activeTab === 'returns' ? 'View' : 'Manage'}</th>
+                                        {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && <th>{activeTab === 'pick' ? 'Picking List' : 'Label'}</th>}
+                                        <th>{activeTab === 'returns' || (activeTab === 'deliveries' && deliveryFilter === 'done') ? 'View' : 'Manage'}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {filteredOrders.map(order => (
                                         <tr key={order.id}>
-                                            <td>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedOrderIds.includes(order.id)}
-                                                    onChange={(e) => {
-                                                        if (e.target.checked) {
-                                                            setSelectedOrderIds([...selectedOrderIds, order.id]);
-                                                        } else {
-                                                            setSelectedOrderIds(selectedOrderIds.filter(id => id !== order.id));
-                                                        }
-                                                    }}
-                                                />
-                                            </td>
+                                            {!(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedOrderIds.includes(order.id)}
+                                                        onChange={(e) => {
+                                                            if (e.target.checked) {
+                                                                setSelectedOrderIds([...selectedOrderIds, order.id]);
+                                                            } else {
+                                                                setSelectedOrderIds(selectedOrderIds.filter(id => id !== order.id));
+                                                            }
+                                                        }}
+                                                    />
+                                                </td>
+                                            )}
                                             <td className={styles.bold}>#{order.id}</td>
                                             <td>
                                                 <div className={styles.resultBadge}><Calendar size={12} /> {new Date(order.date).toLocaleDateString()}</div>
@@ -508,9 +640,15 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                                                 <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
                                                                     ID: {order.shippingId}
                                                                 </span>
-                                                                <span className="text-xs font-semibold text-slate-600">
-                                                                    {order.shippingStatus || 'SHIPPED'}
-                                                                </span>
+                                                                {order.shippingStatus && order.shippingStatus.startsWith('Pickup:') ? (
+                                                                    <span className="text-[10px] font-bold text-purple-600 uppercase tracking-tight">
+                                                                        {order.shippingStatus}
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className="text-xs font-semibold text-slate-600">
+                                                                        {order.shippingStatus || 'SHIPPED'}
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                         ) : (
                                                             <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100 uppercase">
@@ -520,7 +658,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                                     )}
                                                 </td>
                                             )}
-                                            {activeTab !== 'returns' && (
+                                            {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
                                                 <td>
                                                     <div className="flex justify-center">
                                                         {order.deliveryNotePrinted ? (
@@ -537,6 +675,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                                     </div>
                                                 </td>
                                             )}
+
                                             <td>
                                                 <button
                                                     onClick={() => setSelectedOrder(order)}
@@ -567,95 +706,186 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                     )}
                 </div>
 
-                {selectedOrder && (
-                    <DeliveryDialog
-                        order={selectedOrder}
-                        products={products}
-                        onClose={() => setSelectedOrder(null)}
-                        showShippingInterface={activeTab === 'deliveries'}
-                    />
-                )}
+                {
+                    selectedOrder && (
+                        <DeliveryDialog
+                            order={selectedOrder}
+                            products={products}
+                            onClose={() => setSelectedOrder(null)}
+                            showShippingInterface={activeTab === 'deliveries'}
+                            readonly={activeTab === 'deliveries' && deliveryFilter === 'done'}
+                        />
+                    )
+                }
 
-                {selectedPO && (
-                    <PurchaseOrderDialog
-                        po={selectedPO}
-                        products={products}
-                        suppliers={suppliers}
-                        onClose={() => setSelectedPO(null)}
-                        context="fulfillment"
-                    />
-                )}
+                {
+                    selectedPO && (
+                        <PurchaseOrderDialog
+                            po={selectedPO}
+                            products={products}
+                            suppliers={suppliers}
+                            onClose={() => setSelectedPO(null)}
+                            context="fulfillment"
+                        />
+                    )
+                }
 
                 {/* STICKY BULK ACTION BAR */}
-                {selectedOrderIds.length > 0 && (
-                    <div className={styles.stickyBar}>
-                        <div className="flex items-center gap-4">
-                            <div className={styles.selectionBadge}>
-                                {selectedOrderIds.length}
-                            </div>
-                            <div className="hidden sm:block">
-                                <div className="font-extrabold text-slate-800 leading-tight text-xs uppercase tracking-wider">Orders Selected</div>
-                                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
-                                    {activeTab === 'pick' ? 'Bulk Preparation' : 'Bulk Export'}
+                {
+                    selectedOrderIds.length > 0 && (
+                        <div className={styles.stickyBar}>
+                            <div className="flex items-center gap-4">
+                                <div className={styles.selectionBadge}>
+                                    {selectedOrderIds.length}
+                                </div>
+                                <div className="hidden sm:block">
+                                    <div className="font-extrabold text-slate-800 leading-tight text-xs uppercase tracking-wider">Orders Selected</div>
+                                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
+                                        {activeTab === 'pick' ? 'Bulk Preparation' : 'Bulk Export'}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div style={{ height: '24px', width: '2px', background: '#f1f5f9', margin: '0 0.5rem' }} />
+                            <div style={{ height: '24px', width: '2px', background: '#f1f5f9', margin: '0 0.5rem' }} />
 
-                        <div className="flex items-center gap-3">
-                            {activeTab === 'pick' ? (
-                                <>
-                                    <button
-                                        onClick={handlePrintPickingLabels}
-                                        className={styles.bulkShipBtn}
-                                        style={{ background: '#334155' }}
-                                    >
-                                        <Printer size={18} />
-                                        <span>Print Picking List</span>
-                                    </button>
-                                    <button
-                                        onClick={handleFinishPicking}
-                                        disabled={isUpdatingBulk}
-                                        className={styles.bulkShipBtn}
-                                        style={{ background: '#2563eb' }}
-                                    >
-                                        <CheckCircle2 size={18} className={isUpdatingBulk ? 'animate-spin' : ''} />
-                                        <span>{isUpdatingBulk ? 'Updating...' : 'Finish Picking'}</span>
-                                    </button>
-                                </>
-                            ) : (
+                            <div className="flex items-center gap-3">
+                                {activeTab === 'pick' ? (
+                                    <>
+                                        <button
+                                            onClick={handlePrintPickingLabels}
+                                            className={styles.bulkShipBtn}
+                                            style={{ background: '#334155' }}
+                                        >
+                                            <Printer size={18} />
+                                            <span>Print Picking List</span>
+                                        </button>
+
+                                        {pickFilter !== 'pending' && (
+                                            <button
+                                                onClick={handleFinishPicking}
+                                                disabled={isUpdatingBulk}
+                                                className={styles.bulkShipBtn}
+                                                style={{ background: '#2563eb' }}
+                                            >
+                                                <CheckCircle2 size={18} className={isUpdatingBulk ? 'animate-spin' : ''} />
+                                                <span>{isUpdatingBulk ? 'Updating...' : 'Finish Picking'}</span>
+                                            </button>
+                                        )}
+                                    </>
+                                ) : (
+                                    <>
+                                        <button
+                                            onClick={handleBulkShip}
+                                            disabled={isShippingBulk}
+                                            className={styles.bulkShipBtn}
+                                        >
+                                            <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
+                                            <span>{isShippingBulk ? 'Exporting...' : 'Export to Cathedis'}</span>
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                const selectedShipped = deliveryOrders.filter(o => selectedOrderIds.includes(o.id) && o.shippingId);
+                                                if (selectedShipped.length === 0) {
+                                                    alert('No shipped orders selected for pickup.');
+                                                    return;
+                                                }
+
+                                                // Check if all selected orders have been printed
+                                                const unprintedOrders = selectedShipped.filter(o => !o.deliveryNotePrinted);
+                                                if (unprintedOrders.length > 0) {
+                                                    alert(`Cannot request pickup: ${unprintedOrders.length} orders have not had their labels printed yet.\nPlease print labels first.`);
+                                                    return;
+                                                }
+
+                                                setIsPickupModalOpen(true);
+                                            }}
+                                            disabled={isShippingBulk}
+                                            className={styles.bulkShipBtn}
+                                            style={{ background: '#7c3aed' }} // Violet color
+                                        >
+                                            <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
+                                            <span>Request Pickup</span>
+                                        </button>
+                                    </>
+                                )}
+
                                 <button
-                                    onClick={handleBulkShip}
-                                    disabled={isShippingBulk}
-                                    className={styles.bulkShipBtn}
+                                    onClick={() => setSelectedOrderIds([])}
+                                    className={styles.bulkCloseBtn}
+                                    title="Cancel Selection"
                                 >
-                                    <Truck size={18} className={isShippingBulk ? 'animate-spin' : ''} />
-                                    <span>{isShippingBulk ? 'Exporting...' : 'Export to Cathedis'}</span>
+                                    <X size={20} />
                                 </button>
-                            )}
+                            </div>
+                        </div>
+                    )
+                }
+                {/* Pickup Selection Modal */}
+                {isPickupModalOpen && (
+                    <div style={{
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 60
+                    }}>
+                        <div style={{ background: 'white', padding: '2rem', borderRadius: '1rem', width: '400px', maxWidth: '90%' }}>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>Select Pickup Point</h3>
+                            <p style={{ marginBottom: '1.5rem', color: '#64748b' }}>Where should the driver pick up these {selectedOrderIds.length} orders?</p>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                                <button
+                                    onClick={() => handlePickupRequest(26301)}
+                                    disabled={isShippingBulk}
+                                    style={{
+                                        padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '0.5rem',
+                                        background: isShippingBulk ? '#f1f5f9' : 'white', cursor: isShippingBulk ? 'not-allowed' : 'pointer',
+                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    className="hover:border-blue-500 hover:bg-blue-50"
+                                >
+                                    <MapPin size={24} className="text-blue-600" />
+                                    <span style={{ fontWeight: 600 }}>Rabat</span>
+                                </button>
+                                <button
+                                    onClick={() => handlePickupRequest(36407)}
+                                    disabled={isShippingBulk}
+                                    style={{
+                                        padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '0.5rem',
+                                        background: isShippingBulk ? '#f1f5f9' : 'white', cursor: isShippingBulk ? 'not-allowed' : 'pointer',
+                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    className="hover:border-blue-500 hover:bg-blue-50"
+                                >
+                                    <MapPin size={24} className="text-blue-600" />
+                                    <span style={{ fontWeight: 600 }}>Tanger</span>
+                                </button>
+                            </div>
 
                             <button
-                                onClick={() => setSelectedOrderIds([])}
-                                className={styles.bulkCloseBtn}
-                                title="Cancel Selection"
+                                onClick={() => setIsPickupModalOpen(false)}
+                                disabled={isShippingBulk}
+                                style={{
+                                    width: '100%', padding: '0.75rem', background: 'transparent',
+                                    border: 'none', color: '#64748b', cursor: 'pointer'
+                                }}
                             >
-                                <X size={20} />
+                                Cancel
                             </button>
                         </div>
                     </div>
                 )}
-            </div>
+            </div >
 
             {/* PRINT ONLY SECTION */}
-            <div className="hidden print:block">
+            < div className="hidden print:block" >
                 {isPrinting && (
                     <PickingLabel
                         orders={pickOrders.filter(o => selectedOrderIds.includes(o.id))}
                         products={products}
                     />
-                )}
-            </div>
+                )
+                }
+            </div >
         </div >
     );
 }

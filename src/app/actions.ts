@@ -262,6 +262,7 @@ export async function createShipmentAction(order: Order) {
         // Update order with shipping info IMMEDIATELY after creation
         order.shippingId = delivery.id?.toString();
         order.shippingStatus = delivery.deliveryStatus || 'En Attente Ramassage';
+        order.deliveryNotePrinted = false; // Reset printed status on update/creation
 
         // Add log entry
         if (!order.logs) order.logs = [];
@@ -576,5 +577,55 @@ export async function restoreOrderToShipmentAction(orderId: string) {
     } catch (error: any) {
         console.error('Restore failed:', error);
         return { success: false, error: error.message || 'Failed to restore order' };
+    }
+}
+
+import { requestCathedisPickup } from '@/lib/shipping';
+
+export async function requestPickupAction(orderIds: string[], pickupPointId: number) {
+    try {
+        const orders = await getOrders();
+        const ordersToRequest = orders.filter(o => orderIds.includes(o.id));
+
+        if (ordersToRequest.length === 0) {
+            return { success: false, error: 'No orders found' };
+        }
+
+        const deliveryIds = ordersToRequest
+            .filter(o => o.shippingId)
+            .map(o => parseInt(o.shippingId!));
+
+        if (deliveryIds.length === 0) {
+            return { success: false, error: 'No valid shipping IDs found in selection' };
+        }
+
+        const result = await requestCathedisPickup(deliveryIds, pickupPointId);
+
+        // Update local statuses
+        let updatedCount = 0;
+        const cityName = pickupPointId === 26301 ? 'Rabat' : pickupPointId === 36407 ? 'Tanger' : 'Bureau';
+        const newStatus = `Pickup: ${cityName}`;
+
+        for (const order of ordersToRequest) {
+            if (order.shippingId) {
+                order.shippingStatus = newStatus;
+                if (!order.logs) order.logs = [];
+                order.logs.push({
+                    type: 'shipping',
+                    message: `Pickup requested at ${cityName}`,
+                    timestamp: new Date().toISOString(),
+                    user: 'Admin'
+                });
+                await updateOrder(order);
+                updatedCount++;
+            }
+        }
+
+        revalidatePath('/admin/fulfillment');
+        return { success: true, count: updatedCount };
+
+    } catch (error: any) {
+        console.error('Pickup request failed:', error);
+        return { success: false, error: error.message || 'Failed to request pickup' };
     }
 }

@@ -16,9 +16,10 @@ interface DeliveryDialogProps {
     products: Product[];
     onClose: () => void;
     showShippingInterface?: boolean;
+    readonly?: boolean;
 }
 
-export default function DeliveryDialog({ order: initialOrder, products, onClose, showShippingInterface = true }: DeliveryDialogProps) {
+export default function DeliveryDialog({ order: initialOrder, products, onClose, showShippingInterface = true, readonly = false }: DeliveryDialogProps) {
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
@@ -73,16 +74,16 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         <div className="grid grid-cols-2 gap-6">
                             <div className={styles.inputGroup}>
                                 <label>Full Name</label>
-                                <input disabled={isReturned} value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
+                                <input disabled={isReturned || readonly} value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Phone Number</label>
-                                <input disabled={isReturned} value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
+                                <input disabled={isReturned || readonly} value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>City</label>
                                 <select
-                                    disabled={isLoadingCities || isReturned}
+                                    disabled={isLoadingCities || isReturned || readonly}
                                     value={order.customer.city || ''}
                                     onChange={(e) => {
                                         const city = cathedisCities.find(c => c.name === e.target.value);
@@ -106,7 +107,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             <div className={styles.inputGroup}>
                                 <label>Sector/Neighborhood</label>
                                 <select
-                                    disabled={!order.customer.city || isReturned}
+                                    disabled={!order.customer.city || isReturned || readonly}
                                     value={order.customer.sector || ''}
                                     onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
                                     className={styles.inlineInput}
@@ -121,7 +122,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Exact Shipping Address</label>
                                 <textarea
-                                    disabled={isReturned}
+                                    disabled={isReturned || readonly}
                                     value={order.customer.address}
                                     onChange={(e) => setOrder({ ...order, customer: { ...order.customer, address: e.target.value } })}
                                     className={styles.inlineInput}
@@ -345,8 +346,8 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
 
                 <footer className={styles.modalFooter} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        {/* Hide Cancel buttons if returned */}
-                        {order.fulfillmentStatus !== 'returned' && (
+                        {/* Hide Cancel buttons if returned or readonly */}
+                        {order.fulfillmentStatus !== 'returned' && !readonly && (
                             showShippingInterface ? (
                                 <button
                                     onClick={async () => {
@@ -399,7 +400,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         )}
 
                         {/* Return Action only (Restore removed as per request) */}
-                        {order.fulfillmentStatus !== 'returned' && order.shippingId && order.status !== 'canceled' && (
+                        {order.fulfillmentStatus !== 'returned' && order.shippingId && order.status !== 'canceled' && !readonly && (
                             <button
                                 onClick={async () => {
                                     if (!confirm('Mark this order as RETURNED? It will be CANCELED and moved to the Returns tab.')) return;
@@ -423,7 +424,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         <button onClick={onClose} className="btn btn-outline">
                             Close
                         </button>
-                        {!isReturned && (
+                        {!isReturned && !readonly && (
                             <button onClick={handleSave} disabled={isSaving} className="btn btn-primary" style={{ minWidth: '160px' }}>
                                 {isSaving ? 'Updating...' : <><Save size={18} /> Update Recipient Details</>}
                             </button>

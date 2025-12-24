@@ -145,3 +145,36 @@ export async function getCathedisBanks() {
     return result.status === 0 ? result.data : [];
 }
 
+
+export async function requestCathedisPickup(deliveryIds: number[], pickupPointId: number) {
+    const jsessionid = await loginCathedis();
+    const payload = {
+        action: "action-refresh-pickup-request",
+        data: {
+            context: {
+                _model: "com.tracker.delivery.db.Delivery",
+                _ids: deliveryIds,
+                pickupPoint: {
+                    id: pickupPointId
+                }
+            }
+        }
+    };
+
+    const response = await fetch(`${API_URL}/ws/action`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Cookie': `JSESSIONID=${jsessionid}`
+        },
+        body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+    if (result.status !== 0) {
+        throw new Error(result.message || 'Failed to request pickup');
+    }
+
+    return result;
+}
