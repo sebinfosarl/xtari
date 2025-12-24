@@ -260,7 +260,23 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                 <div style={{ display: activeTab === 'inventory' ? 'block' : 'none' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
-                                            <div className={styles.formGroup}><label className={styles.label}>SKU</label><input name="sku" className={styles.input} defaultValue={initialData?.sku} /></div>
+                                            <div className={styles.formGroup}>
+                                                <label className={styles.label}>SKU</label>
+                                                <div style={{ position: 'relative' }}>
+                                                    <input
+                                                        name="sku"
+                                                        className={styles.input}
+                                                        defaultValue={initialData?.sku}
+                                                        readOnly={!!initialData?.sku}
+                                                        style={initialData?.sku ? { backgroundColor: '#f1f5f9', cursor: 'not-allowed', color: '#64748b' } : {}}
+                                                    />
+                                                    {initialData?.sku && (
+                                                        <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
                                             <div className={styles.formGroup}><label className={styles.label}>Stock Quantity</label><input name="stock" type="number" className={styles.input} defaultValue={initialData?.stock || 0} /></div>
 
                                         </div>
@@ -392,6 +408,16 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                         {/* Publish */}
                         <div className={styles.cardSection}>
                             <h3 className={styles.sectionTitle} style={{ fontSize: '1rem', marginBottom: '1rem' }}>Publishing</h3>
+
+                            <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
+                                <label className={styles.label}>Status</label>
+                                <select name="status" className={styles.input} defaultValue={initialData?.status || 'live'}>
+                                    <option value="live">Live</option>
+                                    <option value="draft">In Draft</option>
+                                    <option value="archived">Archived</option>
+                                </select>
+                            </div>
+
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
                                 <input type="checkbox" name="featured" id="featured" defaultChecked={initialData?.featured} />
                                 <label htmlFor="featured">Featured Product</label>

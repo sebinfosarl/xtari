@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
     LayoutDashboard,
@@ -88,8 +89,16 @@ export default function AdminLayout({
     return (
         <div className={styles.adminContainer}>
             <aside className={styles.sidebar}>
-                <div className={styles.brand}>
-                    XTARI ADMIN
+                <div className={styles.brand} style={{ padding: '1rem', paddingTop: '3rem', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ position: 'relative', width: '200px', height: '80px' }}>
+                        <Image
+                            src="/xtari-admin-logo.png"
+                            alt="XTARI AI"
+                            fill
+                            style={{ objectFit: 'contain' }}
+                            priority
+                        />
+                    </div>
                 </div>
 
                 <nav className={styles.nav}>
@@ -161,12 +170,7 @@ export default function AdminLayout({
                     </div>
 
                     <div className={styles.headerActions}>
-                        <div style={{ color: '#64748b' }}><Search size={20} /></div>
-                        <div style={{ color: '#64748b' }}><Bell size={20} /></div>
-                        <div className={styles.userProfile}>
-                            <div className={styles.avatar}>AD</div>
-                            <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>Admin User</span>
-                        </div>
+                        {/* Header actions removed per request */}
                     </div>
                 </header>
 

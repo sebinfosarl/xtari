@@ -36,6 +36,7 @@ export interface Product {
         values: string[];
     }[];
     brandId?: string;
+    status?: 'live' | 'draft' | 'archived';
 }
 
 export interface Category {
@@ -67,7 +68,7 @@ export interface Order {
         price: number; // Stored at time of order/management
     }[];
     total: number;
-    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply';
+    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply' | 'archived';
     fulfillmentStatus?: 'to_pick' | 'picked' | 'returned';
     callResult?: 'Ligne Occupe' | 'Appel coupe' | 'Pas de reponse' | 'Rappel demande' | 'Boite vocal';
     cancellationMotif?: 'Mauvais numero' | 'Appel rejete' | 'commande en double' | 'Rupture de stock' | 'Pas de reponse' | 'Commande frauduleuse' | 'Annule sans reponse';
@@ -170,6 +171,17 @@ export async function saveProduct(product: Product) {
         products.push(product);
     }
     writeJson('products.json', products);
+}
+
+export async function updateProductStatus(id: string, status: 'live' | 'draft' | 'archived') {
+    const products = await getProducts();
+    const product = products.find(p => p.id === id);
+    if (product) {
+        product.status = status;
+        // Sync visibility: Only 'live' products are visible
+        product.isVisible = status === 'live';
+        writeJson('products.json', products);
+    }
 }
 
 export async function deleteProduct(id: string) {

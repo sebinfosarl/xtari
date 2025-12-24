@@ -15,22 +15,56 @@ interface ProductsViewProps {
 
 export default function ProductsView({ products, kits }: ProductsViewProps) {
     const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState<'all' | 'live' | 'draft' | 'archived'>('live');
 
     const filteredProducts = useMemo(() => {
-        if (!searchQuery.trim()) return products;
         const query = searchQuery.toLowerCase();
-        return products.filter(p =>
-            p.title.toLowerCase().includes(query) ||
-            (p.sku && p.sku.toLowerCase().includes(query))
-        );
-    }, [products, searchQuery]);
+        return products.filter(p => {
+            // Status filtering
+            if (statusFilter !== 'all') {
+                const productStatus = p.status || 'live'; // Default to live if undefined
+                if (productStatus !== statusFilter) {
+                    return false; // Exclude if status doesn't match filter
+                }
+            }
+
+            // Search query filtering
+            if (searchQuery.trim()) {
+                if (!(p.title.toLowerCase().includes(query) || (p.sku && p.sku.toLowerCase().includes(query)))) {
+                    return false; // Exclude if search query doesn't match
+                }
+            }
+
+            return true; // Include if all filters pass
+        });
+    }, [products, searchQuery, statusFilter]);
 
     return (
         <div className={styles.dashboardContainer}>
             <div className={styles.sectionHeader}>
                 <div>
-                    <h2 className={styles.sectionTitle}>All Products</h2>
-                    <p className={styles.statTrend}>{filteredProducts.length} filtered / {products.length} total</p>
+                    <h2 className={styles.sectionTitle}>Products</h2>
+                    <div className="flex gap-2 mt-2">
+                        {['all', 'live', 'draft', 'archived'].map((status) => (
+                            <button
+                                key={status}
+                                onClick={() => setStatusFilter(status as any)}
+                                style={{
+                                    padding: '0.25rem 0.75rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 500,
+                                    textTransform: 'capitalize',
+                                    backgroundColor: statusFilter === status ? '#2563eb' : '#e2e8f0',
+                                    color: statusFilter === status ? 'white' : '#64748b',
+                                    border: 'none',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {status === 'live' ? 'Live' : status === 'draft' ? 'In Draft' : status === 'archived' ? 'Archived' : 'All'}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className={styles.searchBarWrapper} style={{ width: '300px', margin: 0 }}>
@@ -110,11 +144,28 @@ export default function ProductsView({ products, kits }: ProductsViewProps) {
                                     </td>
                                     <td>{product.stock || 0} units</td>
                                     <td>
-                                        <span className={`${styles.statusBadge} ${styles.sales_order}`}>Live</span>
+                                        <span className={`${styles.statusBadge} ${styles[product.status || 'active'] === styles.pending ? styles.sales_order : styles[product.status || 'active']}`}
+                                            style={{
+                                                backgroundColor: product.status === 'archived' ? '#f1f5f9' :
+                                                    product.status === 'draft' ? '#fef3c7' : '#dcfce7',
+                                                color: product.status === 'archived' ? '#64748b' :
+                                                    product.status === 'draft' ? '#d97706' : '#166534',
+                                                textTransform: 'capitalize',
+                                                padding: '2px 8px',
+                                                borderRadius: '9999px',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 500
+                                            }}>
+                                            {product.status === 'live' ? 'Live' : product.status === 'draft' ? 'In Draft' : product.status === 'archived' ? 'Archived' : 'Live'}
+                                        </span>
                                     </td>
                                     <td>
                                         <div className={styles.actions}>
-                                            <ProductActions productId={product.id} isLast={index === products.length - 1} />
+                                            <ProductActions
+                                                productId={product.id}
+                                                productStatus={product.status || 'live'}
+                                                isLast={index > filteredProducts.length - 3}
+                                            />
                                         </div>
                                     </td>
                                 </tr>

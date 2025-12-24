@@ -17,7 +17,8 @@ import {
     getSuppliers, saveSupplier, deleteSupplier,
     getPurchaseOrders, savePurchaseOrder, deletePurchaseOrder,
     Supplier, PurchaseOrder,
-    getKits, saveKit, deleteKit, Kit
+    getKits, saveKit, deleteKit, Kit,
+    updateProductStatus
 } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -80,6 +81,12 @@ export async function deleteAttributeAction(id: string) {
 }
 
 // Product Actions
+export async function updateProductStatusAction(id: string, status: 'live' | 'draft' | 'archived') {
+    await updateProductStatus(id, status);
+    revalidatePath('/admin');
+    revalidatePath('/admin/products');
+}
+
 export async function addProductAction(formData: FormData) {
     const dimensions = {
         length: parseFloat(formData.get('length') as string) || 0,
@@ -117,29 +124,30 @@ export async function addProductAction(formData: FormData) {
     const gallery = formData.getAll('gallery') as string[];
 
     const product: Product = {
-        id: formData.get('id') as string || Math.random().toString(36).substr(2, 9),
+        id: (formData.get('id') as string) || `prod_${Date.now()}`,
         title: formData.get('title') as string,
         description: formData.get('description') as string,
         price: parseFloat(formData.get('price') as string),
-        salePrice: parseFloat(formData.get('salePrice') as string) || undefined,
+        salePrice: formData.get('salePrice') ? parseFloat(formData.get('salePrice') as string) : undefined,
         categoryIds: categoryIds,
-        image: formData.get('image') as string || 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1',
+        image: formData.get('image') as string || '/default-product.jpg', // Use fallback image
         gallery: gallery,
         featured: formData.get('featured') === 'on',
         isVisible: formData.get('isHidden') !== 'on', // Inverted logic: if hidden is checked (on), visible is false
         sku: formData.get('sku') as string,
         stock: parseInt(formData.get('stock') as string) || 0, // Handle stock
         location: formData.get('location') as string,
-        weight: parseFloat(formData.get('weight') as string) || undefined,
+        weight: parseFloat(formData.get('weight') as string) || 0,
         dimensions: dimensions,
         brandId: formData.get('brandId') as string || undefined,
-        attributes: attributes,
+        attributes: JSON.parse(formData.get('attributes') as string || '[]'),
         linkedProducts: {
             upsells: formData.getAll('upsells') as string[],
             crossSells: formData.getAll('crossSells') as string[],
             frequentlyBoughtTogether: formData.getAll('frequentlyBoughtTogether') as string[],
             similarProducts: formData.getAll('similarProducts') as string[],
-        }
+        },
+        status: (formData.get('status') as 'live' | 'draft' | 'archived') || 'live',
     };
 
     await saveProduct(product);
@@ -418,9 +426,44 @@ export async function cancelOrderAction(orderId: string) {
         revalidatePath('/admin/fulfillment');
 
         return { success: true, order };
+        return { success: true, order };
     } catch (error: any) {
         console.error('Cancellation failed:', error);
         return { success: false, error: error.message || 'Failed to cancel order' };
+    }
+}
+
+export async function archiveOrderAction(orderId: string) {
+    try {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === orderId);
+
+        if (!order) {
+            return { success: false, error: 'Order not found' };
+        }
+
+        // Update status
+        order.status = 'archived';
+
+        // Add log entry
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'status',
+            message: 'Order archived by admin.',
+            timestamp: new Date().toISOString(),
+            user: 'Admin'
+        });
+
+        await updateOrder(order);
+
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/fulfillment');
+
+        return { success: true, order };
+    } catch (error: any) {
+        console.error('Archiving failed:', error);
+        return { success: false, error: error.message || 'Failed to archive order' };
     }
 }
 
@@ -716,4 +759,9 @@ export async function deleteKitAction(id: string) {
     await deleteKit(id);
     revalidatePath('/admin/products/kits');
     return { success: true };
+}
+
+// Stub for refreshing shipment status to prevent build errors
+export async function refreshShipmentStatusAction() {
+    return { success: false, error: 'Not implemented' };
 }

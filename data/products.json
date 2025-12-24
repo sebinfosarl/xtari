@@ -9,9 +9,10 @@
     "gallery": [],
     "featured": false,
     "isVisible": true,
-    "sku": "",
+    "sku": "fasfasdfdsa",
     "stock": 0,
     "location": null,
+    "weight": 0,
     "dimensions": {
       "length": 0,
       "width": 0,
@@ -23,7 +24,8 @@
       "crossSells": [],
       "frequentlyBoughtTogether": [],
       "similarProducts": []
-    }
+    },
+    "status": "live"
   },
   {
     "id": "k0asfljps",
@@ -48,7 +50,9 @@
       "crossSells": [],
       "frequentlyBoughtTogether": [],
       "similarProducts": []
-    }
+    },
+    "status": "live",
+    "isVisible": true
   },
   {
     "id": "gets19buh",
@@ -109,9 +113,11 @@
     "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
     "gallery": [],
     "featured": false,
-    "sku": "",
+    "isVisible": false,
+    "sku": "statu",
     "stock": 0,
     "location": null,
+    "weight": 0,
     "dimensions": {
       "length": 0,
       "width": 0,
@@ -123,6 +129,91 @@
       "crossSells": [],
       "frequentlyBoughtTogether": [],
       "similarProducts": []
-    }
+    },
+    "status": "live"
+  },
+  {
+    "id": "prod_1766606635481",
+    "title": "Hello",
+    "description": "<p></p>",
+    "price": 100,
+    "categoryIds": [],
+    "image": "/default-product.jpg",
+    "gallery": [],
+    "featured": false,
+    "isVisible": true,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "weight": 0,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "status": "live"
+  },
+  {
+    "id": "prod_1766606721604",
+    "title": "asdfasdfsafd",
+    "description": "<p></p>",
+    "price": 100,
+    "categoryIds": [],
+    "image": "/default-product.jpg",
+    "gallery": [],
+    "featured": false,
+    "isVisible": true,
+    "sku": "asdfasdf",
+    "stock": 0,
+    "location": null,
+    "weight": 0,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "status": "live"
+  },
+  {
+    "id": "prod_1766606843107",
+    "title": "Hello",
+    "description": "<p></p>",
+    "price": 100,
+    "categoryIds": [],
+    "image": "/default-product.jpg",
+    "gallery": [],
+    "featured": false,
+    "isVisible": true,
+    "sku": "toto",
+    "stock": 0,
+    "location": null,
+    "weight": 0,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "status": "live"
   }
 ]
