@@ -10,6 +10,7 @@ import styles from '../Admin.module.css';
 import DeliveryDialog from '@/components/DeliveryDialog';
 import PickingLabel from '@/components/PickingLabel';
 import PurchaseOrderDialog from '@/components/PurchaseOrderDialog';
+import PdfDropzone from '@/components/PdfDropzone';
 
 interface FulfillmentViewProps {
     initialOrders: Order[];
@@ -460,6 +461,10 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                             </button>
                         </div>
                     </div>
+                )}
+
+                {activeTab === 'deliveries' && deliveryFilter === 'picked_up' && (
+                    <PdfDropzone orders={deliveryOrders} />
                 )}
 
                 {activeTab === 'receipts' && (

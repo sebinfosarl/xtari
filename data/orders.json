@@ -2551,13 +2551,31 @@
         "message": "Shipment created with Cathedis. ID: 6178275",
         "timestamp": "2025-12-24T01:17:37.810Z",
         "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T01:18:37.264Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Rabat",
+        "timestamp": "2025-12-24T01:18:50.461Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Marked as Delivered based on document analysis: ramassage-22-12-2025.pdf (3).pdf",
+        "timestamp": "2025-12-24T01:51:30.740Z",
+        "user": "System"
       }
     ],
     "invoiceDownloaded": true,
     "invoiceDate": "2025-12-23T11:41:53.552Z",
-    "deliveryNotePrinted": false,
+    "deliveryNotePrinted": true,
     "shippingId": "6178275",
-    "shippingStatus": "En Attente Ramassage"
+    "shippingStatus": "Livré (Via PDF Scan)"
   },
   {
     "id": "R64OU1",
@@ -3066,12 +3084,42 @@
         "message": "Shipment created with Cathedis. ID: 6178274",
         "timestamp": "2025-12-24T01:16:22.351Z",
         "user": "System"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6178288",
+        "timestamp": "2025-12-24T01:55:22.172Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T01:55:24.812Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T01:55:27.554Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Pickup requested at Tanger",
+        "timestamp": "2025-12-24T01:55:37.753Z",
+        "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Marked as Delivered based on document analysis: ramassage-22-12-2025.pdf (4).pdf",
+        "timestamp": "2025-12-24T01:56:51.975Z",
+        "user": "System"
       }
     ],
     "salesPerson": "Nizar Sebaghi",
-    "deliveryNotePrinted": false,
-    "shippingId": "6178274",
-    "shippingStatus": "En Attente Ramassage"
+    "deliveryNotePrinted": true,
+    "shippingId": "6178288",
+    "shippingStatus": "Livré (Via PDF Scan)"
   },
   {
     "id": "ARY2H2",

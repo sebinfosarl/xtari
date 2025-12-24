@@ -629,3 +629,32 @@ export async function requestPickupAction(orderIds: string[], pickupPointId: num
         return { success: false, error: error.message || 'Failed to request pickup' };
     }
 }
+
+export async function markOrderAsDeliveredAction(orderId: string, deliveryNoteName: string = 'PDF Scan') {
+    try {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === orderId || o.shippingId === orderId);
+
+        if (!order) {
+            return { success: false, error: 'Order not found' };
+        }
+
+        order.shippingStatus = 'Livré (Via PDF Scan)';
+
+        if (!order.logs) order.logs = [];
+        order.logs.push({
+            type: 'shipping',
+            message: `Marked as Delivered based on document analysis: ${deliveryNoteName}`,
+            timestamp: new Date().toISOString(),
+            user: 'System'
+        });
+
+        await updateOrder(order);
+        revalidatePath('/admin/fulfillment');
+
+        return { success: true, orderName: order.customer.name, orderId: order.id };
+    } catch (error: any) {
+        console.error('Marking as delivered failed:', error);
+        return { success: false, error: error.message };
+    }
+}
