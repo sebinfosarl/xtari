@@ -31,7 +31,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
     const [isShippingBulk, setIsShippingBulk] = useState(false);
-    const [isPrinting, setIsPrinting] = useState(false);
+
     const [isUpdatingBulk, setIsUpdatingBulk] = useState(false);
     const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
 
@@ -185,20 +185,22 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
         }
     };
 
-    const handlePrintPickingLabels = async () => {
-        setIsPrinting(true);
-        setTimeout(async () => {
-            window.print();
-            setIsPrinting(false);
 
-            // Mark as printed in the DB
-            try {
-                await bulkMarkDeliveryNotePrintedAction(selectedOrderIds);
-                router.refresh();
-            } catch (err) {
-                console.error('Failed to update print status:', err);
-            }
-        }, 100);
+
+    const handlePrintPickingLabels = async () => {
+        if (selectedOrderIds.length === 0) return;
+
+        // Open the dedicated print route in a new tab
+        const url = `/print/picking?ids=${selectedOrderIds.join(',')}`;
+        window.open(url, '_blank');
+
+        // Mark as printed in the DB
+        try {
+            await bulkMarkDeliveryNotePrintedAction(selectedOrderIds);
+            router.refresh();
+        } catch (err) {
+            console.error('Failed to update print status:', err);
+        }
     };
 
     const handleFinishPicking = async () => {
@@ -505,7 +507,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                         <th>Items</th>
                                         <th>Total cost</th>
                                         <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>View</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -882,15 +884,43 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
             </div >
 
             {/* PRINT ONLY SECTION */}
-            < div className="hidden print:block" >
-                {isPrinting && (
-                    <PickingLabel
-                        orders={pickOrders.filter(o => selectedOrderIds.includes(o.id))}
-                        products={products}
-                    />
-                )
+
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @media screen {
+                    .print-only-container { display: none !important; }
                 }
-            </div >
-        </div >
+                @media print {
+                    /* Hide everything by default using visibility to keep layout flow but hide pixels */
+                    body * {
+                        visibility: hidden;
+                    }
+                    
+                    /* Reset the print container and its children to be visible */
+                    .print-only-container, .print-only-container * {
+                        visibility: visible;
+                    }
+
+                    /* Position the print container at the absolute top/left of the page */
+                    .print-only-container {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                    }
+                    
+                    /* Enhance standard print resets */
+                    body, html {
+                        background: white !important;
+                        height: auto !important;
+                        overflow: visible !important;
+                    }
+                    
+                    /* Ensure no-print elements are definitely gone */
+                    .no-print { display: none !important; }
+                }
+            `}} />
+        </div>
     );
 }

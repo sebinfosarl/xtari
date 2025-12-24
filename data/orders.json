@@ -3487,14 +3487,342 @@
     "allowOpening": 1,
     "packageCount": 1,
     "callResult": "Appel confirmer",
-    "fulfillmentStatus": "to_pick",
+    "fulfillmentStatus": "picked",
     "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-24T18:17:18.849Z"
+      },
       {
         "type": "status_update",
         "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
         "timestamp": "2025-12-24T11:47:47.163Z",
         "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T16:57:12.581Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:05:25.146Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:05:31.284Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:05:37.100Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:07:33.983Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:07:42.928Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:08:26.891Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:08:54.477Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:09:01.187Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:09:23.507Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:12:08.936Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:13:18.953Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:18:32.796Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:26:32.382Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:28:33.772Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:29:12.741Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:29:35.876Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:37:00.867Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:04:09.875Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:04:15.003Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:04:37.913Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:04:46.302Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:22.656Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:27.349Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:45.282Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:57.424Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:06:07.917Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:06:32.138Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:15:56.392Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:16:53.423Z",
+        "user": "Admin"
       }
-    ]
+    ],
+    "deliveryNotePrinted": false
+  },
+  {
+    "id": "LV03FI",
+    "items": [
+      {
+        "productId": "zlt59rqx8",
+        "quantity": 1,
+        "price": 20
+      }
+    ],
+    "total": 20,
+    "status": "sales_order",
+    "date": "2025-12-24T17:06:09.038Z",
+    "customer": {
+      "name": "nizar sebaghi",
+      "email": "",
+      "phone": "0661182295",
+      "address": "adfasdfadsfasdf",
+      "city": "Agzirt",
+      "sector": "Agzirt"
+    },
+    "salesPerson": "Nizar Sebaghi",
+    "allowOpening": 1,
+    "packageCount": 1,
+    "callResult": "Appel confirmer",
+    "fulfillmentStatus": "picked",
+    "logs": [
+      {
+        "type": "fulfillment",
+        "message": "Order marked as PICKED",
+        "timestamp": "2025-12-24T18:17:18.955Z"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-24T17:06:13.388Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:06:31.832Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:07:33.988Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:07:42.930Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:08:54.479Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:09:01.189Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:12:08.939Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:13:18.957Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:18:32.800Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T17:28:33.776Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:04:37.915Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:22.659Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:27.354Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:45.284Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:05:57.428Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:06:32.141Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:15:56.396Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed (Bulk).",
+        "timestamp": "2025-12-24T18:17:04.225Z",
+        "user": "Admin"
+      }
+    ],
+    "deliveryNotePrinted": false
   }
 ]

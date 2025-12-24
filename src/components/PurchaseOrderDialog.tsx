@@ -96,7 +96,6 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose, 
                         <span className={styles.modalSubtitle}>Placed on {po.date ? new Date(po.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Unknown Date'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <button onClick={() => window.print()} className="btn btn-sm btn-outline"><Printer size={16} /> Print</button>
                         <button onClick={onClose} className={styles.closeBtn}><X size={24} /></button>
                     </div>
                 </header>
