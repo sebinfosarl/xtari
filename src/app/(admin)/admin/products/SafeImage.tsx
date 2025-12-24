@@ -13,7 +13,7 @@ interface SafeImageProps {
 export default function SafeImage({
     src,
     alt,
-    fallback = 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1',
+    fallback = '/default-product.jpg',
     style,
     className
 }: SafeImageProps) {

@@ -104,7 +104,7 @@ export default function ProductsView({ products, kits }: ProductsViewProps) {
                                     <td>
                                         <div style={{ width: '48px', height: '48px', borderRadius: '0.5rem', overflow: 'hidden', backgroundColor: '#f1f5f9' }}>
                                             <SafeImage
-                                                src={product.image}
+                                                src={product.image || '/default-product.jpg'}
                                                 alt={product.title}
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />

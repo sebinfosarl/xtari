@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -30,6 +30,11 @@ export default function AdminLayout({
 }) {
     const pathname = usePathname();
     const [openGroups, setOpenGroups] = useState<string[]>([]);
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [hoveredGroup, setHoveredGroup] = useState<{ name: string; top: number; subItems: any[] } | null>(null);
+    const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+
 
     useEffect(() => {
         const groups = [];
@@ -88,79 +93,152 @@ export default function AdminLayout({
 
     return (
         <div className={styles.adminContainer}>
-            <aside className={styles.sidebar}>
-                <div className={styles.brand} style={{ padding: '1rem', paddingTop: '3rem', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ position: 'relative', width: '200px', height: '80px' }}>
-                        <Image
-                            src="/xtari-admin-logo.png"
-                            alt="XTARI AI"
-                            fill
-                            style={{ objectFit: 'contain' }}
-                            priority
-                        />
+            <aside className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ''}`}>
+                <button
+                    className={styles.collapseBtn}
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                >
+                    <ChevronDown size={16} style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(90deg)', transition: 'transform 0.2s' }} />
+                </button>
+
+                <div className={styles.navScrollWrapper}>
+                    <div className={styles.brand} style={{
+                        padding: isCollapsed ? '3rem 0 1rem 0' : '3rem 1rem 1rem 1rem',
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}>
+                        <div style={{ position: 'relative', width: isCollapsed ? '40px' : '200px', height: '80px', transition: 'width 0.2s' }}>
+                            <Image
+                                src={isCollapsed ? "/favicon.ico" : "/xtari-admin-logo.png"}
+                                alt="XTARI AI"
+                                fill
+                                style={{ objectFit: 'contain' }}
+                                priority
+                            />
+                        </div>
+                    </div>
+
+                    <nav className={styles.nav}>
+                        {navItems.map((item) => {
+                            const Icon = item.icon;
+                            const isOpen = openGroups.includes(item.name);
+
+                            if (item.subItems) {
+                                return (
+                                    <div
+                                        key={item.name}
+                                        className={styles.navGroup}
+                                        onMouseEnter={(e) => {
+                                            if (isCollapsed) {
+                                                if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+                                                const rect = e.currentTarget.getBoundingClientRect();
+                                                setHoveredGroup({
+                                                    name: item.name,
+                                                    top: rect.top,
+                                                    subItems: item.subItems || []
+                                                });
+                                            }
+                                        }}
+                                        onMouseLeave={() => {
+                                            if (isCollapsed) {
+                                                closeTimeoutRef.current = setTimeout(() => {
+                                                    setHoveredGroup(null);
+                                                }, 150);
+                                            }
+                                        }}
+                                    >
+                                        <button
+                                            onClick={() => !isCollapsed && toggleGroup(item.name)}
+                                            className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
+                                            style={{ background: 'none', border: 'none', width: '100%', cursor: isCollapsed ? 'default' : 'pointer', textAlign: 'left' }}
+                                            title={isCollapsed ? item.name : ''}
+                                        >
+                                            <Icon size={20} />
+                                            {!isCollapsed && (
+                                                <>
+                                                    {item.name}
+                                                    <ChevronDown
+                                                        size={16}
+                                                        className={`${styles.dropdownIcon} ${isOpen ? styles.dropdownIconOpen : ''}`}
+                                                    />
+                                                </>
+                                            )}
+                                        </button>
+
+                                        {!isCollapsed && isOpen && (
+                                            <div className={styles.subMenu}>
+                                                {item.subItems.map(subItem => (
+                                                    <Link
+                                                        key={subItem.href}
+                                                        href={subItem.href}
+                                                        className={`${styles.subNavItem} ${isActive(subItem.href) ? styles.subNavItemActive : ''}`}
+                                                    >
+                                                        {subItem.name}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
+                                    title={isCollapsed ? item.name : ''}
+                                >
+                                    <Icon size={20} />
+                                    {!isCollapsed && item.name}
+                                </Link>
+                            );
+                        })}
+
+                        <div className={styles.divider}></div>
+
+                        <Link href="/admin/settings" className={`${styles.navItem} ${isActive('/admin/settings') ? styles.navItemActive : ''}`} title={isCollapsed ? "Settings" : ""}>
+                            <Settings size={20} />
+                            {!isCollapsed && "Settings"}
+                        </Link>
+                    </nav>
+
+                    <div className={styles.sidebarFooter}>
+                        <Link href="/" className={styles.navItem} title={isCollapsed ? "Exit Admin" : ""}>
+                            <LogOut size={20} />
+                            {!isCollapsed && "Exit Admin"}
+                        </Link>
                     </div>
                 </div>
 
-                <nav className={styles.nav}>
-                    {navItems.map((item) => {
-                        const Icon = item.icon;
-                        const isOpen = openGroups.includes(item.name);
-
-                        if (item.subItems) {
-                            return (
-                                <div key={item.name} className={styles.navGroup}>
-                                    <button
-                                        onClick={() => toggleGroup(item.name)}
-                                        className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
-                                        style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
-                                    >
-                                        <Icon size={20} /> {item.name}
-                                        <ChevronDown
-                                            size={16}
-                                            className={`${styles.dropdownIcon} ${isOpen ? styles.dropdownIconOpen : ''}`}
-                                        />
-                                    </button>
-
-                                    {isOpen && (
-                                        <div className={styles.subMenu}>
-                                            {item.subItems.map(subItem => (
-                                                <Link
-                                                    key={subItem.href}
-                                                    href={subItem.href}
-                                                    className={`${styles.subNavItem} ${isActive(subItem.href) ? styles.subNavItemActive : ''}`}
-                                                >
-                                                    {subItem.name}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        }
-
-                        return (
+                {/* Floating Menu Portal */}
+                {isCollapsed && hoveredGroup && (
+                    <div
+                        className={styles.floatingMenu}
+                        style={{ top: hoveredGroup.top }}
+                        onMouseEnter={() => {
+                            if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+                        }}
+                        onMouseLeave={() => {
+                            closeTimeoutRef.current = setTimeout(() => {
+                                setHoveredGroup(null);
+                            }, 150);
+                        }}
+                    >
+                        <div className={styles.floatingMenuHeader}>{hoveredGroup.name}</div>
+                        {hoveredGroup.subItems.map(subItem => (
                             <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`${styles.navItem} ${isGroupActive(item.href) ? styles.navItemActive : ''}`}
+                                key={subItem.href}
+                                href={subItem.href}
+                                className={`${styles.floatingMenuItem} ${isActive(subItem.href) ? styles.floatingMenuItemActive : ''}`}
+                                onClick={() => setHoveredGroup(null)}
                             >
-                                <Icon size={20} /> {item.name}
+                                {subItem.name}
                             </Link>
-                        );
-                    })}
-
-                    <div className={styles.divider}></div>
-
-                    <Link href="/admin/settings" className={`${styles.navItem} ${isActive('/admin/settings') ? styles.navItemActive : ''}`}>
-                        <Settings size={20} /> Settings
-                    </Link>
-                </nav>
-
-                <div className={styles.sidebarFooter}>
-                    <Link href="/" className={styles.navItem}>
-                        <LogOut size={20} /> Exit Admin
-                    </Link>
-                </div>
+                        ))}
+                    </div>
+                )}
             </aside>
 
             <div className={styles.contentContainer}>

@@ -7,6 +7,7 @@ import { Product } from '@/lib/db';
 import { useCart } from '@/context/CartContext';
 import styles from './ProductDetail.module.css';
 import Link from 'next/link';
+import SafeImage from './SafeImage';
 
 export default function ProductDetailView({ product, upsells }: { product: Product, upsells: Product[] }) {
     const { addToCart } = useCart();
@@ -22,13 +23,11 @@ export default function ProductDetailView({ product, upsells }: { product: Produ
         <div className={styles.container}>
             <div className={styles.grid}>
                 <div className={styles.imageSection}>
-                    <Image
+                    <SafeImage
                         src={product.image}
                         alt={product.title}
-                        width={600}
-                        height={600}
                         className={styles.mainImage}
-                        priority
+                        style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
                     />
                 </div>
 
@@ -87,7 +86,7 @@ export default function ProductDetailView({ product, upsells }: { product: Produ
                 <div className={styles.upsellGrid}>
                     {upsells.map(p => (
                         <Link key={p.id} href={`/product/${p.id}`} className={styles.upsellCard}>
-                            <Image src={p.image} alt={p.title} width={200} height={200} className={styles.upsellImage} />
+                            <Image src={p.image || '/default-product.jpg'} alt={p.title} width={200} height={200} className={styles.upsellImage} />
                             <div className={styles.upsellInfo}>
                                 <p className={styles.upsellTitle}>{p.title}</p>
                                 <p className={styles.upsellPrice}>${p.price}</p>

@@ -532,7 +532,7 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                             }}
                                         >
                                             <div style={{ width: '40px', height: '40px', borderRadius: '4px', overflow: 'hidden' }}>
-                                                <img src={p.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                <img src={p.image || '/default-product.jpg'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                             </div>
                                             <div style={{ flex: 1 }}>
                                                 <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{p.title}</div>

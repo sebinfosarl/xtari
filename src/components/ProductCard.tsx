@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { ShoppingCart } from 'lucide-react';
 import styles from './ProductCard.module.css';
 import { Product } from '@/lib/db';
 import { useCart } from '@/context/CartContext';
+import SafeImage from './SafeImage';
 
 export default function ProductCard({ product }: { product: Product }) {
     const { addToCart } = useCart();
@@ -18,12 +18,11 @@ export default function ProductCard({ product }: { product: Product }) {
     return (
         <div className={styles.card}>
             <Link href={`/product/${product.id}`} className={styles.imageWrapper}>
-                <Image
+                <SafeImage
                     src={product.image}
                     alt={product.title}
-                    width={400}
-                    height={400}
                     className={styles.image}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
                 {product.featured && <span className={styles.tag}>Featured</span>}
             </Link>
