@@ -3416,7 +3416,7 @@
       }
     ],
     "total": 40,
-    "status": "no_reply",
+    "status": "sales_order",
     "date": "2025-12-24T11:42:34.177Z",
     "customer": {
       "name": "fsadfasdfsadf",
@@ -3431,6 +3431,18 @@
     "packageCount": 1,
     "logs": [
       {
+        "type": "invoice_download",
+        "message": "Downloaded order invoice (Issue Date: 12/24/2025, 7:33:36 PM)",
+        "timestamp": "2025-12-24T18:33:36.555Z",
+        "user": "Admin"
+      },
+      {
+        "type": "status_update",
+        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
+        "timestamp": "2025-12-24T18:33:33.244Z",
+        "user": "Admin"
+      },
+      {
         "type": "status_update",
         "message": "Changed status from pending to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
         "timestamp": "2025-12-24T11:46:16.209Z",
@@ -3443,10 +3455,13 @@
         "user": "Admin"
       }
     ],
-    "callResult": "Ligne Occupé",
+    "callResult": "Appel confirmer",
     "callHistory": {
       "1": 1
-    }
+    },
+    "fulfillmentStatus": "to_pick",
+    "invoiceDownloaded": true,
+    "invoiceDate": "2025-12-24T18:33:36.555Z"
   },
   {
     "id": "IN6WT9",
@@ -3679,9 +3694,29 @@
         "message": "Delivery note printed (Bulk).",
         "timestamp": "2025-12-24T18:16:53.423Z",
         "user": "Admin"
+      },
+      {
+        "type": "shipping",
+        "message": "Shipment created with Cathedis. ID: 6188073",
+        "timestamp": "2025-12-24T18:30:29.215Z",
+        "user": "System"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T18:30:40.005Z",
+        "user": "Admin"
+      },
+      {
+        "type": "print",
+        "message": "Delivery note printed.",
+        "timestamp": "2025-12-24T18:31:11.868Z",
+        "user": "Admin"
       }
     ],
-    "deliveryNotePrinted": false
+    "deliveryNotePrinted": true,
+    "shippingId": "6188073",
+    "shippingStatus": "En Attente Ramassage"
   },
   {
     "id": "LV03FI",

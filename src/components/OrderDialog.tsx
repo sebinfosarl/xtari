@@ -24,6 +24,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
+    const [printFrameUrl, setPrintFrameUrl] = useState<string | null>(null);
 
     // UI States
     const [pendingStatus, setPendingStatus] = useState<Order['status'] | null>(null);
@@ -227,7 +228,8 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
             }
         }
 
-        window.print();
+        // Silent print via hidden iframe (append timestamp to force reload)
+        setPrintFrameUrl(`/print/invoice/${order.id}?t=${Date.now()}`);
     };
 
     return (
@@ -696,89 +698,14 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                 </footer>
 
                 {/* HIDDEN INVOICE PRINT AREA */}
-                <div className={styles.invoicePrintArea}>
-                    <div className={styles.invoiceHeader}>
-                        <div>
-                            <h1 style={{ fontSize: '2rem', margin: 0 }}>XTARI INVOICE</h1>
-                            <p>Order ID: #{order.id}</p>
-                            <p>Issue Date: {order.invoiceDate ? new Date(order.invoiceDate).toLocaleDateString() : new Date().toLocaleDateString()}</p>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                            <p><strong>Billed To:</strong></p>
-                            {order.companyName ? (
-                                <>
-                                    <p style={{ fontSize: '1.2rem', fontWeight: 800, margin: '4px 0' }}>{order.companyName}</p>
-                                    <p>ICE: {order.ice || 'N/A'}</p>
-                                    <p>TEL: {order.customer.phone}</p>
-                                </>
-                            ) : (
-                                <>
-                                    <p>{order.customer.name}</p>
-                                    <p>{order.customer.phone}</p>
-                                    <p>{order.customer.address}</p>
-                                </>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between items-start mt-4 mb-6 pt-4 border-t border-slate-100">
-                        <div>
-                            <p style={{ margin: '0 0 0.5rem 0' }}><strong>Sales Person:</strong> {order.salesPerson || 'Unassigned'}</p>
-                            {salesPeople.find(p => p.fullName === order.salesPerson) && (
-                                <div className="text-[10px] text-slate-500 space-y-1">
-                                    <p>CNIE: {salesPeople.find(p => p.fullName === order.salesPerson)?.cnie}</p>
-                                    <p>ICE: {salesPeople.find(p => p.fullName === order.salesPerson)?.ice} | IF: {salesPeople.find(p => p.fullName === order.salesPerson)?.if}</p>
-                                    <p>TEL: {salesPeople.find(p => p.fullName === order.salesPerson)?.tel}</p>
-                                </div>
-                            )}
-                        </div>
-                        {salesPeople.find(p => p.fullName === order.salesPerson) && (
-                            <div className="flex gap-6 items-end">
-                                {salesPeople.find(p => p.fullName === order.salesPerson)?.signature && (
-                                    <div className="text-center">
-                                        <p className="text-[8px] uppercase font-bold text-slate-400 mb-1">Signature</p>
-                                        <img src={salesPeople.find(p => p.fullName === order.salesPerson)?.signature} alt="Signature" className="h-10 object-contain" />
-                                    </div>
-                                )}
-                                {salesPeople.find(p => p.fullName === order.salesPerson)?.cachet && (
-                                    <div className="text-center">
-                                        <p className="text-[8px] uppercase font-bold text-slate-400 mb-1">Cachet</p>
-                                        <img src={salesPeople.find(p => p.fullName === order.salesPerson)?.cachet} alt="Cachet" className="h-14 object-contain" />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    <table className={styles.invoiceTable}>
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {order.items.map(item => {
-                                const product = products.find(p => p.id === item.productId);
-                                return (
-                                    <tr key={item.productId}>
-                                        <td>{product?.title}</td>
-                                        <td>${(item.price || 0).toFixed(2)}</td>
-                                        <td>{item.quantity}</td>
-                                        <td>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-
-                    <div style={{ textAlign: 'right', marginTop: '2rem' }}>
-                        <h2 style={{ fontSize: '1.5rem' }}>Total: ${order.total.toFixed(2)}</h2>
-                        <p style={{ marginTop: '3rem', fontStyle: 'italic' }}>Thank you for your business!</p>
-                    </div>
-                </div>
+                {/* HIDDEN PRINT FRAME */}
+                {printFrameUrl && (
+                    <iframe
+                        src={printFrameUrl}
+                        style={{ position: 'absolute', width: 0, height: 0, border: 'none', visibility: 'hidden' }}
+                        title="print-frame"
+                    />
+                )}
 
                 {/* DYNAMIC POPUPS */}
                 {
