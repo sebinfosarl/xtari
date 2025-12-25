@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { Order, Product, SalesPerson } from '@/lib/db';
 import {
     X, Save, Trash2, Plus, Phone, MapPin,
     User as UserIcon, ShoppingCart, History as HistoryIcon,
@@ -11,6 +10,7 @@ import {
 } from 'lucide-react';
 import { updateOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
+import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { formatCurrency } from '@/lib/format';
 
 interface OrderDialogProps {
@@ -19,9 +19,10 @@ interface OrderDialogProps {
     salesPeople: SalesPerson[];
     onClose: () => void;
     readOnly?: boolean;
+    kits?: Kit[];
 }
 
-export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose, readOnly = false }: OrderDialogProps) {
+export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose, readOnly = false, kits }: OrderDialogProps) {
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
@@ -615,29 +616,127 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 </tr>
                             </thead>
                             <tbody>
-                                {order.items.map(item => {
-                                    const product = products.find(p => p.id === item.productId);
-                                    return (
-                                        <tr key={item.productId}>
-                                            <td>
-                                                <div className="flex items-center gap-3">
-                                                    {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
-                                                    <div className="font-bold">{product?.title || 'Unknown'}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type="number" step="0.01" value={item.price ?? ''} onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value) || 0)} className={styles.inlineInput} style={{ width: '90px' }} />
-                                            </td>
-                                            <td>
-                                                <input type="number" value={item.quantity ?? ''} onChange={(e) => updateItem(item.productId, parseInt(e.target.value) || 1, item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
-                                            </td>
-                                            <td className="font-bold">{formatCurrency(item.price * item.quantity)}</td>
-                                            <td>
-                                                <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
+                                {(() => {
+                                    // REVERSE KIT RESOLUTION:
+                                    // Check if items can be bundled into a Kit for display.
+                                    // Make a mutable copy of items to "consume".
+                                    let remainingItems = order.items.map(i => ({ ...i }));
+                                    const displayItems: { productId: string; quantity: number; price: number; isKit?: boolean; originalPrice?: number }[] = [];
+
+                                    if (kits && kits.length > 0) {
+                                        for (const kit of kits) {
+                                            // Safety: Ensure kit components exist
+                                            if (!kit.components || kit.components.length === 0) continue;
+
+                                            // Check how many full kits we can form
+                                            let maxPossibleKits = Infinity;
+                                            for (const comp of kit.components) {
+                                                const found = remainingItems.find(r => r.productId === comp.productId);
+                                                if (!found) {
+                                                    maxPossibleKits = 0;
+                                                    break;
+                                                }
+                                                maxPossibleKits = Math.min(maxPossibleKits, Math.floor(found.quantity / comp.quantity));
+                                            }
+
+                                            if (maxPossibleKits > 0 && maxPossibleKits !== Infinity) {
+                                                // We found 'maxPossibleKits' bundles of this kit.
+                                                // Add Kit to display
+                                                const kitProduct = products.find(p => p.id === kit.targetProductId);
+                                                if (kitProduct) {
+                                                    displayItems.push({
+                                                        productId: kit.targetProductId,
+                                                        quantity: maxPossibleKits,
+                                                        price: kitProduct.price, // Use Kit Price
+                                                        isKit: true,
+                                                        // Note: We might want to sum up component prices if kit price is 0? 
+                                                        // But usually Kit Price is authoritative.
+                                                    });
+
+                                                    // Consume components
+                                                    for (const comp of kit.components) {
+                                                        const found = remainingItems.find(r => r.productId === comp.productId);
+                                                        if (found) {
+                                                            found.quantity -= (comp.quantity * maxPossibleKits);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Add remaining non-consumed items
+                                    remainingItems.forEach(item => {
+                                        if (item.quantity > 0) {
+                                            displayItems.push(item);
+                                        }
+                                    });
+
+                                    // Render
+                                    return displayItems.map((item, idx) => {
+                                        const product = products.find(p => p.id === item.productId);
+                                        return (
+                                            <tr key={`${item.productId}-${idx}`} className={item.isKit ? "bg-blue-50/50" : ""}>
+                                                <td>
+                                                    <div className="flex items-center gap-3">
+                                                        {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
+                                                        <div className="flex flex-col">
+                                                            <div className="font-bold flex items-center gap-2">
+                                                                {product?.title || 'Unknown'}
+                                                                {item.isKit && <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">Bundle</span>}
+                                                            </div>
+                                                            {item.isKit && (
+                                                                <div className="text-xs text-slate-500 italic">
+                                                                    Contains: {kits?.find(k => k.targetProductId === item.productId)?.components.map(c =>
+                                                                        `${products.find(p => p.id === c.productId)?.title} (x${c.quantity})`
+                                                                    ).join(', ')}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {item.isKit ? (
+                                                        <span className="text-slate-500 italic text-sm">Bundle Price</span>
+                                                    ) : (
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            value={item.price ?? ''}
+                                                            onChange={(e) => updateItem(item.productId, item.quantity, parseFloat(e.target.value) || 0)}
+                                                            className={styles.inlineInput}
+                                                            style={{ width: '90px' }}
+                                                        />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {item.isKit ? (
+                                                        <span className="font-bold">{item.quantity}</span>
+                                                    ) : (
+                                                        <input
+                                                            type="number"
+                                                            value={item.quantity ?? ''}
+                                                            onChange={(e) => updateItem(item.productId, parseInt(e.target.value) || 1, item.price)}
+                                                            className={styles.inlineInput}
+                                                            style={{ width: '60px' }}
+                                                        />
+                                                    )}
+                                                </td>
+                                                <td className="font-bold">{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
+                                                <td>
+                                                    {!item.isKit && (
+                                                        <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
+                                                    )}
+                                                    {item.isKit && (
+                                                        <div title="Bundles cannot be edited directly" className="text-slate-300">
+                                                            <Ban size={16} />
+                                                        </div>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    });
+                                })()}
                             </tbody>
                             <tfoot>
                                 <tr>

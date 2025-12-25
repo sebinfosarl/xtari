@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Order, Product, SalesPerson } from '@/lib/db';
+import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer, Archive } from 'lucide-react';
 import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction, archiveOrderAction } from '@/app/actions';
 import styles from '../Admin.module.css';
@@ -16,9 +16,10 @@ interface OrdersViewProps {
     products: Product[];
     salesPeople: SalesPerson[];
     isWooCommerceConnected?: boolean;
+    kits?: Kit[];
 }
 
-export default function OrdersView({ initialOrders: orders, products, salesPeople, isWooCommerceConnected }: OrdersViewProps) {
+export default function OrdersView({ initialOrders: orders, products, salesPeople, isWooCommerceConnected, kits }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled' | 'archived'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
@@ -245,6 +246,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                         products={products}
                         salesPeople={salesPeople}
                         onClose={() => setSelectedOrder(null)}
+                        kits={kits}
                     />
                 )
             }

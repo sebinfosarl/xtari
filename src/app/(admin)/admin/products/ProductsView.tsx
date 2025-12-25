@@ -18,7 +18,7 @@ interface ProductsViewProps {
 
 export default function ProductsView({ products, kits, isWooCommerceConnected }: ProductsViewProps) {
     const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState<'all' | 'live' | 'draft' | 'archived'>('live');
+    const [statusFilter, setStatusFilter] = useState<'all' | 'live' | 'draft' | 'archived'>('all');
     const [isImporting, setIsImporting] = useState(false);
 
     const filteredProducts = useMemo(() => {

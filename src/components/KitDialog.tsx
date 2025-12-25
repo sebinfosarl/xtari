@@ -32,8 +32,9 @@ export default function KitDialog({ products, onClose, existingKit, kits }: KitD
 
     const filteredProducts = useMemo(() => {
         return products.filter(p =>
-            p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (p.sku && p.sku.toLowerCase().includes(searchQuery.toLowerCase()))
+            (p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (p.sku && p.sku.toLowerCase().includes(searchQuery.toLowerCase()))) &&
+            (!p.status || p.status === 'live')
         );
     }, [products, searchQuery]);
 

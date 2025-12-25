@@ -121,7 +121,7 @@ export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder): Order {
     return {
         id: Math.random().toString(36).substr(2, 6).toUpperCase(),
         items: wcOrder.line_items.map(item => ({
-            productId: item.product_id.toString(),
+            productId: 'wc_' + item.product_id.toString(),
             quantity: item.quantity,
             price: item.price
         })),

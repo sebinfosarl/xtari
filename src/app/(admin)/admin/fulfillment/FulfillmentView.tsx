@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Order, Product, SalesPerson, PurchaseOrder, Supplier } from '@/lib/db';
+import { Order, Product, SalesPerson, PurchaseOrder, Supplier, Kit } from '@/lib/db';
 import { Eye, Truck, Calendar, Phone, Search, MapPin, Package, CheckCircle, Circle, X, ClipboardList, Printer, CheckCircle2, Receipt, ArrowDownToLine, XCircle, RotateCcw } from 'lucide-react';
 import sc from './SegmentedControl.module.css';
 import { createShipmentAction, updateOrderAction, bulkMarkDeliveryNotePrintedAction, requestPickupAction } from '@/app/actions';
@@ -19,9 +19,10 @@ interface FulfillmentViewProps {
     purchaseOrders: PurchaseOrder[];
     suppliers: Supplier[];
     pickupLocationsRaw: string;
+    kits: Kit[];
 }
 
-export default function FulfillmentView({ initialOrders: orders, products, salesPeople, purchaseOrders, suppliers, pickupLocationsRaw }: FulfillmentViewProps) {
+export default function FulfillmentView({ initialOrders: orders, products, salesPeople, purchaseOrders, suppliers, pickupLocationsRaw, kits }: FulfillmentViewProps) {
     const router = useRouter();
     // ... existing state ...
     const [activeTab, setActiveTab] = useState<'pick' | 'deliveries' | 'receipts' | 'returns'>('pick');
@@ -704,7 +705,7 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
                                             </td>
                                             {activeTab !== 'returns' && !(activeTab === 'deliveries' && (deliveryFilter === 'picked_up' || deliveryFilter === 'done')) && (
                                                 <td>
-                                                    <div className="flex justify-center">
+                                                    <div className="flex flex-col gap-1">
                                                         {order.deliveryNotePrinted ? (
                                                             <div className={`${styles.indicator} ${styles.indicatorPrinted}`} title="Label Printed">
                                                                 <CheckCircle size={14} />

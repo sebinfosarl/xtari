@@ -49,7 +49,9 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
         return products.filter(p => {
             const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
-            return matchesSearch && matchesCategory;
+            // Only allow 'live' products
+            const isLive = !p.status || p.status === 'live';
+            return matchesSearch && matchesCategory && isLive;
         });
     }, [products, searchQuery, selectedCategory]);
 

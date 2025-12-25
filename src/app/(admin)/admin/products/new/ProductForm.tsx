@@ -143,7 +143,8 @@ export default function ProductForm({ categories, brands, products, globalAttrib
     };
 
     const filteredProducts = products.filter(p =>
-        p.title.toLowerCase().includes(searchTerm.toLowerCase())
+        p.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (!p.status || p.status === 'live')
     );
 
     return (

@@ -1,4315 +1,9 @@
 [
   {
-    "id": "7Z21BT",
+    "id": "4AL2Y5",
     "items": [
       {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      },
-      {
-        "productId": "p6",
-        "quantity": 2,
-        "price": 89.99
-      }
-    ],
-    "total": 779.97,
-    "status": "canceled",
-    "date": "2025-12-21T22:15:08.745Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "sebaghinizar99@gmail.com",
-      "phone": "+212 600 000 112",
-      "address": "Hello world morocco"
-    },
-    "cancellationMotif": "Rupture de stock",
-    "cancellationComment": "No problem",
-    "callResult": "Canceled",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to canceled | Reason: Rupture de stock | Call Result set to Canceled",
-        "timestamp": "2025-12-22T02:46:20.003Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T02:45:07.407Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T01:10:25.507Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T01:07:42.695Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T01:07:28.549Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to Ahmed",
-        "timestamp": "2025-12-22T00:55:50.970Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to ",
-        "timestamp": "2025-12-22T00:55:33.647Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to Ahmed",
-        "timestamp": "2025-12-22T00:55:18.730Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T00:35:02.373Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to no_reply | Call Result: Ligne Occupé",
-        "timestamp": "2025-12-22T00:34:52.352Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from canceled to sales_order",
-        "timestamp": "2025-12-22T00:33:33.549Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Pas de reponse",
-        "timestamp": "2025-12-22T00:31:45.063Z",
-        "user": "Admin"
-      },
-      {
-        "type": "comment",
-        "message": "Second chance",
-        "timestamp": "2025-12-22T00:31:17.356Z",
-        "user": "Admin"
-      },
-      {
-        "type": "item_update",
-        "message": "Updated Mechanical Robot Building Kit: Qty 2, Price $89.99",
-        "timestamp": "2025-12-22T00:31:01.790Z",
-        "user": "Admin"
-      },
-      {
-        "type": "item_add",
-        "message": "Added Mechanical Robot Building Kit to order",
-        "timestamp": "2025-12-22T00:30:57.400Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from canceled to no_reply | Call Result: Ligne Occupé",
-        "timestamp": "2025-12-22T00:30:42.406Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "Ahmed",
-    "invoiceDownloaded": true
-  },
-  {
-    "id": "2JWMTW",
-    "items": [
-      {
-        "productId": "p3",
-        "quantity": 1,
-        "price": 899
-      }
-    ],
-    "total": 899,
-    "status": "canceled",
-    "date": "2025-12-22T01:08:38.025Z",
-    "customer": {
-      "name": "Drogba",
-      "email": "drogbamail@gamil.com",
-      "phone": "+212661182295",
-      "address": "somewhere in the reainbow",
-      "city": "FOUM ZGUID",
-      "sector": "Centre Ville"
-    },
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T18:13:53.916Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T02:37:05.912Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T01:09:07.794Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to Yassine",
-        "timestamp": "2025-12-22T01:09:02.606Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T01:08:59.245Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:10:04.830Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "Yassine",
-    "invoiceDownloaded": true,
-    "fulfillmentStatus": "picked",
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "5TK16S",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T01:09:59.294Z",
-    "customer": {
-      "name": "amal",
-      "email": "amal@sebinfo.ma",
-      "phone": "0661182295",
-      "address": "hello"
-    },
-    "salesPerson": "nizar sebaghi",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T18:14:34.188Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T01:40:06.228Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T01:29:04.457Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T01:29:01.983Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:10:47.171Z",
-        "user": "Admin"
-      }
-    ],
-    "invoiceDownloaded": true,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "6MYV7N",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "p3",
-        "quantity": 2,
-        "price": 899
-      }
-    ],
-    "total": 2147,
-    "status": "canceled",
-    "date": "2025-12-22T01:42:22.223Z",
-    "customer": {
-      "name": "hello baba",
-      "email": "baba@sebinfo.ma",
-      "phone": "0661182295",
-      "address": "hello hello"
-    },
-    "callResult": "Ligne Occupé",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero",
-        "timestamp": "2025-12-22T01:43:08.361Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T01:42:41.411Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Call Result: Ligne Occupé",
-        "timestamp": "2025-12-22T01:42:39.065Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "nizar sebaghi",
-    "cancellationMotif": "Mauvais numero"
-  },
-  {
-    "id": "F4BE9X",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 3,
-        "price": 349
-      }
-    ],
-    "total": 1047,
-    "status": "canceled",
-    "date": "2025-12-22T01:44:37.517Z",
-    "customer": {
-      "name": "sebod",
-      "email": "fajdsi@gmail.com",
-      "phone": "+212661182295",
-      "address": "momocati"
-    },
-    "callResult": "Canceled",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Pas de reponse | Call Result set to Canceled",
-        "timestamp": "2025-12-22T02:02:45.309Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 5 for Day 3",
-        "timestamp": "2025-12-22T02:02:14.843Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 4 for Day 3",
-        "timestamp": "2025-12-22T02:02:13.972Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 3 for Day 3",
-        "timestamp": "2025-12-22T02:02:13.269Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 3",
-        "timestamp": "2025-12-22T02:02:12.585Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 1 for Day 3",
-        "timestamp": "2025-12-22T02:02:11.842Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 5 for Day 2",
-        "timestamp": "2025-12-22T02:02:04.506Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 4 for Day 2",
-        "timestamp": "2025-12-22T02:02:03.699Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 3 for Day 2",
-        "timestamp": "2025-12-22T02:02:02.429Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 2",
-        "timestamp": "2025-12-22T02:01:54.744Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 1 for Day 2",
-        "timestamp": "2025-12-22T01:58:51.654Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T01:57:58.965Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 5 for Day 1",
-        "timestamp": "2025-12-22T01:57:46.449Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 3 for Day 1",
-        "timestamp": "2025-12-22T01:57:44.889Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 1 for Day 1",
-        "timestamp": "2025-12-22T01:57:44.164Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Updated Call Result to Rappel demandé",
-        "timestamp": "2025-12-22T01:55:28.050Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Updated Call Result to Pas de réponse",
-        "timestamp": "2025-12-22T01:50:49.815Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Call Result: Rappel demandé",
-        "timestamp": "2025-12-22T01:46:32.975Z",
-        "user": "Admin"
-      }
-    ],
-    "daysCalled": 1,
-    "callsPerDay": 3,
-    "callHistory": {
-      "1": 5,
-      "2": 5,
-      "3": 5
-    },
-    "salesPerson": "nizar sebaghi",
-    "cancellationMotif": "Pas de reponse"
-  },
-  {
-    "id": "M3EM56",
-    "items": [
-      {
-        "productId": "p3",
-        "quantity": 1,
-        "price": 899
-      },
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 1498.99,
-    "status": "canceled",
-    "date": "2025-12-22T02:25:35.218Z",
-    "customer": {
-      "name": "Hoho",
-      "email": "baba@sebo.ma",
-      "phone": "0660015991",
-      "address": "toto el grande"
-    },
-    "companyName": "Acem To",
-    "ice": "34273847238423",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T18:14:34.715Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice",
-        "timestamp": "2025-12-22T02:26:13.392Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T02:26:11.581Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T02:26:08.390Z",
-        "user": "Admin"
-      },
-      {
-        "type": "business_mode",
-        "message": "Enabled Business/Company Info",
-        "timestamp": "2025-12-22T02:25:48.566Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:27:01.111Z",
-        "user": "Admin"
-      }
-    ],
-    "callResult": "Appel confirmer",
-    "salesPerson": "nizar sebaghi",
-    "invoiceDownloaded": true,
-    "fulfillmentStatus": "picked",
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "OI8X3E",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T02:50:45.870Z",
-    "customer": {
-      "name": "nizarbo",
-      "email": "bobo@gmail.ma",
-      "phone": "7397699050",
-      "address": "hoah"
-    },
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T18:14:34.969Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/22/2025, 3:52:03 AM)",
-        "timestamp": "2025-12-22T02:52:03.975Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T02:51:44.276Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T02:51:13.568Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:26:55.453Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "nizar sebaghi",
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-22T02:52:03.975Z",
-    "fulfillmentStatus": "picked",
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "D2ES8L",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T03:01:55.494Z",
-    "customer": {
-      "name": "moomo",
-      "email": "admin@sebreachmarketingllc.pro",
-      "phone": "0660015991",
-      "address": "nirvana",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T03:02:08.424Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:20:36.919Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Picking list printed (Bulk).",
-        "timestamp": "2025-12-22T19:54:57.394Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:09:28.858Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "pickingListPrinted": true
-  },
-  {
-    "id": "AA7TDO",
-    "items": [
-      {
-        "productId": "p6",
-        "quantity": 1,
-        "price": 89.99
-      }
-    ],
-    "total": 89.99,
-    "status": "canceled",
-    "date": "2025-12-22T03:19:25.458Z",
-    "customer": {
-      "name": "new customer",
-      "email": "new@sebinfo.ma",
-      "phone": "+0660660660",
-      "address": "all new"
-    },
-    "callResult": "Canceled",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to canceled | Reason: Mauvais numero | Call Result set to Canceled",
-        "timestamp": "2025-12-22T03:27:09.866Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/22/2025, 4:23:00 AM)",
-        "timestamp": "2025-12-22T03:23:00.760Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/22/2025, 4:21:38 AM)",
-        "timestamp": "2025-12-22T03:21:38.784Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T03:20:43.229Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T03:20:41.179Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "nizar sebaghi",
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-22T03:21:38.784Z",
-    "cancellationMotif": "Mauvais numero"
-  },
-  {
-    "id": "Z9BEF6",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T03:20:18.888Z",
-    "customer": {
-      "name": "nova",
-      "email": "nova@outlook.com",
-      "phone": "+0660660660",
-      "address": "for all"
-    },
-    "callResult": "Canceled",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to canceled | Reason: commande en double | Call Result set to Canceled",
-        "timestamp": "2025-12-22T03:27:22.241Z",
-        "user": "Admin"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/22/2025, 4:23:22 AM)",
-        "timestamp": "2025-12-22T03:23:22.807Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T03:20:56.517Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T03:20:54.581Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "nizar sebaghi",
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-22T03:23:22.807Z",
-    "cancellationMotif": "commande en double"
-  },
-  {
-    "id": "VH1OZP",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T04:18:27.148Z",
-    "customer": {
-      "name": "Test Bot",
-      "email": "",
-      "phone": "123456789",
-      "address": "123 Bot St",
-      "city": "AGLOU",
-      "sector": "Centre Ville"
-    },
-    "callResult": "Canceled",
-    "callHistory": {
-      "1": 5
-    },
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Appel rejete | Call Result set to Canceled",
-        "timestamp": "2025-12-22T20:27:31.944Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 5 for Day 1",
-        "timestamp": "2025-12-22T06:24:53.047Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 3 for Day 1",
-        "timestamp": "2025-12-22T06:10:57.370Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 1",
-        "timestamp": "2025-12-22T06:10:50.784Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
-        "timestamp": "2025-12-22T06:10:30.763Z",
-        "user": "Admin"
-      }
-    ],
-    "cancellationMotif": "Appel rejete"
-  },
-  {
-    "id": "LXJE73",
-    "items": [
-      {
-        "productId": "p6",
-        "quantity": 3,
-        "price": 89.99
-      },
-      {
-        "productId": "vyoww2xrg",
-        "quantity": 1,
-        "price": 100
-      }
-    ],
-    "total": 369.96999999999997,
-    "status": "canceled",
-    "date": "2025-12-22T04:25:02.606Z",
-    "customer": {
-      "name": "triniti trotinit",
-      "email": "sebaghinizar@sebinfo.ma",
-      "phone": "0696489568",
-      "address": "somewhere",
-      "city": "Rabat",
-      "sector": "Hay Riad"
-    },
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T19:22:25.803Z"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T05:32:20.937Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T05:32:18.926Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:21:37.323Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:26:38.362Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "nizar sebaghi",
-    "paymentType": "Virement",
-    "deliveryNotePrinted": true,
-    "fulfillmentStatus": "picked",
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "CGGC8Z",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T05:38:13.372Z",
-    "customer": {
-      "name": "Nizaron",
-      "email": "nizar@outlook.com",
-      "phone": "0661182295",
-      "address": "Full address 123 ",
-      "city": "AGDZ",
-      "sector": "Centre Ville"
-    },
-    "shippingStatus": "En Attente Ramassage",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
-        "timestamp": "2025-12-22T20:27:40.281Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 1",
-        "timestamp": "2025-12-22T06:31:19.774Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Appel coupé | Initiative Day 1",
-        "timestamp": "2025-12-22T06:31:14.675Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: undefined",
-        "timestamp": "2025-12-22T05:38:42.768Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: undefined",
-        "timestamp": "2025-12-22T05:40:18.795Z",
-        "user": "System"
-      }
-    ],
-    "rangeWeight": "Plus de 30Kg",
-    "weight": 10,
-    "callResult": "Canceled",
-    "callHistory": {
-      "1": 2
-    },
-    "cancellationMotif": "Mauvais numero"
-  },
-  {
-    "id": "3LCEGM",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T05:41:29.806Z",
-    "customer": {
-      "name": "nizarsmart",
-      "email": "",
-      "phone": "0661182295",
-      "address": "isgood",
-      "city": "AGLOU",
-      "sector": "AGLOU-TIZNIT"
-    },
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T05:41:42.834Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T05:41:41.197Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: undefined",
-        "timestamp": "2025-12-22T05:42:18.481Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:21:37.334Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:10:26.257Z",
-        "user": "Admin"
-      }
-    ],
-    "salesPerson": "nizar sebaghi",
-    "rangeWeight": "Plus de 30Kg",
-    "weight": 10,
-    "allowOpening": 1,
-    "shippingStatus": "En Attente Ramassage",
-    "deliveryNotePrinted": true
-  },
-  {
-    "id": "6KV1LI",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T05:43:05.654Z",
-    "customer": {
-      "name": "nazorei",
-      "email": "",
-      "phone": "0661182295",
-      "address": "",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "shippingStatus": "En Attente Ramassage",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
-        "timestamp": "2025-12-22T20:27:52.665Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Updated Call Result to Pas de réponse",
-        "timestamp": "2025-12-22T06:32:49.442Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 1",
-        "timestamp": "2025-12-22T06:32:41.277Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to nizar sebaghi",
-        "timestamp": "2025-12-22T06:32:33.743Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Appel coupé | Initiative Day 1",
-        "timestamp": "2025-12-22T06:32:31.098Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: undefined",
-        "timestamp": "2025-12-22T05:43:18.620Z",
-        "user": "System"
-      }
-    ],
-    "callResult": "Canceled",
-    "callHistory": {
-      "1": 2
-    },
-    "salesPerson": "nizar sebaghi",
-    "cancellationMotif": "Mauvais numero"
-  },
-  {
-    "id": "2HL9T3",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T05:48:50.313Z",
-    "customer": {
-      "name": "completelynew",
-      "email": "",
-      "phone": "0661122345",
-      "address": "this is the shipping address",
-      "city": "AGLOU",
-      "sector": "Centre Ville"
-    },
-    "callResult": "Canceled",
-    "callHistory": {
-      "1": 1
-    },
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
-        "timestamp": "2025-12-22T06:35:24.798Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
-        "timestamp": "2025-12-22T06:35:04.085Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T06:34:57.047Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 1",
-        "timestamp": "2025-12-22T06:34:44.434Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
-        "timestamp": "2025-12-22T06:34:42.552Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T06:34:36.701Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Boite vocal | Initiative Day 1",
-        "timestamp": "2025-12-22T06:33:52.568Z",
-        "user": "Admin"
-      }
-    ],
-    "cancellationMotif": "Mauvais numero"
-  },
-  {
-    "id": "J459D9",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T05:51:33.728Z",
-    "customer": {
-      "name": "hopa",
-      "email": "",
-      "phone": "0667748856",
-      "address": "Helloshippint",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T20:11:09.716Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:38:47.472Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:22:01.929Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:11:28.515Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": false,
-    "fulfillmentStatus": "picked",
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "6WVX2W",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 948.99,
-    "status": "canceled",
-    "date": "2025-12-22T05:58:01.291Z",
-    "customer": {
-      "name": "lastest",
-      "email": "",
-      "phone": "0661120090",
-      "address": "this is a ciity",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "shippingId": "6152667",
-    "shippingStatus": "En Attente Ramassage",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:38:37.912Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152667",
-        "timestamp": "2025-12-22T05:58:45.385Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:22:01.937Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:21:28.650Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/5091048121697456789?name=Delivery+voucher.pdf",
-    "callResult": "Appel confirmer",
-    "deliveryNotePrinted": true
-  },
-  {
-    "id": "CNODQP",
-    "items": [
-      {
-        "productId": "p3",
-        "quantity": 1,
-        "price": 899
-      }
-    ],
-    "total": 899,
-    "status": "canceled",
-    "date": "2025-12-22T06:02:13.180Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0666666666",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "fragile": true,
-    "shippingId": "6152668",
-    "shippingStatus": "ANNULÉE",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T19:58:23.627Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:38:25.413Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152668",
-        "timestamp": "2025-12-22T06:02:38.270Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:58:20.515Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:26:29.509Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/7813035827761481598?name=Delivery+voucher.pdf",
-    "callResult": "Appel confirmer",
-    "deliveryNotePrinted": true,
-    "fulfillmentStatus": "picked"
-  },
-  {
-    "id": "KFHP6Q",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T06:12:04.190Z",
-    "customer": {
-      "name": "NIZAR",
-      "email": "",
-      "phone": "0661187777",
-      "address": "SAHAT BOBOBO",
-      "city": "AGOUIM",
-      "sector": "Centre Ville"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:38:15.813Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T20:07:29.502Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:21:34.969Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true
-  },
-  {
-    "id": "MTVTEP",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T06:12:45.756Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0776678878",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:37:42.205Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:22:26.592Z",
-        "user": "Admin"
-      }
-    ]
-  },
-  {
-    "id": "UXIREV",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T06:17:13.211Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0777777777",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "AIN AICHA- TAOUNATE-",
-      "sector": "AIN AICHA"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:37:17.790Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:22:37.533Z",
-        "user": "Admin"
-      }
-    ]
-  },
-  {
-    "id": "SDSIMA",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T06:43:11.571Z",
-    "customer": {
-      "name": "nohaaaaa",
-      "email": "",
-      "phone": "0665578898",
-      "address": "agourai",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T06:43:29.806Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152669",
-        "timestamp": "2025-12-22T06:43:46.936Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:22:43.359Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152669",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/3402473665841758837?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "7H0VDN",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T06:44:35.873Z",
-    "customer": {
-      "name": "nohooooaba",
-      "email": "",
-      "phone": "0665585594",
-      "address": "ahalghds",
-      "city": "aguelmouss",
-      "sector": "Autre"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T19:59:56.146Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T06:44:49.850Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152670",
-        "timestamp": "2025-12-22T06:45:04.969Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:59:53.562Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-22T20:02:03.764Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:26:23.621Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152670",
-    "shippingStatus": "ANNULÉE",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11140964204657153691?name=Delivery+voucher.pdf",
-    "deliveryNotePrinted": true,
-    "fulfillmentStatus": "picked"
-  },
-  {
-    "id": "5QZLBR",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T06:46:47.997Z",
-    "customer": {
-      "name": "babamimouna",
-      "email": "",
-      "phone": "0661182296",
-      "address": "bibasokd",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T06:47:02.497Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152671",
-        "timestamp": "2025-12-22T06:47:22.729Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152673",
-        "timestamp": "2025-12-22T06:51:47.465Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:23:04.494Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152673",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/860948199104212563?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "Q0HJ7V",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T06:55:58.061Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T06:56:14.380Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152676",
-        "timestamp": "2025-12-22T06:56:42.551Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152677",
-        "timestamp": "2025-12-22T06:57:28.038Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152678",
-        "timestamp": "2025-12-22T06:58:26.896Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:23:11.995Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152678",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/11630348359339648434?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "DT2TND",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T07:12:28.097Z",
-    "customer": {
-      "name": "anothertest",
-      "email": "",
-      "phone": "0661182295",
-      "address": "agdiw",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T07:12:44.178Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152696",
-        "timestamp": "2025-12-22T07:13:03.023Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested via hub Rabat",
-        "timestamp": "2025-12-22T07:13:36.651Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested via hub Tanger",
-        "timestamp": "2025-12-22T07:16:48.212Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:23:18.204Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152696",
-    "shippingStatus": "Ramassage Demandé",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/6189993524876212207?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "56HTLJ",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T07:32:52.026Z",
-    "customer": {
-      "name": "comoestas",
-      "email": "",
-      "phone": "0661182295",
-      "address": "agdiz",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T07:33:08.985Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152717",
-        "timestamp": "2025-12-22T07:33:29.858Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152736",
-        "timestamp": "2025-12-22T07:45:58.038Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:23:24.589Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152736",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/372437319277892186?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/372437319277892186?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "Z8KXRD",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T07:47:11.965Z",
-    "customer": {
-      "name": "like a boss",
-      "email": "",
-      "phone": "0661182295",
-      "address": "agourai",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T19:58:49.364Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/22/2025, 8:52:09 AM)",
-        "timestamp": "2025-12-22T07:52:09.595Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T07:47:31.788Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152739",
-        "timestamp": "2025-12-22T07:47:54.567Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-22T19:58:45.431Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:26:17.950Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152739",
-    "shippingStatus": "ANNULÉE",
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-22T07:52:09.595Z",
-    "deliveryNotePrinted": true,
-    "fulfillmentStatus": "picked"
-  },
-  {
-    "id": "Z5RE6D",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T07:57:58.792Z",
-    "customer": {
-      "name": "soujack",
-      "email": "",
-      "phone": "0661182297",
-      "address": "heojisojdf",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T07:58:17.168Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152752",
-        "timestamp": "2025-12-22T07:58:35.485Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152760",
-        "timestamp": "2025-12-22T08:02:14.312Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:24:02.948Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6152760",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "KRIOLY",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T08:06:36.812Z",
-    "customer": {
-      "name": "fadfadsf",
-      "email": "",
-      "phone": "0666666666",
-      "address": "dfasdfadsfadfs",
-      "city": "aguelmouss",
-      "sector": "Centre Ville"
-    },
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T08:06:55.738Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6152807",
-        "timestamp": "2025-12-22T08:10:46.722Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6153459",
-        "timestamp": "2025-12-22T09:17:31.081Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:24:09.773Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6153459",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/12201041128531082729?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/12201041128531082729?name=Delivery+voucher.pdf",
-    "insuranceValue": 3999
-  },
-  {
-    "id": "AXR2ID",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T09:20:40.029Z",
-    "customer": {
-      "name": "Finally finally",
-      "email": "",
-      "phone": "0661182296",
-      "address": "ahfirr",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T09:20:52.815Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6153548",
-        "timestamp": "2025-12-22T09:21:19.436Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6153590",
-        "timestamp": "2025-12-22T09:24:13.230Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6153693",
-        "timestamp": "2025-12-22T09:30:54.717Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T09:32:19.039Z",
-        "user": "Admin"
-      }
-    ],
-    "fragile": true,
-    "shippingId": "6153693",
-    "shippingStatus": "ANNULÉE",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/6387348604080338276?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/6387348604080338276?name=Delivery+voucher.pdf",
-    "insuranceValue": 399
-  },
-  {
-    "id": "JG4AYS",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T09:34:47.282Z",
-    "customer": {
-      "name": "lastonetoday",
-      "email": "",
-      "phone": "0661182295",
-      "address": "perfect",
-      "city": "AGUERD TAMANART-TATA",
-      "sector": "TAMANART"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T09:36:41.245Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6153815",
-        "timestamp": "2025-12-22T09:38:25.877Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:24:28.605Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6153815",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/2329587963391787529?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/2329587963391787529?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "ACWR04",
-    "items": [
-      {
-        "productId": "p6",
-        "quantity": 1,
-        "price": 89.99
-      }
-    ],
-    "total": 89.99,
-    "status": "canceled",
-    "date": "2025-12-22T11:20:08.021Z",
-    "customer": {
-      "name": "Hellomyfriend",
-      "email": "",
-      "phone": "0661182295",
-      "address": "agdz",
-      "city": "AGDZ",
-      "sector": "Centre Ville"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T11:20:23.437Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6156521",
-        "timestamp": "2025-12-22T11:20:47.871Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6157965",
-        "timestamp": "2025-12-22T11:52:58.110Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-22T12:49:44.909Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-22T12:49:54.887Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:25:03.732Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6157965",
-    "shippingStatus": "En Attente Ramassage",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/16627953218410562566?name=Delivery+voucher.pdf",
-    "deliveryNotePrinted": true
-  },
-  {
-    "id": "XNBZI1",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T11:54:08.453Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0665542270",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "aguelmouss",
-      "sector": "Autre"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T11:54:20.351Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6158013",
-        "timestamp": "2025-12-22T11:54:34.515Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6158876",
-        "timestamp": "2025-12-22T12:21:30.674Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6158885",
-        "timestamp": "2025-12-22T12:22:04.476Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T12:35:28.879Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6158885",
-    "shippingStatus": "ANNULÉE",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/1061851736788625601?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/1061851736788625601?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "NHU7TF",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T12:23:22.083Z",
-    "customer": {
-      "name": "mzyan",
-      "email": "",
-      "phone": "0661182294",
-      "address": "adfasdf",
-      "city": "aguelmouss",
-      "sector": "aguelmouss-KHENIFRA"
-    },
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:23:37.685Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6158933",
-        "timestamp": "2025-12-22T12:23:55.037Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6158981",
-        "timestamp": "2025-12-22T12:26:36.989Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T12:35:10.709Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6158981",
-    "shippingStatus": "ANNULÉE",
-    "shippingVoucherUrl": "https://v1.cathedis.delivery/ws/files/report/16453714734298553098?name=Delivery+voucher.pdf",
-    "shippingLabelUrl": "https://v1.cathedis.delivery/ws/files/report/16453714734298553098?name=Delivery+voucher.pdf"
-  },
-  {
-    "id": "NZOUNE",
-    "items": [
-      {
-        "productId": "p3",
-        "quantity": 1,
-        "price": 899
-      }
-    ],
-    "total": 899,
-    "status": "canceled",
-    "date": "2025-12-22T12:36:58.275Z",
-    "customer": {
-      "name": "order1",
-      "email": "",
-      "phone": "0661182293",
-      "address": "asodjfjadsoif",
-      "city": "AIN AICHA- TAOUNATE-",
-      "sector": "AIN AICHA"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:37:28.726Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6159225",
-        "timestamp": "2025-12-22T12:40:14.151Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:25:10.470Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6159225",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "IBDBJ5",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T12:39:31.973Z",
-    "customer": {
-      "name": "order2",
-      "email": "",
-      "phone": "0661182273",
-      "address": "jaisjfaisfd",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer",
-        "timestamp": "2025-12-22T12:39:41.276Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6159226",
-        "timestamp": "2025-12-22T12:40:14.875Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:25:56.733Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingId": "6159226",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "0HRIF3",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 599.99
-      }
-    ],
-    "total": 599.99,
-    "status": "canceled",
-    "date": "2025-12-22T18:12:25.031Z",
-    "customer": {
-      "name": "Test User",
-      "email": "",
-      "phone": "0600000000",
-      "address": "",
-      "city": "AFOURER",
-      "sector": "Autre"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "to_pick",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-22T18:15:16.695Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-22T20:26:03.591Z",
-        "user": "Admin"
-      }
-    ]
-  },
-  {
-    "id": "P7Y2WX",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-22T18:16:31.071Z",
-    "customer": {
-      "name": "NEW ONE",
-      "email": "",
-      "phone": "0661182295",
-      "address": "hello world",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-22T18:16:57.308Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-22T18:16:41.934Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-22T20:26:11.252Z",
-        "user": "Admin"
-      }
-    ],
-    "shippingStatus": "ANNULÉE"
-  },
-  {
-    "id": "WVXN7F",
-    "items": [
-      {
-        "productId": "p7",
-        "quantity": 1,
-        "price": 219
-      }
-    ],
-    "total": 219,
-    "status": "canceled",
-    "date": "2025-12-22T20:29:43.317Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "AGADIR",
-      "sector": "Tamraght"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Canceled",
-    "cancellationMotif": "Mauvais numero",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to canceled | Reason: Mauvais numero | Call Result set to Canceled",
-        "timestamp": "2025-12-22T20:30:22.392Z",
-        "user": "Admin"
-      }
-    ]
-  },
-  {
-    "id": "XBMQOU",
-    "items": [
-      {
-        "productId": "p3",
-        "quantity": 1,
-        "price": 899
-      }
-    ],
-    "total": 899,
-    "status": "sales_order",
-    "date": "2025-12-23T11:25:15.714Z",
-    "customer": {
-      "name": "Nassim Sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "hay nassim",
-      "city": "Rabat",
-      "sector": "Hay Nassim "
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/23/2025, 1:05:24 PM)",
-        "timestamp": "2025-12-23T12:05:24.382Z",
-        "user": "Admin"
-      },
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T11:58:41.184Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/23/2025, 12:41:53 PM)",
-        "timestamp": "2025-12-23T11:41:53.552Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T11:41:39.273Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-23T11:58:36.048Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6176540",
-        "timestamp": "2025-12-23T17:15:03.094Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:15:05.462Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:50:06.276Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:00:37.905Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:01:30.025Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:02:41.688Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178261",
-        "timestamp": "2025-12-24T01:00:16.870Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178263",
-        "timestamp": "2025-12-24T01:01:53.641Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178269",
-        "timestamp": "2025-12-24T01:09:54.491Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat",
-        "timestamp": "2025-12-24T01:10:19.883Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178270",
-        "timestamp": "2025-12-24T01:11:53.376Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178271",
-        "timestamp": "2025-12-24T01:13:35.010Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Tanger",
-        "timestamp": "2025-12-24T01:16:01.642Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178275",
-        "timestamp": "2025-12-24T01:17:37.810Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T01:18:37.264Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat",
-        "timestamp": "2025-12-24T01:18:50.461Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Marked as Delivered based on document analysis: ramassage-22-12-2025.pdf (3).pdf",
-        "timestamp": "2025-12-24T01:51:30.740Z",
-        "user": "System"
-      }
-    ],
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-23T11:41:53.552Z",
-    "deliveryNotePrinted": true,
-    "shippingId": "6178275",
-    "shippingStatus": "Livré (Via PDF Scan)"
-  },
-  {
-    "id": "R64OU1",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": null
-      },
-      {
-        "productId": "p7",
-        "quantity": 1,
-        "price": 219
-      }
-    ],
-    "total": 219,
-    "status": "sales_order",
-    "date": "2025-12-23T11:49:40.612Z",
-    "customer": {
-      "name": "hello",
-      "email": "",
-      "phone": "0661182295",
-      "address": "this is the address",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "returned",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T11:58:41.470Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T11:54:17.265Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-23T11:58:36.054Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6176538",
-        "timestamp": "2025-12-23T17:14:39.987Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order marked as Returned.",
-        "timestamp": "2025-12-23T17:14:45.797Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": false,
-    "shippingId": "6176538",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "XTP2VG",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "sales_order",
-    "date": "2025-12-23T12:01:59.928Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "aguelmouss",
-      "sector": "Autre"
-    },
-    "salesPerson": "hello world",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T13:01:19.126Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T12:54:09.206Z",
-        "user": "Admin"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to hello world",
-        "timestamp": "2025-12-23T12:53:43.804Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-23T13:01:15.837Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6172241",
-        "timestamp": "2025-12-23T13:01:35.196Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order marked as Returned.",
-        "timestamp": "2025-12-23T17:06:40.949Z",
-        "user": "Admin"
-      }
-    ],
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "returned",
-    "deliveryNotePrinted": false,
-    "shippingId": "6172241",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "BUOLRW",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 698,
-    "status": "sales_order",
-    "date": "2025-12-23T12:04:24.244Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "shipping yes",
-      "city": "Agourai",
-      "sector": "Agourai"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T16:40:09.854Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/23/2025, 1:05:36 PM)",
-        "timestamp": "2025-12-23T12:05:36.261Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T12:05:02.471Z",
-        "user": "Admin"
-      },
-      {
-        "type": "business_mode",
-        "message": "Enabled Business/Company Info",
-        "timestamp": "2025-12-23T12:04:37.942Z",
-        "user": "Admin"
-      },
-      {
-        "type": "item_add",
-        "message": "Added Ergonomic Mesh Office Chair to order",
-        "timestamp": "2025-12-23T12:04:31.646Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-23T16:40:07.082Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6176241",
-        "timestamp": "2025-12-23T16:42:33.980Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order marked as Returned.",
-        "timestamp": "2025-12-23T16:59:34.856Z",
-        "user": "Admin"
-      }
-    ],
-    "companyName": "perfect",
-    "ice": "34234234",
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "returned",
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-23T12:05:36.261Z",
-    "deliveryNotePrinted": false,
-    "shippingId": "6176241",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "5YIEE3",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "vyoww2xrg",
-        "quantity": 1,
-        "price": 100
-      }
-    ],
-    "total": 449,
-    "status": "canceled",
-    "date": "2025-12-23T12:54:52.995Z",
-    "customer": {
-      "name": "howblack",
-      "email": "",
-      "phone": "0661182295",
-      "address": "",
-      "city": "AGLOU",
-      "sector": "AGLOU-TIZNIT"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to canceled | Reason: Mauvais numero | Call Result set to Canceled",
-        "timestamp": "2025-12-23T12:56:35.164Z",
-        "user": "Admin"
-      },
-      {
-        "type": "call_tracking",
-        "message": "Logged attempt 2 for Day 1",
-        "timestamp": "2025-12-23T12:56:13.540Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from sales_order to no_reply | Status: No Reply | Result: Appel coupé | Initiative Day 1",
-        "timestamp": "2025-12-23T12:55:56.644Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T12:55:07.046Z",
-        "user": "Admin"
-      },
-      {
-        "type": "item_add",
-        "message": "Added hola to order",
-        "timestamp": "2025-12-23T12:55:00.686Z",
-        "user": "Admin"
-      }
-    ],
-    "callResult": "Canceled",
-    "fulfillmentStatus": "to_pick",
-    "callHistory": {
-      "1": 2
-    },
-    "cancellationMotif": "Mauvais numero"
-  },
-  {
-    "id": "GKDCGC",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "eviglm437",
-        "quantity": 1,
-        "price": 100
-      }
-    ],
-    "total": 449,
-    "status": "canceled",
-    "date": "2025-12-23T13:08:52.454Z",
-    "customer": {
-      "name": "Nizar Sebaghi",
-      "email": "",
-      "phone": "0661192295",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "AGUERD TAMANART-TATA",
-      "sector": "TAMANART"
-    },
-    "salesPerson": "nizar sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "returned",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T13:09:21.539Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T13:08:57.907Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-23T13:09:18.625Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6176218",
-        "timestamp": "2025-12-23T16:40:39.429Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T16:40:56.246Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order marked as Returned.",
-        "timestamp": "2025-12-23T16:42:03.807Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-23T16:43:36.482Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6176218",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "049PCI",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-23T16:55:43.381Z",
-    "customer": {
-      "name": "Test User",
-      "email": "",
-      "phone": "0612345678",
-      "address": "gggggggg",
-      "city": "AGAFAY",
-      "sector": "AGAFAY-MARRAKECH"
-    },
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "to_pick",
-    "logs": [
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T19:06:04.445Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order canceled by admin (Pre-shipping).",
-        "timestamp": "2025-12-23T19:06:27.768Z",
-        "user": "Admin"
-      }
-    ]
-  },
-  {
-    "id": "24KNBQ",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "p6",
-        "quantity": 1,
-        "price": 89.99
-      }
-    ],
-    "total": 438.99,
-    "status": "sales_order",
-    "date": "2025-12-23T17:19:43.293Z",
-    "customer": {
-      "name": "hello world this is me",
-      "email": "",
-      "phone": "0661182295",
-      "address": "This is the first address that you have to be very good in order to know that I am only testing this label\r\nThis is all good do not worry\r\nplease, Agdal\r\nMorocco",
-      "city": "BNI AHMED GHARBIA- CHEFCHAOUEN",
-      "sector": "BNI AHMED GHARBIA"
-    },
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T17:21:00.446Z"
-      },
-      {
-        "type": "sales_person_assign",
-        "message": "Assigned to Nizar Sebaghi",
-        "timestamp": "2025-12-23T17:20:41.266Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T17:19:52.054Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6176608",
-        "timestamp": "2025-12-23T17:21:09.312Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:21:13.963Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:27:44.465Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:28:37.817Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:29:12.796Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:43:34.239Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:02:33.490Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:03:01.569Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T01:10:33.674Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178274",
-        "timestamp": "2025-12-24T01:16:22.351Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178288",
-        "timestamp": "2025-12-24T01:55:22.172Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T01:55:24.812Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T01:55:27.554Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Tanger",
-        "timestamp": "2025-12-24T01:55:37.753Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Marked as Delivered based on document analysis: ramassage-22-12-2025.pdf (4).pdf",
-        "timestamp": "2025-12-24T01:56:51.975Z",
-        "user": "System"
-      }
-    ],
-    "salesPerson": "Nizar Sebaghi",
-    "deliveryNotePrinted": true,
-    "shippingId": "6178288",
-    "shippingStatus": "Livré (Via PDF Scan)"
-  },
-  {
-    "id": "ARY2H2",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      },
-      {
-        "productId": "p6",
-        "quantity": 1,
-        "price": 89.99
-      }
-    ],
-    "total": 438.99,
-    "status": "canceled",
-    "date": "2025-12-23T17:44:48.192Z",
-    "customer": {
-      "name": "Nizar Sebaghi Nizar Sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "05, Rue de Dakar, appt. n° 1, Océan, 05, Rue de Dakar, appt. n° 1, Océan\r\n05, Rue de Dakar, appt. n° 1, Océan\r\n05, Rue de Dakar, appt. n° 1, Océan",
-      "city": "BNI AHMED GHARBIA- CHEFCHAOUEN",
-      "sector": "BNI AHMED GHARBIA"
-    },
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T17:45:16.801Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T17:44:58.432Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-23T17:45:14.278Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6176728",
-        "timestamp": "2025-12-23T17:45:30.669Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:45:33.522Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:48:15.459Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:50:14.110Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:54:44.672Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T17:58:47.138Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:00:54.014Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:02:25.575Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:02:57.022Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:05:14.015Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:30:45.052Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:31:48.641Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6177152",
-        "timestamp": "2025-12-23T18:32:00.733Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T18:32:08.707Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order and Shipment canceled by admin.",
-        "timestamp": "2025-12-23T18:43:32.344Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6177152",
-    "shippingStatus": "ANNULÉE",
-    "fragile": true
-  },
-  {
-    "id": "OM5GTV",
-    "items": [
-      {
-        "productId": "p2",
-        "quantity": 1,
-        "price": 349
-      }
-    ],
-    "total": 349,
-    "status": "canceled",
-    "date": "2025-12-23T19:08:10.287Z",
-    "customer": {
-      "name": "hello",
-      "email": "",
-      "phone": "0661182295",
-      "address": "hello",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "returned",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-23T19:08:25.020Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-23T19:08:14.930Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6177437",
-        "timestamp": "2025-12-23T19:09:00.830Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-23T19:09:06.630Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status",
-        "message": "Order marked as Returned.",
-        "timestamp": "2025-12-23T19:09:32.847Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6177437",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "ZU7535",
-    "items": [
-      {
-        "productId": "p1",
-        "quantity": 1,
-        "price": 100
-      }
-    ],
-    "total": 100,
-    "status": "canceled",
-    "date": "2025-12-24T01:15:16.179Z",
-    "customer": {
-      "name": "asdfsadfasdf",
-      "email": "",
-      "phone": "0661182295",
-      "address": "ihiuhiuhhuhuhi",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "returned",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-24T09:40:47.152Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-24T01:15:22.880Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T09:39:58.058Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6178940",
-        "timestamp": "2025-12-24T09:41:13.324Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T09:45:59.479Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat",
-        "timestamp": "2025-12-24T09:46:14.687Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Marked as Delivered based on document analysis: ramassage-22-12-2025.pdf (5).pdf",
-        "timestamp": "2025-12-24T09:49:10.157Z",
-        "user": "System"
-      },
-      {
-        "type": "status",
-        "message": "Order marked as Returned.",
-        "timestamp": "2025-12-24T09:59:43.618Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6178940",
-    "shippingStatus": "Livré (Via PDF Scan)"
-  },
-  {
-    "id": "CW1871",
-    "items": [
-      {
-        "productId": "zlt59rqx8",
-        "quantity": 1,
-        "price": 20
-      },
-      {
-        "productId": "k0asfljps",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 40,
-    "status": "sales_order",
-    "date": "2025-12-24T11:42:34.177Z",
-    "customer": {
-      "name": "fsadfasdfsadf",
-      "email": "",
-      "phone": "0661182295",
-      "address": "asfsafasdfasf",
-      "city": "Agzirt",
-      "sector": "Centre Ville"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-24T23:04:09.545Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/24/2025, 7:33:36 PM)",
-        "timestamp": "2025-12-24T18:33:36.555Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from no_reply to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-24T18:33:33.244Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to no_reply | Status: No Reply | Result: Ligne Occupé | Initiative Day 1",
-        "timestamp": "2025-12-24T11:46:16.209Z",
-        "user": "Admin"
-      },
-      {
-        "type": "comment",
-        "message": "Hello",
-        "timestamp": "2025-12-24T11:46:09.762Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T23:04:00.122Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188849",
-        "timestamp": "2025-12-24T23:05:47.358Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T23:06:28.259Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat-AAKKARI-6322 (ID: 6322)",
-        "timestamp": "2025-12-24T23:13:27.391Z",
-        "user": "Admin"
-      }
-    ],
-    "callResult": "Appel confirmer",
-    "callHistory": {
-      "1": 1
-    },
-    "fulfillmentStatus": "picked",
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-24T18:33:36.555Z",
-    "deliveryNotePrinted": true,
-    "shippingId": "6188849",
-    "shippingStatus": "Pickup: Rabat-AAKKARI-6322"
-  },
-  {
-    "id": "IN6WT9",
-    "items": [
-      {
-        "productId": "zlt59rqx8",
-        "quantity": 1,
-        "price": 20
-      },
-      {
-        "productId": "k0asfljps",
-        "quantity": 1,
-        "price": 20
-      },
-      {
-        "productId": "gets19buh",
-        "quantity": 1,
-        "price": 20
-      },
-      {
-        "productId": "bklgok9wt",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 80,
-    "status": "sales_order",
-    "date": "2025-12-24T11:47:27.135Z",
-    "customer": {
-      "name": "fasfdsafdsafdsa",
-      "email": "",
-      "phone": "0661182295",
-      "address": "fagregfsfdgsfgdfg",
-      "city": "AIN AICHA- TAOUNATE-",
-      "sector": "AIN AICHA"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-24T18:17:18.849Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-24T11:47:47.163Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T16:57:12.581Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:05:25.146Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:05:31.284Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:05:37.100Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:07:33.983Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:07:42.928Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:08:26.891Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:08:54.477Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:09:01.187Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:09:23.507Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:12:08.936Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:13:18.953Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:18:32.796Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:26:32.382Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:28:33.772Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:29:12.741Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:29:35.876Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:37:00.867Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:04:09.875Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:04:15.003Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:04:37.913Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:04:46.302Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:22.656Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:27.349Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:45.282Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:57.424Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:06:07.917Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:06:32.138Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:15:56.392Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:16:53.423Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188073",
-        "timestamp": "2025-12-24T18:30:29.215Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T18:30:40.005Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T18:31:11.868Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188796",
-        "timestamp": "2025-12-24T22:39:41.806Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188864",
-        "timestamp": "2025-12-24T23:15:15.510Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T23:15:17.926Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat-CENTRE VILLE-26301 (ID: 26301)",
-        "timestamp": "2025-12-24T23:16:39.426Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6188864",
-    "shippingStatus": "Pickup: Rabat-CENTRE VILLE-26301"
-  },
-  {
-    "id": "LV03FI",
-    "items": [
-      {
-        "productId": "zlt59rqx8",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 20,
-    "status": "sales_order",
-    "date": "2025-12-24T17:06:09.038Z",
-    "customer": {
-      "name": "nizar sebaghi",
-      "email": "",
-      "phone": "0661182295",
-      "address": "adfasdfadsfasdf",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-24T18:17:18.955Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-24T17:06:13.388Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:06:31.832Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:07:33.988Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:07:42.930Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:08:54.479Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:09:01.189Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:12:08.939Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:13:18.957Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:18:32.800Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T17:28:33.776Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:04:37.915Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:22.659Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:27.354Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:45.284Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:05:57.428Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:06:32.141Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:15:56.396Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T18:17:04.225Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188790",
-        "timestamp": "2025-12-24T22:38:01.617Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188887",
-        "timestamp": "2025-12-24T23:24:56.346Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T23:25:23.465Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat-CENTRE VILLE-26301 (ID: 26301)",
-        "timestamp": "2025-12-24T23:25:35.968Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6188887",
-    "shippingStatus": "Pickup: Rabat-CENTRE VILLE-26301"
-  },
-  {
-    "id": "DJLLFT",
-    "items": [
-      {
-        "productId": "zlt59rqx8",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 20,
-    "status": "sales_order",
-    "date": "2025-12-24T23:27:51.013Z",
-    "customer": {
-      "name": "adsfasdfsadf",
-      "email": "",
-      "phone": "0661182295",
-      "address": "dsafsadfsafsafsadf",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-24T23:28:13.678Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-24T23:27:56.983Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T23:28:07.375Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188895",
-        "timestamp": "2025-12-24T23:28:19.156Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T23:28:47.432Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188898",
-        "timestamp": "2025-12-24T23:29:06.452Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188902",
-        "timestamp": "2025-12-24T23:29:57.040Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T23:30:16.292Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at Rabat-AAKKARI-6322 (ID: 6322)",
-        "timestamp": "2025-12-24T23:30:22.939Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "shippingId": "6188902",
-    "shippingStatus": "Pickup: Rabat-AAKKARI-6322",
-    "fragile": false
-  },
-  {
-    "id": "21JCJM",
-    "items": [
-      {
-        "productId": "k0asfljps",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 20,
-    "status": "sales_order",
-    "date": "2025-12-24T23:33:28.358Z",
-    "customer": {
-      "name": "ewfidsafhdsuff",
-      "email": "",
-      "phone": "0661182295",
-      "address": "asdfasdfsafdsaf",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 5,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-24T23:33:46.878Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-24T23:33:33.056Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-24T23:33:39.459Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188918",
-        "timestamp": "2025-12-24T23:42:37.477Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188920",
-        "timestamp": "2025-12-24T23:43:30.814Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188922",
-        "timestamp": "2025-12-24T23:45:09.047Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188923",
-        "timestamp": "2025-12-24T23:45:35.859Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188924",
-        "timestamp": "2025-12-24T23:45:54.566Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-24T23:46:30.764Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188926",
-        "timestamp": "2025-12-24T23:47:34.207Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6188927",
-        "timestamp": "2025-12-24T23:48:16.241Z",
-        "user": "System"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6189006",
-        "timestamp": "2025-12-25T01:25:08.581Z",
-        "user": "System"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed.",
-        "timestamp": "2025-12-25T01:25:27.115Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Pickup requested at RABAT (ID: 26301)",
-        "timestamp": "2025-12-25T01:44:54.917Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": true,
-    "weight": 5,
-    "shippingId": "6189006",
-    "shippingStatus": "Pickup: RABAT",
-    "rangeWeight": "Entre 1.2 Kg et 5 Kg"
-  },
-  {
-    "id": "MYRUKA",
-    "items": [
-      {
-        "productId": "k0asfljps",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 20,
-    "status": "sales_order",
-    "date": "2025-12-25T01:45:59.342Z",
-    "customer": {
-      "name": "asjdifasidfo",
-      "email": "",
-      "phone": "0661182295",
-      "address": "asjdfoiasdjfoi",
-      "city": "Ahfir",
-      "sector": "Ahfir"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-25T01:46:51.762Z"
-      },
-      {
-        "type": "invoice_download",
-        "message": "Downloaded order invoice (Issue Date: 12/25/2025, 2:46:17 AM)",
-        "timestamp": "2025-12-25T01:46:17.431Z",
-        "user": "Admin"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-25T01:46:14.096Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-25T01:46:39.589Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6189014",
-        "timestamp": "2025-12-25T01:51:37.621Z",
-        "user": "System"
-      }
-    ],
-    "invoiceDownloaded": true,
-    "invoiceDate": "2025-12-25T01:46:17.431Z",
-    "deliveryNotePrinted": false,
-    "shippingId": "6189014",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "BGUN9C",
-    "items": [
-      {
-        "productId": "k0asfljps",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 20,
-    "status": "sales_order",
-    "date": "2025-12-25T01:53:50.916Z",
-    "customer": {
-      "name": "asdfsadf",
-      "email": "",
-      "phone": "0661182295",
-      "address": "sadjfiasodjfoiasdf",
-      "city": "aguelmouss",
-      "sector": "Autre"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 0,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-25T01:54:27.822Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-25T01:54:04.568Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-25T01:54:18.691Z",
-        "user": "Admin"
-      }
-    ],
-    "deliveryNotePrinted": false
-  },
-  {
-    "id": "7IUFUC",
-    "items": [
-      {
-        "productId": "k0asfljps",
-        "quantity": 1,
-        "price": 20
-      }
-    ],
-    "total": 20,
-    "status": "sales_order",
-    "date": "2025-12-25T01:56:03.628Z",
-    "customer": {
-      "name": "ifadjfajsdf",
-      "email": "",
-      "phone": "0661182295",
-      "address": "aodjfaodif",
-      "city": "Agzirt",
-      "sector": "Agzirt"
-    },
-    "salesPerson": "Nizar Sebaghi",
-    "allowOpening": 1,
-    "packageCount": 1,
-    "callResult": "Appel confirmer",
-    "fulfillmentStatus": "picked",
-    "logs": [
-      {
-        "type": "fulfillment",
-        "message": "Order marked as PICKED",
-        "timestamp": "2025-12-25T01:56:45.788Z"
-      },
-      {
-        "type": "status_update",
-        "message": "Changed status from pending to sales_order | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK",
-        "timestamp": "2025-12-25T01:56:17.826Z",
-        "user": "Admin"
-      },
-      {
-        "type": "print",
-        "message": "Delivery note printed (Bulk).",
-        "timestamp": "2025-12-25T01:56:32.522Z",
-        "user": "Admin"
-      },
-      {
-        "type": "shipping",
-        "message": "Shipment created with Cathedis. ID: 6189016",
-        "timestamp": "2025-12-25T01:57:01.360Z",
-        "user": "System"
-      }
-    ],
-    "deliveryNotePrinted": false,
-    "shippingId": "6189016",
-    "shippingStatus": "En Attente Ramassage"
-  },
-  {
-    "id": "EEOY1F",
-    "items": [
-      {
-        "productId": "23055",
+        "productId": "wc_23055",
         "quantity": 2,
         "price": 1679
       }
@@ -4331,16 +25,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23809)",
-        "timestamp": "2025-12-25T02:34:44.640Z",
+        "timestamp": "2025-12-25T04:31:07.603Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "GJB94A",
+    "id": "SUAODT",
     "items": [
       {
-        "productId": "23052",
+        "productId": "wc_23052",
         "quantity": 1,
         "price": 1490
       }
@@ -4362,16 +56,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23808)",
-        "timestamp": "2025-12-25T02:34:44.660Z",
+        "timestamp": "2025-12-25T04:31:07.609Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "A63ESW",
+    "id": "A5MDRE",
     "items": [
       {
-        "productId": "23055",
+        "productId": "wc_23055",
         "quantity": 2,
         "price": 1679
       }
@@ -4393,16 +87,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23807)",
-        "timestamp": "2025-12-25T02:34:44.679Z",
+        "timestamp": "2025-12-25T04:31:07.615Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "35TSMA",
+    "id": "A617LO",
     "items": [
       {
-        "productId": "23055",
+        "productId": "wc_23055",
         "quantity": 1,
         "price": 1679
       }
@@ -4424,16 +118,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23806)",
-        "timestamp": "2025-12-25T02:34:44.695Z",
+        "timestamp": "2025-12-25T04:31:07.619Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "DEHP2M",
+    "id": "N4DEMP",
     "items": [
       {
-        "productId": "21018",
+        "productId": "wc_21018",
         "quantity": 1,
         "price": 269
       }
@@ -4455,16 +149,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23805)",
-        "timestamp": "2025-12-25T02:34:44.712Z",
+        "timestamp": "2025-12-25T04:31:07.624Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "GWQBMY",
+    "id": "5WAG9J",
     "items": [
       {
-        "productId": "18135",
+        "productId": "wc_18135",
         "quantity": 1,
         "price": 229
       }
@@ -4486,16 +180,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23804)",
-        "timestamp": "2025-12-25T02:34:44.730Z",
+        "timestamp": "2025-12-25T04:31:07.628Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "K9U4RL",
+    "id": "M3YVPB",
     "items": [
       {
-        "productId": "23052",
+        "productId": "wc_23052",
         "quantity": 1,
         "price": 1490
       }
@@ -4517,16 +211,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23803)",
-        "timestamp": "2025-12-25T02:34:44.751Z",
+        "timestamp": "2025-12-25T04:31:07.634Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "322J39",
+    "id": "NF43TG",
     "items": [
       {
-        "productId": "23055",
+        "productId": "wc_23055",
         "quantity": 1,
         "price": 1679
       }
@@ -4548,16 +242,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23802)",
-        "timestamp": "2025-12-25T02:34:44.779Z",
+        "timestamp": "2025-12-25T04:31:07.641Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "MD4NWG",
+    "id": "KYVQD9",
     "items": [
       {
-        "productId": "21025",
+        "productId": "wc_21025",
         "quantity": 1,
         "price": 199
       }
@@ -4579,21 +273,21 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23801)",
-        "timestamp": "2025-12-25T02:34:44.802Z",
+        "timestamp": "2025-12-25T04:31:07.648Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "MNTSCO",
+    "id": "ERQZ56",
     "items": [
       {
-        "productId": "21025",
+        "productId": "wc_21025",
         "quantity": 1,
         "price": 199
       },
       {
-        "productId": "18135",
+        "productId": "wc_18135",
         "quantity": 1,
         "price": 229
       }
@@ -4615,16 +309,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23800)",
-        "timestamp": "2025-12-25T02:34:44.820Z",
+        "timestamp": "2025-12-25T04:31:07.653Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "JI3FTA",
+    "id": "GPESEO",
     "items": [
       {
-        "productId": "23055",
+        "productId": "wc_23055",
         "quantity": 1,
         "price": 1679
       }
@@ -4646,16 +340,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23799)",
-        "timestamp": "2025-12-25T02:34:44.838Z",
+        "timestamp": "2025-12-25T04:31:07.659Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "TVTJK1",
+    "id": "YUXKJV",
     "items": [
       {
-        "productId": "19275",
+        "productId": "wc_19275",
         "quantity": 1,
         "price": 199
       }
@@ -4677,16 +371,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23798)",
-        "timestamp": "2025-12-25T02:34:44.863Z",
+        "timestamp": "2025-12-25T04:31:07.666Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "HUJONK",
+    "id": "65XBXF",
     "items": [
       {
-        "productId": "19272",
+        "productId": "wc_19272",
         "quantity": 1,
         "price": 179
       }
@@ -4708,16 +402,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23797)",
-        "timestamp": "2025-12-25T02:34:44.880Z",
+        "timestamp": "2025-12-25T04:31:07.670Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "OVLYK4",
+    "id": "A0B7LJ",
     "items": [
       {
-        "productId": "23052",
+        "productId": "wc_23052",
         "quantity": 1,
         "price": 1490
       }
@@ -4739,16 +433,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23796)",
-        "timestamp": "2025-12-25T02:34:44.901Z",
+        "timestamp": "2025-12-25T04:31:07.677Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "ETIUEA",
+    "id": "TDV7GL",
     "items": [
       {
-        "productId": "18135",
+        "productId": "wc_18135",
         "quantity": 1,
         "price": 229
       }
@@ -4770,16 +464,16 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23795)",
-        "timestamp": "2025-12-25T02:34:44.917Z",
+        "timestamp": "2025-12-25T04:31:07.683Z",
         "user": "System"
       }
     ]
   },
   {
-    "id": "BMWFMM",
+    "id": "E96DIJ",
     "items": [
       {
-        "productId": "18135",
+        "productId": "wc_18135",
         "quantity": 1,
         "price": 229
       }
@@ -4801,7 +495,1433 @@
       {
         "type": "import",
         "message": "Imported from WooCommerce (Order #23793)",
-        "timestamp": "2025-12-25T02:34:44.934Z",
+        "timestamp": "2025-12-25T04:31:07.689Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "JARN0B",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-24T12:05:26",
+    "customer": {
+      "name": "Elaomari Abdellatif",
+      "email": "",
+      "phone": "+212601351873",
+      "address": "Centre agouim ighrem nougdal",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23792)",
+        "timestamp": "2025-12-25T04:31:07.695Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "R4DLU1",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-24T11:44:37",
+    "customer": {
+      "name": "Mohamed Ait oumghar",
+      "email": "",
+      "phone": "+212684953155",
+      "address": "Centre assaki province tafoudant",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23791)",
+        "timestamp": "2025-12-25T04:31:07.703Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "YFGSB6",
+    "items": [
+      {
+        "productId": "wc_17492",
+        "quantity": 1,
+        "price": 169
+      }
+    ],
+    "total": 169,
+    "status": "pending",
+    "date": "2025-12-24T10:57:31",
+    "customer": {
+      "name": "Aiman Shehada",
+      "email": "araaiman3006@gmail.com",
+      "phone": "+212707553199",
+      "address": "Fes. Rut ain chkef",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23790)",
+        "timestamp": "2025-12-25T04:31:07.713Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "BUXXLQ",
+    "items": [
+      {
+        "productId": "wc_21524",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-24T10:49:39",
+    "customer": {
+      "name": "Jalal eddine Meziane mtalsi",
+      "email": "",
+      "phone": "+212662185989",
+      "address": "Lotissement belle vue imm 12 app 82",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23789)",
+        "timestamp": "2025-12-25T04:31:07.721Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "84ND7L",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-24T09:59:54",
+    "customer": {
+      "name": "lahbal Yassin",
+      "email": "yassinlhl@gmail.com",
+      "phone": "+212672556018",
+      "address": "Hay aghrass II avenue anjra numero 127 martil",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23788)",
+        "timestamp": "2025-12-25T04:31:07.727Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "BI3076",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T23:56:54",
+    "customer": {
+      "name": "Sadia Matjinouche",
+      "email": "",
+      "phone": "+212661345682",
+      "address": "Boulevard Mohamed 5 Berrechid",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23787)",
+        "timestamp": "2025-12-25T04:37:34.720Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "99C3Y6",
+    "items": [
+      {
+        "productId": "wc_21524",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-23T21:46:00",
+    "customer": {
+      "name": "Kharbou Fatima Zahra",
+      "email": "kharbou24@gmail.com",
+      "phone": "+212632005513",
+      "address": "Hay ljadid",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23786)",
+        "timestamp": "2025-12-25T04:37:34.726Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "OAJ7H7",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T21:34:57",
+    "customer": {
+      "name": "Adkhis Lahcen",
+      "email": "",
+      "phone": "+212619555155",
+      "address": "Galvacier zone industrielle bir rami kenitra",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23785)",
+        "timestamp": "2025-12-25T04:37:34.731Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "LLI6LC",
+    "items": [
+      {
+        "productId": "wc_21018",
+        "quantity": 1,
+        "price": 269
+      }
+    ],
+    "total": 269,
+    "status": "pending",
+    "date": "2025-12-23T21:24:02",
+    "customer": {
+      "name": "Hamza Nfissi",
+      "email": "hamza.nfissi49@gmail.com",
+      "phone": "+212695561365",
+      "address": "CHERAKA CR HJAR NHAL TANGER",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23784)",
+        "timestamp": "2025-12-25T04:37:34.737Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "MPH8UJ",
+    "items": [
+      {
+        "productId": "wc_17495",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-23T21:12:49",
+    "customer": {
+      "name": "Badr-eddine Mimouni",
+      "email": "",
+      "phone": "+212680046633",
+      "address": "66 BD EL MOUKAOUAMA HAY EL HANAE SIDI SLIMANE BERKANE",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23783)",
+        "timestamp": "2025-12-25T04:37:34.743Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "1HU0J2",
+    "items": [
+      {
+        "productId": "wc_17483",
+        "quantity": 1,
+        "price": 189
+      }
+    ],
+    "total": 189,
+    "status": "pending",
+    "date": "2025-12-23T20:14:49",
+    "customer": {
+      "name": "Anas Mazzi",
+      "email": "",
+      "phone": "+212667706352",
+      "address": "الولفة الفردوس",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23782)",
+        "timestamp": "2025-12-25T04:37:34.749Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "GDBMLR",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T20:13:28",
+    "customer": {
+      "name": "Mohammed hajim",
+      "email": "fusojapon@gmail.com",
+      "phone": "+212661106586",
+      "address": "sidi moumen",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23781)",
+        "timestamp": "2025-12-25T04:37:34.754Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "2IAZHK",
+    "items": [
+      {
+        "productId": "wc_17495",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-23T19:24:11",
+    "customer": {
+      "name": "نورالدين نورالدين",
+      "email": "",
+      "phone": "+212662061340",
+      "address": "Boulevard Allah fassi",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23780)",
+        "timestamp": "2025-12-25T04:37:34.760Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "WE76YX",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T17:42:36",
+    "customer": {
+      "name": "Abdelhak Farissi",
+      "email": "",
+      "phone": "+212773130803",
+      "address": "LOT AL AZHAR GH 47 A IMM 150, EL OULFA",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23779)",
+        "timestamp": "2025-12-25T04:37:34.768Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "BPJOWZ",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T16:01:24",
+    "customer": {
+      "name": "Yocef Mez",
+      "email": "",
+      "phone": "+212608757799",
+      "address": "Laayoune rue Mekka",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23778)",
+        "timestamp": "2025-12-25T04:37:34.773Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "3K8BZ2",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T15:29:19",
+    "customer": {
+      "name": "Toufik Sakkali",
+      "email": "sakkalli@gmail.com",
+      "phone": "+212699966600",
+      "address": "Quartier oulad brahim Rue 109 n 22",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23777)",
+        "timestamp": "2025-12-25T04:37:34.785Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "0NA9HX",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-23T15:00:56",
+    "customer": {
+      "name": "Ismail Hamdouni",
+      "email": "ismham@hotmail.fr",
+      "phone": "+212631666678",
+      "address": "Rue Abd Elkarim Elkhattabi Nº 8 Zaio",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23776)",
+        "timestamp": "2025-12-25T04:37:34.791Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "EL3YGP",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-23T14:36:35",
+    "customer": {
+      "name": "Said Elidrissi",
+      "email": "elidrissi.s3791@gmail.com",
+      "phone": "+212663818520",
+      "address": "Topaze immeuble C app03",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23775)",
+        "timestamp": "2025-12-25T04:37:34.797Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "ZCFSVN",
+    "items": [
+      {
+        "productId": "wc_23052",
+        "quantity": 1,
+        "price": 1490
+      }
+    ],
+    "total": 1490,
+    "status": "pending",
+    "date": "2025-12-23T14:29:05",
+    "customer": {
+      "name": "Taoufik El hilali",
+      "email": "",
+      "phone": "+212667899809",
+      "address": "Lot ouad el jadid route de rabat",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23774)",
+        "timestamp": "2025-12-25T04:37:34.804Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "IXZGWB",
+    "items": [
+      {
+        "productId": "wc_21034",
+        "quantity": 1,
+        "price": 189
+      }
+    ],
+    "total": 189,
+    "status": "pending",
+    "date": "2025-12-23T13:43:48",
+    "customer": {
+      "name": "Abderrahman Azizi",
+      "email": "abderrahmanazizi@gmail.com",
+      "phone": "+212661849114",
+      "address": "706 bloc c madinat elwahda",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23773)",
+        "timestamp": "2025-12-25T04:37:34.811Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "HML6E9",
+    "items": [
+      {
+        "productId": "wc_21021",
+        "quantity": 1,
+        "price": 189
+      }
+    ],
+    "total": 189,
+    "status": "pending",
+    "date": "2025-12-23T12:28:55",
+    "customer": {
+      "name": "Med el habib Wirhlani",
+      "email": "habimed798@hotmail.com",
+      "phone": "+212664729161",
+      "address": "32 lot gharnata lksour",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23772)",
+        "timestamp": "2025-12-25T04:37:34.817Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "9F77RH",
+    "items": [
+      {
+        "productId": "wc_21141",
+        "quantity": 1,
+        "price": 219
+      }
+    ],
+    "total": 219,
+    "status": "pending",
+    "date": "2025-12-23T11:53:40",
+    "customer": {
+      "name": "Morad Boualam",
+      "email": "",
+      "phone": "+212669903860",
+      "address": "a coté de café blonco route ain chkef fes",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23771)",
+        "timestamp": "2025-12-25T04:37:34.824Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "ADOVQ7",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-23T10:30:22",
+    "customer": {
+      "name": "Kharroub Kharroub",
+      "email": "abdo.kh.2022.1444@gmail.com",
+      "phone": "+212643634937",
+      "address": "Maghreb Jadid",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23770)",
+        "timestamp": "2025-12-25T04:37:34.830Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "I36R61",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-23T10:23:30",
+    "customer": {
+      "name": "Saoudi Nabil",
+      "email": "bibatataha@gmail.com",
+      "phone": "+212666265361",
+      "address": "26 MM caserne des forces auxiliaires a côté mosqué joha.",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23769)",
+        "timestamp": "2025-12-25T04:37:34.836Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "MU7GIZ",
+    "items": [
+      {
+        "productId": "wc_17483",
+        "quantity": 1,
+        "price": 189
+      }
+    ],
+    "total": 189,
+    "status": "pending",
+    "date": "2025-12-23T10:10:32",
+    "customer": {
+      "name": "Anas Stitou",
+      "email": "",
+      "phone": "+212661753274",
+      "address": "Sect 14 res borj D hay riad rabat",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23768)",
+        "timestamp": "2025-12-25T04:37:34.842Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "BV2UZ6",
+    "items": [
+      {
+        "productId": "wc_23052",
+        "quantity": 1,
+        "price": 1490
+      }
+    ],
+    "total": 1490,
+    "status": "pending",
+    "date": "2025-12-22T23:37:06",
+    "customer": {
+      "name": "Abderazzak Mohssine",
+      "email": "mohssineabderazzak@outlook.com",
+      "phone": "+212661485044",
+      "address": "Berrechid",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23767)",
+        "timestamp": "2025-12-25T04:42:40.829Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "P2AJ3Q",
+    "items": [
+      {
+        "productId": "wc_23208",
+        "quantity": 1,
+        "price": 450
+      }
+    ],
+    "total": 450,
+    "status": "pending",
+    "date": "2025-12-22T23:18:07",
+    "customer": {
+      "name": "Nahla Abgor",
+      "email": "",
+      "phone": "+212654305575",
+      "address": "Avenue Annaser",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23766)",
+        "timestamp": "2025-12-25T04:42:40.858Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "FJKBFR",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T22:54:27",
+    "customer": {
+      "name": "احمد المعزي",
+      "email": "elahmed959@gmail.com",
+      "phone": "+212613380770",
+      "address": "مركز عين دريج جماعة لمجاعرة إقليم وزان",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23765)",
+        "timestamp": "2025-12-25T04:42:40.891Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "LCG7IV",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T22:53:27",
+    "customer": {
+      "name": "Brahim Hariri madini",
+      "email": "brahimmadini5@gmail.com",
+      "phone": "+212664461898",
+      "address": "Zone industrielle mghougha",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23764)",
+        "timestamp": "2025-12-25T04:42:40.922Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "88BUWM",
+    "items": [
+      {
+        "productId": "wc_21028",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-22T21:30:10",
+    "customer": {
+      "name": "Kaoutar Elatt",
+      "email": "",
+      "phone": "+212647063693",
+      "address": "Sidi yahya de gharb",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23763)",
+        "timestamp": "2025-12-25T04:42:40.953Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "XI8O1R",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T21:17:24",
+    "customer": {
+      "name": "Abderrahim EL Morsli",
+      "email": "saadija0815@gmail.com",
+      "phone": "+212674949558",
+      "address": "Jacaranda A2 N 8 Hay Matar BEN SLIMANE",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23762)",
+        "timestamp": "2025-12-25T04:42:40.978Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "7NL37I",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-22T20:13:00",
+    "customer": {
+      "name": "Abdelhadi Ghninou",
+      "email": "",
+      "phone": "+212608745311",
+      "address": "Hay el hana 1 n° 1070 el kelaa des sraghna",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23758)",
+        "timestamp": "2025-12-25T04:42:41.003Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "ENZL43",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T19:36:18",
+    "customer": {
+      "name": "Rayan G.B",
+      "email": "bkourosh@hotmail.com",
+      "phone": "+212638952056",
+      "address": "Bd Resistance, Hay Nassim, GH13, Imm 3, no 2",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23757)",
+        "timestamp": "2025-12-25T04:42:41.027Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "7QLPQ2",
+    "items": [
+      {
+        "productId": "wc_17483",
+        "quantity": 1,
+        "price": 189
+      }
+    ],
+    "total": 189,
+    "status": "pending",
+    "date": "2025-12-22T19:13:12",
+    "customer": {
+      "name": "Houssam Essalih",
+      "email": "",
+      "phone": "+212648928111",
+      "address": "Marrakech sidi abad 5 imm meryem 5 1 etage",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23756)",
+        "timestamp": "2025-12-25T04:42:41.055Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "56AQ7O",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-22T18:37:53",
+    "customer": {
+      "name": "Speed Assistance",
+      "email": "speedassistance1@gmail.com",
+      "phone": "+212614012140",
+      "address": "Sale",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23755)",
+        "timestamp": "2025-12-25T04:42:41.082Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "TR26CL",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T17:44:53",
+    "customer": {
+      "name": "Reda Elouafrasi",
+      "email": "medpressereda@gmail.com",
+      "phone": "+212677854651",
+      "address": "09 rie tizi ayache. Sidi abid alhoceima",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23754)",
+        "timestamp": "2025-12-25T04:42:41.114Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "3HHSFB",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-22T17:16:06",
+    "customer": {
+      "name": "Hassan Hassan",
+      "email": "",
+      "phone": "+212602744226",
+      "address": "Marrakech doha abwab marrakech zone 20",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23753)",
+        "timestamp": "2025-12-25T04:42:41.139Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "NVIY9R",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T16:36:51",
+    "customer": {
+      "name": "محمد مشعال",
+      "email": "machaalmohamed2@gmail.com",
+      "phone": "+212615382298",
+      "address": "دوار البويبات الكبير قرب قهوة الرومية طريق التعاونية الفلاحية أيت سي سالم",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23752)",
+        "timestamp": "2025-12-25T04:42:41.165Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "C5OKJX",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T16:16:15",
+    "customer": {
+      "name": "Khalil Mesrour",
+      "email": "kyleblunt81@gmail.com",
+      "phone": "+212612681488",
+      "address": "Drarga, Proche De La Visite Technique",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23751)",
+        "timestamp": "2025-12-25T04:42:41.191Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "ROZ75N",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T16:07:26",
+    "customer": {
+      "name": "majid houta",
+      "email": "",
+      "phone": "+212648038041",
+      "address": "taza centre",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23750)",
+        "timestamp": "2025-12-25T04:42:41.269Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "4TYALY",
+    "items": [
+      {
+        "productId": "wc_18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-22T15:07:38",
+    "customer": {
+      "name": "Samira Bakhti",
+      "email": "omdfh2024@gmail.com",
+      "phone": "+212660794018",
+      "address": "Amal 1 rue 20 N 15 sidi Bernoussi",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23749)",
+        "timestamp": "2025-12-25T04:42:41.328Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "8LOK1J",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 2,
+        "price": 1679
+      }
+    ],
+    "total": 3358,
+    "status": "pending",
+    "date": "2025-12-22T14:29:26",
+    "customer": {
+      "name": "كريم الزهراوي",
+      "email": "karimezzahraoui7@gmail.com",
+      "phone": "+212603807739",
+      "address": "Youssoufia",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23748)",
+        "timestamp": "2025-12-25T04:42:41.354Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "CF2HCK",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T13:41:56",
+    "customer": {
+      "name": "Abdenbi ElARFAOUI",
+      "email": "3cfi.sarl@gmail.com",
+      "phone": "+212661919667",
+      "address": "6 rue Abdelkrim Benjelloun Agdal VN Fès",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23747)",
+        "timestamp": "2025-12-25T04:42:41.381Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "FGVM0H",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T12:59:45",
+    "customer": {
+      "name": "Mohammed Hanzaz",
+      "email": "mohammedhanzaz626@gmail.com",
+      "phone": "+212668115638",
+      "address": "Rue rihane lotissement nassim 5 n° 11",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23746)",
+        "timestamp": "2025-12-25T04:42:41.411Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "S455V8",
+    "items": [
+      {
+        "productId": "wc_17495",
+        "quantity": 2,
+        "price": 190.8333335
+      }
+    ],
+    "total": 458,
+    "status": "pending",
+    "date": "2025-12-22T11:12:35",
+    "customer": {
+      "name": "Mohammed Gnaw",
+      "email": "gnaw2007@gmail.com",
+      "phone": "+212676913965",
+      "address": "Agadirتدارت أنزا",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23745)",
+        "timestamp": "2025-12-25T04:42:41.437Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "ZU5JBM",
+    "items": [
+      {
+        "productId": "wc_23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-22T10:18:15",
+    "customer": {
+      "name": "Ghizlane Ghizlane",
+      "email": "",
+      "phone": "+212700163436",
+      "address": "Av meknes imm b etg 4 appt 11 riad meknes",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23744)",
+        "timestamp": "2025-12-25T04:42:41.466Z",
         "user": "System"
       }
     ]

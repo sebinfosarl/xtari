@@ -831,5 +831,89 @@
     "status": "live",
     "isVisible": true,
     "woocommerceId": 17483
+  },
+  {
+    "id": "prod_1766635457647",
+    "title": "A",
+    "description": "<p></p>",
+    "price": 1,
+    "categoryIds": [],
+    "image": "/default-product.jpg",
+    "gallery": [],
+    "featured": false,
+    "isVisible": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "weight": 0,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "status": "archived"
+  },
+  {
+    "id": "prod_1766635471620",
+    "title": "b",
+    "description": "<p></p>",
+    "price": 1,
+    "categoryIds": [],
+    "image": "/default-product.jpg",
+    "gallery": [],
+    "featured": false,
+    "isVisible": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "weight": 0,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "status": "archived"
+  },
+  {
+    "id": "prod_1766635486376",
+    "title": "c",
+    "description": "<p></p>",
+    "price": 1,
+    "categoryIds": [],
+    "image": "/default-product.jpg",
+    "gallery": [],
+    "featured": false,
+    "isVisible": false,
+    "sku": "",
+    "stock": 0,
+    "location": null,
+    "weight": 0,
+    "dimensions": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    },
+    "attributes": [],
+    "linkedProducts": {
+      "upsells": [],
+      "crossSells": [],
+      "frequentlyBoughtTogether": [],
+      "similarProducts": []
+    },
+    "status": "archived"
   }
 ]
