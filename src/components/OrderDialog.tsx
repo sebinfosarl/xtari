@@ -901,15 +901,16 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     </div>
                                 )}
 
-                                <div className="flex gap-3 mt-4">
+                                <div className="flex gap-6 mt-4" style={{ justifyContent: 'center' }}>
                                     <button
                                         disabled={(pendingStatus === 'no_reply' && !tempCallResult) || (pendingStatus === 'canceled' && !tempReason)}
                                         onClick={confirmUpdate}
-                                        className="btn btn-primary flex-1"
+                                        className="btn btn-primary"
+                                        style={{ paddingLeft: '2rem', paddingRight: '2rem', marginRight: '0.75rem' }}
                                     >
                                         Confirm Change
                                     </button>
-                                    <button onClick={() => { setPendingStatus(null); setTempCallResult('' as any); setTempReason('' as any); }} className="btn btn-outline flex-1">Abort</button>
+                                    <button onClick={() => { setPendingStatus(null); setTempCallResult('' as any); setTempReason('' as any); }} className="btn btn-outline" style={{ paddingLeft: '2rem', paddingRight: '2rem', marginLeft: '0.75rem' }}>Abort</button>
                                 </div>
                             </div>
                         </div>
