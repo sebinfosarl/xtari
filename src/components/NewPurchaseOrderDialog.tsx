@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { PurchaseOrder, Product, Supplier } from '@/lib/db';
 import { savePurchaseOrderAction, saveSupplierAction } from '@/app/actions';
 import { X, Search, Plus, ShoppingBag, User, PlusCircle, Trash2, Eye } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface NewPurchaseOrderDialogProps {
@@ -256,7 +257,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
                                                     style={{ width: '60px' }}
                                                 />
                                             </td>
-                                            <td className="font-bold">${(item.buyPrice * item.quantity).toFixed(2)}</td>
+                                            <td className="font-bold">{formatCurrency(item.buyPrice * item.quantity)}</td>
                                             <td>
                                                 <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
                                             </td>
@@ -272,7 +273,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
                             <tfoot>
                                 <tr>
                                     <td colSpan={3} className="text-right p-4 font-bold">Total Investment</td>
-                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">${total.toFixed(2)}</td>
+                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(total)}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -346,7 +347,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
                                     {p.image && <img src={p.image} className={styles.galleryThumb} alt="" />}
                                     <div style={{ flex: 1, paddingRight: '2rem' }}>
                                         <div className={styles.galleryTitle}>{p.title}</div>
-                                        <div className={styles.galleryPrice}>Sell: ${(p.price || 0).toFixed(2)}</div>
+                                        <div className={styles.galleryPrice}>Sell: {formatCurrency(p.price || 0)}</div>
                                     </div>
 
                                     <button
@@ -414,7 +415,7 @@ export default function NewPurchaseOrderDialog({ products, suppliers, onClose }:
                             <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
                             <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
                             <div className="flex justify-between items-center">
-                                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${(previewProduct.price || 0).toFixed(2)} <span className="text-sm text-slate-400 font-normal">(Sell Price)</span></span>
+                                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(previewProduct.price || 0)} <span className="text-sm text-slate-400 font-normal">(Sell Price)</span></span>
                                 <button
                                     className="btn btn-primary"
                                     onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}

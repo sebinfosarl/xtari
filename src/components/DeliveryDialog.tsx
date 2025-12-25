@@ -9,6 +9,7 @@ import {
     User as UserIcon, ShoppingCart, Truck, Package, ChevronDown, ChevronUp, Printer, Trash2, RotateCcw
 } from 'lucide-react';
 import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction, returnOrderAction, restoreOrderToShipmentAction } from '@/app/actions';
+import { formatCurrency } from '@/lib/format';
 import styles from '../app/(admin)/admin/Admin.module.css';
 import SearchableCitySelect from './SearchableCitySelect';
 import SearchableSelect from './SearchableSelect';
@@ -154,8 +155,8 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                                 </div>
                                             </td>
                                             <td className="font-bold">{item.quantity}</td>
-                                            <td>${(item.price || 0).toFixed(2)}</td>
-                                            <td className="font-bold">${((item.price || 0) * item.quantity).toFixed(2)}</td>
+                                            <td>{formatCurrency(item.price || 0)}</td>
+                                            <td className="font-bold">{formatCurrency((item.price || 0) * item.quantity)}</td>
                                         </tr>
                                     );
                                 })}
@@ -163,7 +164,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             <tfoot>
                                 <tr>
                                     <td colSpan={3} className="text-right p-4 font-bold">Total Cash on Delivery</td>
-                                    <td className="p-4 font-extrabold text-blue-600 text-xl">${order.total.toFixed(2)}</td>
+                                    <td className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(order.total)}</td>
                                 </tr>
                             </tfoot>
                         </table>

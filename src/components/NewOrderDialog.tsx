@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { createOrderAction, getCathedisCitiesAction } from '@/app/actions';
+import { formatCurrency } from '@/lib/format';
 import {
     X, Search, Plus, ShoppingCart, User as UserIcon, Briefcase, ChevronRight, Eye, MapPin, Trash2, PlusCircle
 } from 'lucide-react';
@@ -455,7 +456,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                                                 padding: '1rem',
                                                 textAlign: 'right',
                                                 fontWeight: 'bold'
-                                            }}>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
+                                            }}>{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
                                             <td style={{
                                                 border: '1px solid #cbd5e1',
                                                 padding: '1rem',
@@ -493,7 +494,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                                         fontWeight: '800',
                                         color: '#2563eb',
                                         fontSize: '1.25rem'
-                                    }}>${total.toFixed(2)}</td>
+                                    }}>{formatCurrency(total)}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -561,7 +562,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                                         </div>
                                         <div style={{ flex: 1, paddingRight: '2.5rem' }}>
                                             <div className={styles.galleryTitle}>{p.title}</div>
-                                            <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
+                                            <div className={styles.galleryPrice}>{formatCurrency(p.price || 0)}</div>
                                             <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                         </div>
                                         {kits?.some(k => k.targetProductId === p.id) && (
@@ -685,7 +686,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                                     borderTop: '1px solid #f1f5f9',
                                     paddingTop: '1rem'
                                 }}>
-                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${(previewProduct.price || 0).toFixed(2)}</span>
+                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(previewProduct.price || 0)}</span>
                                     <button
                                         className="btn btn-primary"
                                         onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}

@@ -1101,7 +1101,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             </div>
                                             <div style={{ flex: 1, paddingRight: '2.5rem' }}>
                                                 <div className={styles.galleryTitle}>{p.title}</div>
-                                                <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
+                                                <div className={styles.galleryPrice}>{formatCurrency(p.price || 0)}</div>
                                                 <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                             </div>
                                             {kits?.some(k => k.targetProductId === p.id) && (
@@ -1228,7 +1228,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             borderTop: '1px solid #f1f5f9',
                                             paddingTop: '1rem'
                                         }}>
-                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(previewProduct.price)}</span>
                                             <button
                                                 className="btn btn-primary"
                                                 onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
@@ -1243,7 +1243,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             paddingTop: '1rem',
                                             textAlign: 'center'
                                         }}>
-                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(previewProduct.price)}</span>
                                         </div>
                                     )}
                                 </div>
