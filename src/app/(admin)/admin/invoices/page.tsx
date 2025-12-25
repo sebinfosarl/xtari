@@ -1,18 +1,14 @@
-
-import { getOrders, getProducts, getSalesPeople } from '@/lib/db';
+// import { getOrders, getProducts, getSalesPeople } from '@/lib/db';
+// import { Suspense } from 'react';
+// import InvoicesView from './InvoicesView';
 
 export const dynamic = 'force-dynamic';
-import { Suspense } from 'react';
-import InvoicesView from './InvoicesView';
 
-export default async function InvoicesPage() {
-    const orders = await getOrders();
-    const products = await getProducts();
-    const salesPeople = await getSalesPeople();
-
+export default function InvoicesPage() {
     return (
-        <Suspense fallback={<div>Loading Invoices...</div>}>
-            <InvoicesView initialOrders={orders} products={products} salesPeople={salesPeople} />
-        </Suspense>
+        <div className="p-8 text-center text-slate-500">
+            <h2 className="text-xl font-bold mb-2">Invoices Section Disabled</h2>
+            <p>This section is temporarily disabled for deployment maintenance.</p>
+        </div>
     );
 }
