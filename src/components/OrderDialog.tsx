@@ -174,13 +174,31 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     const addItem = (productId: string) => {
         const product = products.find(p => p.id === productId);
         if (!product) return;
-        const newItems = [...order.items, { productId, quantity: 1, price: product.price }];
+
+        // Check if product already exists in order
+        const existingItem = order.items.find(item => item.productId === productId);
+
+        let newItems;
+        if (existingItem) {
+            // Increase quantity of existing item
+            newItems = order.items.map(item =>
+                item.productId === productId
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+        } else {
+            // Add as new item
+            newItems = [...order.items, { productId, quantity: 1, price: product.price }];
+        }
+
         const newTotal = newItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
         setOrder({
             ...order,
             items: newItems,
             total: newTotal,
-            logs: addLog('item_add', `Added ${product.title} to order`)
+            logs: addLog('item_add', existingItem
+                ? `Increased ${product.title} quantity to ${existingItem.quantity + 1}`
+                : `Added ${product.title} to order`)
         });
         setShowProductGallery(false);
     };
@@ -655,7 +673,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                     {/* SECTION 3: ORDER CONTENT */}
                     <section className={styles.infoSection}>
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem' }}>
                             <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><ShoppingCart size={16} /> Order Content</h3>
                             {!readOnly && (
                                 <button onClick={() => setShowProductGallery(true)} className="btn btn-accent btn-sm">
@@ -664,14 +682,60 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             )}
                         </div>
 
-                        <table className={styles.managementTable}>
+                        <table
+                            className={styles.managementTable}
+                            style={{
+                                border: '2px solid #cbd5e1',
+                                borderCollapse: 'collapse',
+                                background: 'white'
+                            }}
+                        >
                             <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                    <th>Qty</th>
-                                    <th>Subtotal</th>
-                                    <th></th>
+                                <tr style={{ background: '#f1f5f9' }}>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em'
+                                    }}>Item</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'center'
+                                    }}>Price</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'center'
+                                    }}>Qty</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'right'
+                                    }}>Subtotal</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        width: '60px'
+                                    }}></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -735,14 +799,31 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     return displayItems.map((item, idx) => {
                                         const product = products.find(p => p.id === item.productId);
                                         return (
-                                            <tr key={`${item.productId}-${idx}`} className={item.isKit ? "bg-blue-50/50" : ""}>
-                                                <td>
+                                            <tr
+                                                key={`${item.productId}-${idx}`}
+                                                style={{
+                                                    background: item.isKit ? '#eff6ff' : 'white',
+                                                    transition: 'background 0.2s'
+                                                }}
+                                            >
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem'
+                                                }}>
                                                     <div className="flex items-center gap-8">
-                                                        {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
+                                                        {product?.image && (
+                                                            <img
+                                                                src={product.image}
+                                                                className={styles.imageCell}
+                                                                alt=""
+                                                                onClick={() => setPreviewProduct(product)}
+                                                                style={{ cursor: 'pointer' }}
+                                                            />
+                                                        )}
                                                         <div className="flex flex-col">
                                                             <div className="font-bold flex items-center gap-2">
                                                                 {product?.title || 'Unknown'}
-                                                                {item.isKit && (
+                                                                {(item.isKit || kits?.some(k => k.targetProductId === item.productId)) && (
                                                                     <span style={{
                                                                         display: 'inline-block',
                                                                         padding: '2px 6px',
@@ -769,7 +850,11 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    textAlign: 'center'
+                                                }}>
                                                     {item.isKit ? (
                                                         <span className="text-slate-500 italic text-sm">Bundle Price</span>
                                                     ) : (
@@ -784,7 +869,11 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         />
                                                     )}
                                                 </td>
-                                                <td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    textAlign: 'center'
+                                                }}>
                                                     {item.isKit ? (
                                                         <span className="font-bold">{item.quantity}</span>
                                                     ) : (
@@ -798,8 +887,18 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         />
                                                     )}
                                                 </td>
-                                                <td className="font-bold">{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
-                                                <td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    fontWeight: '700',
+                                                    textAlign: 'right',
+                                                    color: '#0f172a'
+                                                }}>{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    textAlign: 'center'
+                                                }}>
                                                     {!item.isKit && !readOnly && (
                                                         <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
                                                     )}
@@ -815,9 +914,35 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 })()}
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colSpan={3} className="text-right p-4 font-bold">Total Amount</td>
-                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(order.total)}</td>
+                                <tr style={{ background: '#f8fafc' }}>
+                                    <td
+                                        colSpan={3}
+                                        style={{
+                                            border: '2px solid #cbd5e1',
+                                            padding: '1.25rem',
+                                            textAlign: 'right',
+                                            fontWeight: '800',
+                                            fontSize: '1rem',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            color: '#475569'
+                                        }}
+                                    >
+                                        Total Amount
+                                    </td>
+                                    <td
+                                        colSpan={2}
+                                        style={{
+                                            border: '2px solid #cbd5e1',
+                                            padding: '1.25rem',
+                                            fontWeight: '800',
+                                            fontSize: '1.5rem',
+                                            color: '#2563eb',
+                                            textAlign: 'right'
+                                        }}
+                                    >
+                                        {formatCurrency(order.total)}
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>
