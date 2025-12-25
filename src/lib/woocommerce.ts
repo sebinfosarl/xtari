@@ -117,6 +117,26 @@ export async function fetchWoocommerceOrders(url: string, key: string, secret: s
 
 import { Order } from './db';
 
+
+function normalizeMoroccanPhone(phone: string): string {
+    // Remove all non-numeric characters
+    let cleaned = phone.replace(/\D/g, '');
+
+    // Remove 212 prefix if present
+    if (cleaned.startsWith('212')) {
+        cleaned = cleaned.substring(3);
+    } else if (cleaned.startsWith('00212')) {
+        cleaned = cleaned.substring(5);
+    }
+
+    // Remove leading 0 if present
+    if (cleaned.startsWith('0')) {
+        cleaned = cleaned.substring(1);
+    }
+
+    return cleaned;
+}
+
 export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder): Order {
     return {
         id: Math.random().toString(36).substr(2, 6).toUpperCase(),
@@ -131,7 +151,7 @@ export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder): Order {
         customer: {
             name: `${wcOrder.billing.first_name} ${wcOrder.billing.last_name}`,
             email: wcOrder.billing.email,
-            phone: wcOrder.billing.phone,
+            phone: normalizeMoroccanPhone(wcOrder.billing.phone),
             address: `${wcOrder.shipping.address_1} ${wcOrder.shipping.address_2}`.trim(),
             city: wcOrder.shipping.city,
         },
