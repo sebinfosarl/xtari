@@ -111,6 +111,7 @@ export interface Order {
     rangeWeight?: string;
     packageCount?: number;
     allowOpening?: number;
+    weight?: number;
     width?: number;
     length?: number;
     height?: number;
