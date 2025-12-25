@@ -4304,5 +4304,506 @@
     "deliveryNotePrinted": false,
     "shippingId": "6189016",
     "shippingStatus": "En Attente Ramassage"
+  },
+  {
+    "id": "EEOY1F",
+    "items": [
+      {
+        "productId": "23055",
+        "quantity": 2,
+        "price": 1679
+      }
+    ],
+    "total": 3358,
+    "status": "pending",
+    "date": "2025-12-24T23:39:10",
+    "customer": {
+      "name": "Fatima Zahra Aissi",
+      "email": "fatizara@gmail.com",
+      "phone": "+212675491941",
+      "address": "Imm Taya 23 les arenes (rue derrière oliveri maarif) 5 eme etage",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23809)",
+        "timestamp": "2025-12-25T02:34:44.640Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "GJB94A",
+    "items": [
+      {
+        "productId": "23052",
+        "quantity": 1,
+        "price": 1490
+      }
+    ],
+    "total": 1490,
+    "status": "pending",
+    "date": "2025-12-24T22:40:33",
+    "customer": {
+      "name": "ghailan ghailan",
+      "email": "soufianghailan7@gmail.com",
+      "phone": "+212642651417",
+      "address": "Pharmacie cha3bia",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23808)",
+        "timestamp": "2025-12-25T02:34:44.660Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "A63ESW",
+    "items": [
+      {
+        "productId": "23055",
+        "quantity": 2,
+        "price": 1679
+      }
+    ],
+    "total": 3358,
+    "status": "pending",
+    "date": "2025-12-24T22:20:30",
+    "customer": {
+      "name": "Adil Belmokadem",
+      "email": "belmokademadil@gmail.com",
+      "phone": "+212661223138",
+      "address": "Q4c1 Coeur De Vie Cgi",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23807)",
+        "timestamp": "2025-12-25T02:34:44.679Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "35TSMA",
+    "items": [
+      {
+        "productId": "23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-24T22:01:01",
+    "customer": {
+      "name": "Jamal Rouane",
+      "email": "",
+      "phone": "+212656205971",
+      "address": "فاس",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23806)",
+        "timestamp": "2025-12-25T02:34:44.695Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "DEHP2M",
+    "items": [
+      {
+        "productId": "21018",
+        "quantity": 1,
+        "price": 269
+      }
+    ],
+    "total": 269,
+    "status": "pending",
+    "date": "2025-12-24T21:33:38",
+    "customer": {
+      "name": "Sidi mohamed Azaouad",
+      "email": "",
+      "phone": "+212601386013",
+      "address": "Quartier ouaritezdigue",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23805)",
+        "timestamp": "2025-12-25T02:34:44.712Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "GWQBMY",
+    "items": [
+      {
+        "productId": "18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-24T21:04:37",
+    "customer": {
+      "name": "EL AMINE MOHAMMED",
+      "email": "aminemod27@gmail.com",
+      "phone": "+212661886167",
+      "address": "HAY EL MASSIRA 1 TEMARA",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23804)",
+        "timestamp": "2025-12-25T02:34:44.730Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "K9U4RL",
+    "items": [
+      {
+        "productId": "23052",
+        "quantity": 1,
+        "price": 1490
+      }
+    ],
+    "total": 1490,
+    "status": "pending",
+    "date": "2025-12-24T20:32:22",
+    "customer": {
+      "name": "Jamil Zarioh",
+      "email": "jamozar13@gmail.com",
+      "phone": "+212662668257",
+      "address": "Av Jabal zarhon rue n7 boujarrah",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23803)",
+        "timestamp": "2025-12-25T02:34:44.751Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "322J39",
+    "items": [
+      {
+        "productId": "23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-24T19:56:24",
+    "customer": {
+      "name": "Tarik Aarrass",
+      "email": "",
+      "phone": "+212654969905",
+      "address": "Rouadi alhoceima",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23802)",
+        "timestamp": "2025-12-25T02:34:44.779Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "MD4NWG",
+    "items": [
+      {
+        "productId": "21025",
+        "quantity": 1,
+        "price": 199
+      }
+    ],
+    "total": 199,
+    "status": "pending",
+    "date": "2025-12-24T19:27:34",
+    "customer": {
+      "name": "Hasna Daoudi",
+      "email": "",
+      "phone": "+212716959421",
+      "address": "Tiddas khemisset",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23801)",
+        "timestamp": "2025-12-25T02:34:44.802Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "MNTSCO",
+    "items": [
+      {
+        "productId": "21025",
+        "quantity": 1,
+        "price": 199
+      },
+      {
+        "productId": "18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 428,
+    "status": "pending",
+    "date": "2025-12-24T19:25:09",
+    "customer": {
+      "name": "Hasna Daoudi",
+      "email": "",
+      "phone": "+212716959421",
+      "address": "Tiddas khemisset",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23800)",
+        "timestamp": "2025-12-25T02:34:44.820Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "JI3FTA",
+    "items": [
+      {
+        "productId": "23055",
+        "quantity": 1,
+        "price": 1679
+      }
+    ],
+    "total": 1679,
+    "status": "pending",
+    "date": "2025-12-24T19:25:05",
+    "customer": {
+      "name": "Aziz Bourmtane",
+      "email": "azotman60@gmail.com",
+      "phone": "+212660448795",
+      "address": "N10 batiment24 city militaire nouaceur",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23799)",
+        "timestamp": "2025-12-25T02:34:44.838Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "TVTJK1",
+    "items": [
+      {
+        "productId": "19275",
+        "quantity": 1,
+        "price": 199
+      }
+    ],
+    "total": 199,
+    "status": "pending",
+    "date": "2025-12-24T17:58:23",
+    "customer": {
+      "name": "aya benaqa",
+      "email": "ayabenaqa2@gmail.com",
+      "phone": "+212691416640",
+      "address": "temara massira 2 sec 5",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23798)",
+        "timestamp": "2025-12-25T02:34:44.863Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "HUJONK",
+    "items": [
+      {
+        "productId": "19272",
+        "quantity": 1,
+        "price": 179
+      }
+    ],
+    "total": 179,
+    "status": "pending",
+    "date": "2025-12-24T17:28:04",
+    "customer": {
+      "name": "سعاد منصوري",
+      "email": "",
+      "phone": "+212615063212",
+      "address": "الزحيليگة المركز دائرة الرماني",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23797)",
+        "timestamp": "2025-12-25T02:34:44.880Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "OVLYK4",
+    "items": [
+      {
+        "productId": "23052",
+        "quantity": 1,
+        "price": 1490
+      }
+    ],
+    "total": 1490,
+    "status": "pending",
+    "date": "2025-12-24T17:20:27",
+    "customer": {
+      "name": "Abdelhaq Mans",
+      "email": "",
+      "phone": "+212660060521",
+      "address": "160 lotissement almorjane 1 safi",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23796)",
+        "timestamp": "2025-12-25T02:34:44.901Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "ETIUEA",
+    "items": [
+      {
+        "productId": "18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-24T16:53:13",
+    "customer": {
+      "name": "Abderrahim Najim",
+      "email": "",
+      "phone": "+212672647973",
+      "address": "Centre Teroual",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23795)",
+        "timestamp": "2025-12-25T02:34:44.917Z",
+        "user": "System"
+      }
+    ]
+  },
+  {
+    "id": "BMWFMM",
+    "items": [
+      {
+        "productId": "18135",
+        "quantity": 1,
+        "price": 229
+      }
+    ],
+    "total": 229,
+    "status": "pending",
+    "date": "2025-12-24T13:17:11",
+    "customer": {
+      "name": "الحسين بويسوار",
+      "email": "bouisouarm@gmail.com",
+      "phone": "+212641121861",
+      "address": "حي اسراكن مدينة اولوز باشوية اولوز عمالة تارودانت",
+      "city": ""
+    },
+    "paymentType": "Paiement à la livraison",
+    "packageCount": 1,
+    "allowOpening": 1,
+    "logs": [
+      {
+        "type": "import",
+        "message": "Imported from WooCommerce (Order #23793)",
+        "timestamp": "2025-12-25T02:34:44.934Z",
+        "user": "System"
+      }
+    ]
   }
 ]

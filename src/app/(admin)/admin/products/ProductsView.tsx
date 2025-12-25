@@ -7,15 +7,19 @@ import Link from 'next/link';
 import SafeImage from './SafeImage';
 import styles from '../Admin.module.css';
 import ProductActions from './ProductActions';
+import ImportProductsDialog from '@/components/ImportProductsDialog';
+import { formatCurrency } from '@/lib/format';
 
 interface ProductsViewProps {
     products: Product[];
     kits: Kit[];
+    isWooCommerceConnected?: boolean;
 }
 
-export default function ProductsView({ products, kits }: ProductsViewProps) {
+export default function ProductsView({ products, kits, isWooCommerceConnected }: ProductsViewProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<'all' | 'live' | 'draft' | 'archived'>('live');
+    const [isImporting, setIsImporting] = useState(false);
 
     const filteredProducts = useMemo(() => {
         const query = searchQuery.toLowerCase();
@@ -78,11 +82,29 @@ export default function ProductsView({ products, kits }: ProductsViewProps) {
                             style={{ paddingTop: '0.75rem', paddingBottom: '0.75rem' }}
                         />
                     </div>
-                    <Link href="/admin/products/new" className={styles.submitBtn} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
-                        <Plus size={18} /> New Product
-                    </Link>
+                    <div className="flex flex-col gap-2">
+                        <Link href="/admin/products/new" className={styles.submitBtn} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', justifyContent: 'center' }}>
+                            <Plus size={18} /> New Product
+                        </Link>
+                        {isWooCommerceConnected && (
+                            <button
+                                onClick={() => setIsImporting(true)}
+                                className={styles.wooImportBtn}
+                                style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', width: '100%' }}
+                            >
+                                Import from WooCommerce
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
+
+            {isImporting && (
+                <ImportProductsDialog
+                    onClose={() => setIsImporting(false)}
+                    onSuccess={() => { }}
+                />
+            )}
 
             <div className={styles.tableSection}>
                 <div className={styles.tableWrapper}>
@@ -110,8 +132,8 @@ export default function ProductsView({ products, kits }: ProductsViewProps) {
                                             />
                                         </div>
                                     </td>
-                                    <td>
-                                        <div className={styles.bold}>{product.title}</div>
+                                    <td style={{ maxWidth: '200px' }}>
+                                        <div className={styles.bold} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.title}</div>
                                         {kits.some(k => k.targetProductId === product.id) && (
                                             <div style={{ marginTop: '0.25rem' }}>
                                                 <span style={{
@@ -135,11 +157,11 @@ export default function ProductsView({ products, kits }: ProductsViewProps) {
                                     <td>
                                         {product.salePrice ? (
                                             <>
-                                                <div className={styles.bold} style={{ color: '#15803d' }}>${product.salePrice}</div>
-                                                <div style={{ fontSize: '0.75rem', color: '#64748b', textDecoration: 'line-through' }}>${product.price}</div>
+                                                <div className={styles.bold} style={{ color: '#15803d' }}>{formatCurrency(product.salePrice)}</div>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748b', textDecoration: 'line-through' }}>{formatCurrency(product.price)}</div>
                                             </>
                                         ) : (
-                                            <div className={styles.bold}>${product.price}</div>
+                                            <div className={styles.bold}>{formatCurrency(product.price)}</div>
                                         )}
                                     </td>
                                     <td>{product.stock || 0} units</td>

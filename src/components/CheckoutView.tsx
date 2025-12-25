@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import styles from './CheckoutView.module.css';
+import { formatCurrency } from '@/lib/format';
 import { Product } from '@/lib/db';
 import Image from 'next/image';
 import { Trash2, CheckCircle2, MapPin, Truck } from 'lucide-react';
@@ -75,7 +76,7 @@ export default function CheckoutView({ upsells }: { upsells: Product[] }) {
                             </div>
                             <div className={styles.itemInfo}>
                                 <h4>{item.title}</h4>
-                                <p className={styles.itemPrice}>${item.price}</p>
+                                <p className={styles.itemPrice}>{formatCurrency(item.price)}</p>
                             </div>
                             <div className={styles.itemActions}>
                                 <span className="text-sm font-bold">x{item.quantity}</span>
@@ -93,7 +94,7 @@ export default function CheckoutView({ upsells }: { upsells: Product[] }) {
                                 <div key={p.id} className={styles.upsellCard}>
                                     <div className={styles.upsellInfo}>
                                         <p className={styles.upsellTitle}>{p.title}</p>
-                                        <p className={styles.upsellPrice}>${p.price}</p>
+                                        <p className={styles.upsellPrice}>{formatCurrency(p.price)}</p>
                                     </div>
                                     <button onClick={() => addToCart(p)} className="btn btn-outline" style={{ padding: '0.2rem 0.8rem', fontSize: '0.8rem' }}>Add</button>
                                 </div>
@@ -137,12 +138,12 @@ export default function CheckoutView({ upsells }: { upsells: Product[] }) {
                         </div>
 
                         <div className={styles.summary}>
-                            <div className="flex justify-between"><span>Subtotal</span><span>${total.toFixed(2)}</span></div>
+                            <div className="flex justify-between"><span>Subtotal</span><span>{formatCurrency(total)}</span></div>
                             <div className="flex justify-between"><span>Shipping</span><span>Free</span></div>
                             <hr className={styles.divider} />
                             <div className="flex justify-between" style={{ fontWeight: 700, fontSize: '1.2rem', color: 'var(--color-primary)' }}>
                                 <span>Total to Pay</span>
-                                <span>${total.toFixed(2)}</span>
+                                <span>{formatCurrency(total)}</span>
                             </div>
                         </div>
 

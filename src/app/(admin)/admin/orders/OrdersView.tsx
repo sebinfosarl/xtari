@@ -7,14 +7,18 @@ import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction, ar
 import styles from '../Admin.module.css';
 import OrderDialog from '@/components/OrderDialog';
 import NewOrderDialog from '@/components/NewOrderDialog';
+import ImportOrdersDialog from '@/components/ImportOrdersDialog';
+import { formatCurrency } from '@/lib/format';
+
 
 interface OrdersViewProps {
     initialOrders: Order[];
     products: Product[];
     salesPeople: SalesPerson[];
+    isWooCommerceConnected?: boolean;
 }
 
-export default function OrdersView({ initialOrders: orders, products, salesPeople }: OrdersViewProps) {
+export default function OrdersView({ initialOrders: orders, products, salesPeople, isWooCommerceConnected }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled' | 'archived'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +27,9 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
     const [showNewOrderDialog, setShowNewOrderDialog] = useState(false);
     const [isRequestingPickup, setIsRequestingPickup] = useState(false);
     const [isSyncingShipping, setIsSyncingShipping] = useState(false);
+    const [isImporting, setIsImporting] = useState(false);
+
+    // Removed old handleImportWoocommerce logic as it's now in the dialog
 
     const filteredOrders = orders.filter(o => {
         // Status filter
@@ -60,6 +67,16 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                         <h2 className={styles.sectionTitle}>Call Center Dashboard</h2>
                         <div className={styles.statTrend}>{filteredOrders.length} {filter.replace('_', ' ')} orders</div>
                     </div>
+
+
+                    {isWooCommerceConnected && (
+                        <button
+                            onClick={() => setIsImporting(true)}
+                            className={styles.wooImportBtn}
+                        >
+                            Import from WooCommerce
+                        </button>
+                    )}
                 </div>
 
                 <div className="flex gap-2">
@@ -161,7 +178,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                     <div style={{ fontWeight: 600 }}>{order.customer.name}</div>
                                     <div style={{ fontSize: '0.8rem', color: '#64748b' }}><Phone size={10} style={{ display: 'inline', marginRight: '2px' }} /> {order.customer.phone || 'No phone'}</div>
                                 </td>
-                                <td className={styles.bold}>${order.total.toFixed(2)}</td>
+                                <td className={styles.bold}>{formatCurrency(order.total)}</td>
                                 <td>
                                     <span className={`${styles.statusBadge} ${styles[order.status]}`}>
                                         {order.status.replace('_', ' ').toUpperCase()}
@@ -205,6 +222,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                                 const result = await archiveOrderAction(order.id);
                                                 if (result.success) {
                                                     // Optional: Toast notification
+                                                    window.location.reload();
                                                 } else {
                                                     alert('Failed to archive: ' + result.error);
                                                 }
@@ -240,7 +258,19 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                 )
             }
 
-            {/* FLOATING ACTION BUTTON */}
+            {/* IMPORT DIALOG */}
+            {
+                isImporting && (
+                    <ImportOrdersDialog
+                        onClose={() => setIsImporting(false)}
+                        onSuccess={() => {
+                            // The dialog closes itself or provides a way to close & refresh.
+                            // If we want to keep dialog open to show success result, handle that in dialog.
+                            // Here we just toggle visibility.
+                        }}
+                    />
+                )
+            }
 
             {/* FLOATING ACTION BUTTON */}
             <style jsx>{`

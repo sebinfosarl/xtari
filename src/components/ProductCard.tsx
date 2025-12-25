@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import styles from './ProductCard.module.css';
 import { Product } from '@/lib/db';
+import { formatCurrency } from '@/lib/format';
 import { useCart } from '@/context/CartContext';
 import SafeImage from './SafeImage';
 
@@ -34,7 +35,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     <h3 className={styles.title}>{product.title}</h3>
                 </Link>
                 <div className={styles.footer}>
-                    <span className={styles.price}>${(product.price || 0).toFixed(2)}</span>
+                    <span className={styles.price}>{formatCurrency(product.price)}</span>
                     <button
                         className={styles.addBtn}
                         aria-label="Add to Cart"

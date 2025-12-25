@@ -4,5 +4,11 @@
     "password": "zV38Zqj2",
     "isConnected": true
   },
-  "pickupLocations": "RABAT - 26301\r\nTANGER - 36407\r\nMORE - 28398"
+  "pickupLocations": "RABAT - 26301\r\nTANGER - 36407\r\nMORE - 28398",
+  "woocommerce": {
+    "storeUrl": "https://sebinfo.ma/",
+    "consumerKey": "ck_36f499f52f654edf67ff12e57df19036eb140bfb",
+    "consumerSecret": "cs_8b3aa82ce6b52074438d90ff91873225e8eaaf84",
+    "isConnected": true
+  }
 }

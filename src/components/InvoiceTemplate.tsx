@@ -1,6 +1,7 @@
 'use client';
 
 import { Order, Product, SalesPerson } from '@/lib/db';
+import { formatCurrency } from '@/lib/format';
 
 interface InvoiceTemplateProps {
     order: Order;
@@ -118,8 +119,8 @@ export default function InvoiceTemplate({ order, products, salesPeople }: Invoic
                             <tr key={idx}>
                                 <td>{product?.title || item.productId}</td>
                                 <td className="text-center">{item.quantity}</td>
-                                <td className="text-right">{item.price.toFixed(2)} DH</td>
-                                <td className="text-right">{(item.price * item.quantity).toFixed(2)} DH</td>
+                                <td className="text-right">{formatCurrency(item.price)}</td>
+                                <td className="text-right">{formatCurrency(item.price * item.quantity)}</td>
                             </tr>
                         );
                     })}
@@ -130,7 +131,7 @@ export default function InvoiceTemplate({ order, products, salesPeople }: Invoic
             <div className="total-section">
                 <div className="total-row">
                     <span>Total Net à payer</span>
-                    <span>{totalNet.toFixed(2)} DH</span>
+                    <span>{formatCurrency(totalNet)}</span>
                 </div>
             </div>
 

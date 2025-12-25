@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { updateOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
+import { formatCurrency } from '@/lib/format';
 
 interface OrderDialogProps {
     order: Order;
@@ -165,7 +166,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
             ...order,
             items: newItems,
             total: newTotal,
-            logs: addLog('item_update', `Updated ${product?.title}: Qty ${quantity}, Price $${price}`)
+            logs: addLog('item_update', `Updated ${product?.title}: Qty ${quantity}, Price ${formatCurrency(price)}`)
         });
     };
 
@@ -630,7 +631,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             <td>
                                                 <input type="number" value={item.quantity ?? ''} onChange={(e) => updateItem(item.productId, parseInt(e.target.value) || 1, item.price)} className={styles.inlineInput} style={{ width: '60px' }} />
                                             </td>
-                                            <td className="font-bold">${(item.price * item.quantity).toFixed(2)}</td>
+                                            <td className="font-bold">{formatCurrency(item.price * item.quantity)}</td>
                                             <td>
                                                 <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
                                             </td>
@@ -641,7 +642,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             <tfoot>
                                 <tr>
                                     <td colSpan={3} className="text-right p-4 font-bold">Total Amount</td>
-                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">${order.total.toFixed(2)}</td>
+                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(order.total)}</td>
                                 </tr>
                             </tfoot>
                         </table>

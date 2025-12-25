@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCathedisSettingsAction, saveCathedisSettingsAction, disconnectCathedisAction, savePickupLocationsAction } from '@/app/actions';
-import { ToggleLeft, ToggleRight, Loader2, Save, Trash2, CheckCircle2, XCircle, MapPin } from 'lucide-react';
+// ... [existing imports]
+import { getCathedisSettingsAction, saveCathedisSettingsAction, disconnectCathedisAction, savePickupLocationsAction, getWoocommerceSettingsAction, saveWoocommerceSettingsAction, disconnectWoocommerceAction } from '@/app/actions';
+import { ToggleLeft, ToggleRight, Loader2, Save, Trash2, CheckCircle2, XCircle, MapPin, ShoppingCart } from 'lucide-react';
 import styles from './Settings.module.css';
+// ...
 
 export default function SettingsPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [settings, setSettings] = useState<{ username: string; isConnected: boolean }>({ username: '', isConnected: false });
+    const [wcSettings, setWcSettings] = useState<{ storeUrl: string; isConnected: boolean }>({ storeUrl: '', isConnected: false });
 
     // Changing from simple string to array of objects
     const [locations, setLocations] = useState<{ name: string; id: string }[]>([]);
@@ -18,15 +21,30 @@ export default function SettingsPage() {
     const [formUser, setFormUser] = useState('');
     const [formPass, setFormPass] = useState('');
 
+    const [wcUrl, setWcUrl] = useState('');
+    const [wcKey, setWcKey] = useState('');
+    const [wcSecret, setWcSecret] = useState('');
+
     useEffect(() => {
         async function load() {
             try {
+                // Load Cathedis
                 const data = await getCathedisSettingsAction();
                 setSettings({
                     username: data.username,
                     isConnected: data.isConnected
                 });
                 setFormUser(data.username);
+
+                // Load WooCommerce
+                const wcData = await getWoocommerceSettingsAction();
+                setWcSettings({
+                    storeUrl: wcData.storeUrl,
+                    isConnected: wcData.isConnected
+                });
+                setWcUrl(wcData.storeUrl);
+                setWcKey(wcData.consumerKey || '');
+                setWcSecret(wcData.consumerSecret || '');
 
                 // Parse the existing string into array
                 if (data.pickupLocations) {
@@ -81,6 +99,48 @@ export default function SettingsPage() {
             setSettings({ username: '', isConnected: false });
             setFormUser('');
             setFormPass('');
+            router.refresh();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleConnectWC = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSaving(true);
+        try {
+            const formData = new FormData();
+            formData.append('storeUrl', wcUrl);
+            formData.append('consumerKey', wcKey);
+            formData.append('consumerSecret', wcSecret);
+
+            const res = await saveWoocommerceSettingsAction(formData);
+            if (res.success) {
+                alert('WooCommerce connected successfully!');
+                setWcSettings({ storeUrl: wcUrl, isConnected: true });
+                router.refresh();
+            } else {
+                alert(`WooCommerce connection failed: ${res.error}`);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('An unexpected error occurred.');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleDisconnectWC = async () => {
+        if (!confirm('Disconnect WooCommerce?')) return;
+        setIsSaving(true);
+        try {
+            await disconnectWoocommerceAction();
+            setWcSettings({ storeUrl: '', isConnected: false });
+            setWcUrl('');
+            setWcKey('');
+            setWcSecret('');
             router.refresh();
         } catch (err) {
             console.error(err);
@@ -144,7 +204,7 @@ export default function SettingsPage() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Settings</h1>
-                <p className={styles.subtitle}>Manage your seamless integration with Cathedis.</p>
+                <p className={styles.subtitle}>Manage your seamless integration with Cathedis and WooCommerce.</p>
             </div>
 
             <div className={styles.card}>
@@ -158,6 +218,7 @@ export default function SettingsPage() {
                             <p className={styles.integrationDesc}>Automatic shipping & labeling</p>
                         </div>
                     </div>
+
                     <div>
                         {settings.isConnected ? (
                             <div className={`${styles.statusBadge} ${styles.statusConnected}`}>
@@ -249,7 +310,7 @@ export default function SettingsPage() {
                                 </div>
 
                                 <div className={styles.actions}>
-                                    <div></div> {/* Spacer */}
+                                    <div></div>
                                     <button
                                         onClick={handleSaveLocations}
                                         disabled={isSaving}
@@ -300,6 +361,118 @@ export default function SettingsPage() {
                                         <>
                                             <Save size={20} />
                                             Connect Account
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* WooCommerce Card */}
+            <div className={styles.card} style={{ marginTop: '2rem' }}>
+                <div className={styles.cardHeader}>
+                    <div className={styles.brand}>
+                        <div className={`${styles.logo} ${wcSettings.isConnected ? styles.logoConnected : styles.logoDisconnected}`} style={{ background: wcSettings.isConnected ? '#7f54b3' : '#e2e8f0', color: wcSettings.isConnected ? 'white' : '#64748b' }}>
+                            W
+                        </div>
+                        <div>
+                            <h2 className={styles.integrationTitle}>WooCommerce Integration</h2>
+                            <p className={styles.integrationDesc}>Import orders directly from your store</p>
+                        </div>
+                    </div>
+                    <div>
+                        {wcSettings.isConnected ? (
+                            <div className={`${styles.statusBadge} ${styles.statusConnected}`}>
+                                <span className={styles.indicator}>
+                                    <span className={styles.ping}></span>
+                                    <span className={styles.dot}></span>
+                                </span>
+                                <span>Connected</span>
+                            </div>
+                        ) : (
+                            <div className={`${styles.statusBadge} ${styles.statusDisconnected}`}>
+                                Not Connected
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className={styles.cardBody}>
+                    {wcSettings.isConnected ? (
+                        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                            <div className={styles.activeAccountCard}>
+                                <div className={styles.accountInfo}>
+                                    <div className={styles.checkIcon} style={{ background: '#f3e8ff', color: '#7f54b3' }}>
+                                        <ShoppingCart size={24} />
+                                    </div>
+                                    <div>
+                                        <p className={styles.accountLabel}>Active Store</p>
+                                        <p className={styles.username}>{wcSettings.storeUrl}</p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleDisconnectWC}
+                                    disabled={isSaving}
+                                    className={styles.disconnectBtn}
+                                >
+                                    {isSaving ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
+                                    Disconnect
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={styles.loginForm}>
+                            <form onSubmit={handleConnectWC} className={styles.form}>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.label}>Store URL</label>
+                                    <input
+                                        type="url"
+                                        required
+                                        value={wcUrl}
+                                        onChange={e => setWcUrl(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="https://yourstore.com"
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.label}>Consumer Key</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={wcKey}
+                                        onChange={e => setWcKey(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="ck_..."
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.label}>Consumer Secret</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={wcSecret}
+                                        onChange={e => setWcSecret(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="cs_..."
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={isSaving}
+                                    className={styles.connectBtn}
+                                    style={{ background: '#7f54b3' }}
+                                >
+                                    {isSaving ? (
+                                        <>
+                                            <Loader2 className="animate-spin" size={20} />
+                                            Connecting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Save size={20} />
+                                            Connect WooCommerce
                                         </>
                                     )}
                                 </button>

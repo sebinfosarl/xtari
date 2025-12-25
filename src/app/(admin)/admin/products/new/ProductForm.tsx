@@ -247,11 +247,11 @@ export default function ProductForm({ categories, brands, products, globalAttrib
                                 <div style={{ display: activeTab === 'general' ? 'block' : 'none' }}>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                                         <div className={styles.formGroup}>
-                                            <label className={styles.label}>Regular Price ($)</label>
+                                            <label className={styles.label}>Regular Price (DH)</label>
                                             <input name="price" type="number" step="0.01" required className={styles.input} defaultValue={initialData?.price} />
                                         </div>
                                         <div className={styles.formGroup}>
-                                            <label className={styles.label}>Sale Price ($)</label>
+                                            <label className={styles.label}>Sale Price (DH)</label>
                                             <input name="salePrice" type="number" step="0.01" className={styles.input} defaultValue={initialData?.salePrice} />
                                         </div>
                                     </div>

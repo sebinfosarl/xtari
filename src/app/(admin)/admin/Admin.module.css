@@ -797,6 +797,37 @@
 
 
 /* Kit Manager Styles */
+.wooImportBtn {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1.25rem;
+    background-color: #96588a;
+    color: white;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    width: fit-content;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    /* Ensures it pushes to the right */
+}
+
+.wooImportBtn:hover {
+    background-color: #7f4a74;
+}
+
+@media (max-width: 640px) {
+    .wooImportBtn {
+        margin-left: 0;
+        /* Reset on mobile if needed, or keep to align right? "not center" implies preference for side. */
+        align-self: flex-start;
+        /* Default to start on mobile? Or end? */
+    }
+}
+
 .selectorOverlay {
     position: fixed;
     inset: 0;

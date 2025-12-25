@@ -443,6 +443,12 @@ export interface Settings {
         password: string;
         isConnected: boolean;
     };
+    woocommerce?: {
+        storeUrl: string;
+        consumerKey: string;
+        consumerSecret: string;
+        isConnected: boolean;
+    };
     pickupLocations?: string; // Multiline string: "Label - ID"
 }
 
@@ -451,6 +457,12 @@ export async function getSettings(): Promise<Settings> {
         cathedis: {
             username: '',
             password: '',
+            isConnected: false
+        },
+        woocommerce: {
+            storeUrl: '',
+            consumerKey: '',
+            consumerSecret: '',
             isConnected: false
         },
         pickupLocations: ''

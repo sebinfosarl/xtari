@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ShoppingCart, Star, Check } from 'lucide-react';
 import { Product } from '@/lib/db';
 import { useCart } from '@/context/CartContext';
+import { formatCurrency } from '@/lib/format';
 import styles from './ProductDetail.module.css';
 import Link from 'next/link';
 import SafeImage from './SafeImage';
@@ -34,7 +35,7 @@ export default function ProductDetailView({ product, upsells }: { product: Produ
                 <div className={styles.infoSection}>
                     <div className={styles.category}>{product.category ? product.category.replace('-', ' ') : 'Uncategorized'}</div>
                     <h1 className={styles.title}>{product.title}</h1>
-                    <div className={styles.price}>${(product.price || 0).toFixed(2)}</div>
+                    <div className={styles.price}>{formatCurrency(product.price)}</div>
 
                     <div className={styles.description}>
                         <div
@@ -89,7 +90,7 @@ export default function ProductDetailView({ product, upsells }: { product: Produ
                             <Image src={p.image || '/default-product.jpg'} alt={p.title} width={200} height={200} className={styles.upsellImage} />
                             <div className={styles.upsellInfo}>
                                 <p className={styles.upsellTitle}>{p.title}</p>
-                                <p className={styles.upsellPrice}>${p.price}</p>
+                                <p className={styles.upsellPrice}>{formatCurrency(p.price)}</p>
                             </div>
                         </Link>
                     ))}

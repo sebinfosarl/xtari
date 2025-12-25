@@ -25,6 +25,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { loginCathedis, createCathedisDelivery, generateCathedisVoucher, getCathedisCities, getCathedisBanks } from '@/lib/shipping';
+import { fetchWoocommerceOrders, fetchWoocommerceProducts, verifyWoocommerceConnection, mapWoocommerceOrderToLocal } from '@/lib/woocommerce';
 
 export async function adminLoginAction(formData: FormData) {
     const username = formData.get('username') as string;
@@ -807,6 +808,7 @@ export async function getCathedisSettingsAction() {
     };
 }
 
+
 export async function saveCathedisSettingsAction(formData: FormData) {
     const username = formData.get('username') as string;
     const password = formData.get('password') as string;
@@ -827,13 +829,9 @@ export async function saveCathedisSettingsAction(formData: FormData) {
         await saveSettings(settings);
 
         // 2. Verify by attempting to login
-        // loginCathedis now reads from the DB, so it will use the credentials we just saved.
         try {
             await loginCathedis();
         } catch (loginError: any) {
-            // Login failed - revert isConnected (it's already false, but good to be explicit)
-            // We keep the username/password so user doesn't have to retype them, but they remain "disconnected"
-            // Actually, usually we might want to clear them if invalid, but better UX to let them fix it.
             return { success: false, error: 'Invalid credentials or connection failed. Please check your username and password.' };
         }
 
@@ -847,6 +845,18 @@ export async function saveCathedisSettingsAction(formData: FormData) {
     } catch (error: any) {
         return { success: false, error: error.message };
     }
+}
+
+export async function disconnectCathedisAction() {
+    const settings = await getSettings();
+    settings.cathedis = {
+        username: '',
+        password: '',
+        isConnected: false
+    };
+    await saveSettings(settings);
+    revalidatePath('/admin/settings');
+    return { success: true };
 }
 
 export async function savePickupLocationsAction(formData: FormData) {
@@ -863,14 +873,142 @@ export async function savePickupLocationsAction(formData: FormData) {
     }
 }
 
-export async function disconnectCathedisAction() {
+// WooCommerce Actions
+export async function getWoocommerceSettingsAction() {
     const settings = await getSettings();
-    settings.cathedis = {
-        username: '',
-        password: '',
-        isConnected: false
-    };
+    return settings.woocommerce || { storeUrl: '', consumerKey: '', consumerSecret: '', isConnected: false };
+}
+
+export async function saveWoocommerceSettingsAction(formData: FormData) {
+    const settings = await getSettings();
+    const storeUrl = formData.get('storeUrl') as string;
+    const consumerKey = formData.get('consumerKey') as string;
+    const consumerSecret = formData.get('consumerSecret') as string;
+
+    const verification = await verifyWoocommerceConnection(storeUrl, consumerKey, consumerSecret);
+
+    if (verification.success) {
+        settings.woocommerce = {
+            storeUrl,
+            consumerKey,
+            consumerSecret,
+            isConnected: true
+        };
+        await saveSettings(settings);
+        revalidatePath('/admin/settings');
+        return { success: true };
+    } else {
+        return { success: false, error: verification.error || 'Connection failed' };
+    }
+}
+
+export async function disconnectWoocommerceAction() {
+    const settings = await getSettings();
+    if (settings.woocommerce) {
+        settings.woocommerce = { storeUrl: '', consumerKey: '', consumerSecret: '', isConnected: false };
+    }
     await saveSettings(settings);
     revalidatePath('/admin/settings');
-    return { success: true };
+}
+
+export async function importWoocommerceOrdersAction(after?: string, before?: string) {
+    const settings = await getSettings();
+    if (!settings.woocommerce || !settings.woocommerce.isConnected) {
+        return { success: false, error: 'WooCommerce not connected' };
+    }
+
+    try {
+        const wcOrders = await fetchWoocommerceOrders(
+            settings.woocommerce.storeUrl,
+            settings.woocommerce.consumerKey,
+            settings.woocommerce.consumerSecret,
+            after,
+            before
+        );
+
+        const orders = await getOrders();
+        let importedCount = 0;
+
+        for (const wcOrder of wcOrders) {
+            // Heuristic duplicate check
+            const isDuplicate = orders.some(o =>
+                (o.date === wcOrder.date_created && parseFloat((wcOrder.total || "0")) === o.total) ||
+                (o.logs && o.logs.some(l => l.message.includes(`Order #${wcOrder.id})`)))
+            );
+
+            if (isDuplicate) continue;
+
+            const newOrder: Order = mapWoocommerceOrderToLocal(wcOrder);
+
+            await createOrder(newOrder);
+            importedCount++;
+        }
+
+        revalidatePath('/admin/orders');
+        return { success: true, count: importedCount };
+
+    } catch (e: any) {
+        console.error('Import failed', e);
+        return { success: false, error: e.message };
+    }
+}
+
+
+export async function importWoocommerceProductsAction() {
+    try {
+        const settings = await getSettings();
+
+        if (!settings.woocommerce?.isConnected || !settings.woocommerce.storeUrl) {
+            return { success: false, error: 'WooCommerce is not connected.' };
+        }
+
+        const wcProducts = await fetchWoocommerceProducts(
+            settings.woocommerce.storeUrl,
+            settings.woocommerce.consumerKey,
+            settings.woocommerce.consumerSecret
+        );
+
+        const existingProducts = await getProducts();
+        let newCount = 0;
+        let skippedCount = 0;
+
+        for (const wcP of wcProducts) {
+            const targetId = 'wc_' + wcP.id;
+
+            // Check if product already exists by ID (previously imported) or SKU (manually created)
+            const exists = existingProducts.find(p =>
+                p.id === targetId ||
+                (wcP.sku && p.sku === wcP.sku)
+            );
+
+            if (exists) {
+                skippedCount++;
+                continue;
+            }
+
+            const gallery = wcP.images.map(img => img.src);
+            const mainImage = gallery.length > 0 ? gallery[0] : '';
+            const newProduct: Product = {
+                id: targetId,
+                title: wcP.name,
+                description: wcP.description || wcP.short_description || '',
+                price: parseFloat(wcP.regular_price || wcP.price) || 0,
+                salePrice: wcP.sale_price ? parseFloat(wcP.sale_price) : undefined,
+                stock: wcP.stock_quantity ?? 0,
+                sku: wcP.sku,
+                image: mainImage,
+                gallery: gallery,
+                categoryIds: [],
+                status: wcP.status === 'publish' ? 'live' : 'draft',
+                isVisible: wcP.status === 'publish'
+            };
+            await saveProduct(newProduct);
+            newCount++;
+        }
+        revalidatePath('/admin/products');
+        return { success: true, count: newCount, skipped: skippedCount };
+    } catch (err: any) {
+        console.error('Import Error:', err);
+        return { success: false, error: err.message };
+    }
 }
