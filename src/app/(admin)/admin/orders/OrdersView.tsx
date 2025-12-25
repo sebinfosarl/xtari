@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Order, Product, SalesPerson, Kit } from '@/lib/db';
-import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer, Archive } from 'lucide-react';
-import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction, archiveOrderAction } from '@/app/actions';
+import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer } from 'lucide-react';
+import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import OrderDialog from '@/components/OrderDialog';
 import NewOrderDialog from '@/components/NewOrderDialog';
@@ -21,7 +21,7 @@ interface OrdersViewProps {
 
 export default function OrdersView({ initialOrders: orders, products, salesPeople, isWooCommerceConnected, kits }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled' | 'archived'>('pending');
+    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -81,7 +81,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                 </div>
 
                 <div className="flex gap-2">
-                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'archived', 'all'] as const).map(f => (
+                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
                         <button
                             key={f}
                             onClick={() => setFilter(f)}
@@ -214,24 +214,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                     >
                                         <Eye size={20} />
                                     </button>
-                                    <button
-                                        className={styles.actionBtn}
-                                        style={{ color: '#ef4444' }}
-                                        title="Archive Order"
-                                        onClick={async () => {
-                                            if (confirm('Are you sure you want to archive this order?')) {
-                                                const result = await archiveOrderAction(order.id);
-                                                if (result.success) {
-                                                    // Optional: Toast notification
-                                                    window.location.reload();
-                                                } else {
-                                                    alert('Failed to archive: ' + result.error);
-                                                }
-                                            }
-                                        }}
-                                    >
-                                        <Archive size={18} />
-                                    </button>
+
                                 </td>
                             </tr>
                         ))}

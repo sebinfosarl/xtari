@@ -74,7 +74,7 @@ export interface Order {
         price: number;
     }[];
     total: number;
-    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply' | 'archived';
+    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply';
     fulfillmentStatus?: 'to_pick' | 'picked' | 'returned';
     callResult?: string; // simplified type for brevity
     cancellationMotif?: string;

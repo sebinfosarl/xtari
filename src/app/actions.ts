@@ -435,39 +435,6 @@ export async function cancelOrderAction(orderId: string) {
     }
 }
 
-export async function archiveOrderAction(orderId: string) {
-    try {
-        const orders = await getOrders();
-        const order = orders.find(o => o.id === orderId);
-
-        if (!order) {
-            return { success: false, error: 'Order not found' };
-        }
-
-        // Update status
-        order.status = 'archived';
-
-        // Add log entry
-        if (!order.logs) order.logs = [];
-        order.logs.push({
-            type: 'status',
-            message: 'Order archived by admin.',
-            timestamp: new Date().toISOString(),
-            user: 'Admin'
-        });
-
-        await updateOrder(order);
-
-        revalidatePath('/admin');
-        revalidatePath('/admin/orders');
-        revalidatePath('/admin/fulfillment');
-
-        return { success: true, order };
-    } catch (error: any) {
-        console.error('Archiving failed:', error);
-        return { success: false, error: error.message || 'Failed to archive order' };
-    }
-}
 
 export async function bulkPrintVouchersAction(orderIds: string[]) {
     try {
