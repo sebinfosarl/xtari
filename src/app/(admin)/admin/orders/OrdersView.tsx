@@ -166,7 +166,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                             <th>Status</th>
                             <th>Call Result</th>
                             {filter === 'no_reply' && <th>Call Activity</th>}
-                            <th>{(filter === 'canceled' || filter === 'sales_order') ? 'View' : 'Manage'}</th>
+                            <th>{(filter === 'canceled' || filter === 'sales_order') ? 'View' : 'Actions'}</th>
                         </tr>
                     </thead>
                     <tbody>
