@@ -12,6 +12,7 @@ import { updateOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { formatCurrency } from '@/lib/format';
+import SearchableCitySelect from './SearchableCitySelect';
 
 interface OrderDialogProps {
     order: Order;
@@ -398,27 +399,23 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                             <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>City</label>
-                                <select
-                                    disabled={readOnly || isLoadingCities}
+                                <SearchableCitySelect
+                                    cities={cathedisCities}
                                     value={order.customer.city || ''}
-                                    onChange={(e) => {
-                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                    onChange={(cityName) => {
+                                        const city = cathedisCities.find(c => c.name === cityName);
                                         setOrder({
                                             ...order,
                                             customer: {
                                                 ...order.customer,
-                                                city: e.target.value,
+                                                city: cityName,
                                                 sector: city?.sectors?.[0]?.name || ''
                                             }
                                         });
                                     }}
-                                    className={styles.inlineInput}
-                                >
-                                    <option value="">Select City...</option>
-                                    {cathedisCities.map((c: any) => (
-                                        <option key={c.id} value={c.name}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    disabled={readOnly || isLoadingCities}
+                                    placeholder="Select City..."
+                                />
                             </div>
                             <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Sector/Neighborhood</label>

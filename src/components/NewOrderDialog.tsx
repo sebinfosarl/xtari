@@ -8,6 +8,7 @@ import {
     X, Search, Plus, ShoppingCart, User as UserIcon, Briefcase, ChevronRight, Eye, MapPin, Trash2, PlusCircle
 } from 'lucide-react';
 import styles from '../app/(admin)/admin/Admin.module.css';
+import SearchableCitySelect from './SearchableCitySelect';
 
 interface NewOrderDialogProps {
     products: Product[];
@@ -252,24 +253,20 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                             </div>
                             <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>City *</label>
-                                <select
+                                <SearchableCitySelect
+                                    cities={cathedisCities}
                                     value={customer.city}
-                                    onChange={(e) => {
-                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                    onChange={(cityName) => {
+                                        const city = cathedisCities.find(c => c.name === cityName);
                                         setCustomer({
                                             ...customer,
-                                            city: e.target.value,
+                                            city: cityName,
                                             sector: city?.sectors?.[0]?.name || ''
                                         });
                                     }}
-                                    className={styles.inlineInput}
                                     disabled={isLoadingCities}
-                                >
-                                    <option value="">Select City...</option>
-                                    {cathedisCities.map((c: any) => (
-                                        <option key={c.id} value={c.name}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    placeholder="Select City..."
+                                />
                             </div>
                             <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>Sector/Neighborhood *</label>

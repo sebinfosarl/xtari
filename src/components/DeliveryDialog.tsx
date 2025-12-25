@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction, returnOrderAction, restoreOrderToShipmentAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
+import SearchableCitySelect from './SearchableCitySelect';
 
 interface DeliveryDialogProps {
     order: Order;
@@ -86,27 +87,23 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>City</label>
-                                <select
-                                    disabled={isLoadingCities || isReturned || readonly}
+                                <SearchableCitySelect
+                                    cities={cathedisCities}
                                     value={order.customer.city || ''}
-                                    onChange={(e) => {
-                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                    onChange={(cityName) => {
+                                        const city = cathedisCities.find(c => c.name === cityName);
                                         setOrder({
                                             ...order,
                                             customer: {
                                                 ...order.customer,
-                                                city: e.target.value,
+                                                city: cityName,
                                                 sector: city?.sectors?.[0]?.name || ''
                                             }
                                         });
                                     }}
-                                    className={styles.inlineInput}
-                                >
-                                    <option value="">Select City...</option>
-                                    {cathedisCities.map((c: any) => (
-                                        <option key={c.id} value={c.name}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    disabled={isLoadingCities || isReturned || readonly}
+                                    placeholder="Select City..."
+                                />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Sector/Neighborhood</label>
