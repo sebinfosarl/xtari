@@ -74,7 +74,7 @@ export interface Order {
         price: number;
     }[];
     total: number;
-    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply' | 'archived';
+    status: 'pending' | 'sales_order' | 'canceled' | 'no_reply';
     fulfillmentStatus?: 'to_pick' | 'picked' | 'returned';
     callResult?: string; // simplified type for brevity
     cancellationMotif?: string;
@@ -315,6 +315,8 @@ export async function getOrders(): Promise<Order[]> {
             quantity: i.quantity,
             price: i.price
         }))
+
+
     }));
 }
 
@@ -348,13 +350,14 @@ export async function createOrder(order: Order) {
     // 2. Insert Items
     if (order.items && order.items.length > 0) {
         const itemsPayload = order.items.map(i => ({
+            id: Math.random().toString(36).substr(2, 9),
             orderId: order.id,
             productId: i.productId,
             quantity: i.quantity,
             price: i.price
         }));
         const { error: itemsError } = await supabase.from('OrderItem').insert(itemsPayload);
-        if (itemsError) console.error('createOrder (items) error', itemsError);
+        if (itemsError) console.error('createOrder items error', itemsError);
     }
 }
 
@@ -406,6 +409,7 @@ export async function updateOrder(order: Order) {
 
     if (order.items && order.items.length > 0) {
         const itemsPayload = order.items.map(i => ({
+            id: Math.random().toString(36).substr(2, 9),
             orderId: order.id, // Implicit foreign key if table structure allows
             productId: i.productId,
             quantity: i.quantity,

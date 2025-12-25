@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Order, Product, SalesPerson, Kit } from '@/lib/db';
-import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer, Archive } from 'lucide-react';
-import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction, archiveOrderAction } from '@/app/actions';
+import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer } from 'lucide-react';
+import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction } from '@/app/actions';
 import styles from '../Admin.module.css';
 import OrderDialog from '@/components/OrderDialog';
 import NewOrderDialog from '@/components/NewOrderDialog';
@@ -21,7 +21,7 @@ interface OrdersViewProps {
 
 export default function OrdersView({ initialOrders: orders, products, salesPeople, isWooCommerceConnected, kits }: OrdersViewProps) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled' | 'archived'>('pending');
+    const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -81,7 +81,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                 </div>
 
                 <div className="flex gap-2">
-                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'archived', 'all'] as const).map(f => (
+                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
                         <button
                             key={f}
                             onClick={() => setFilter(f)}
@@ -165,7 +165,8 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                             <th>Total</th>
                             <th>Status</th>
                             <th>Call Result</th>
-                            <th>Manage</th>
+                            {filter === 'no_reply' && <th>Call Activity</th>}
+                            <th>{(filter === 'canceled' || filter === 'sales_order') ? 'View' : 'Actions'}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -206,32 +207,51 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                         </div>
                                     )}
                                 </td>
+                                {filter === 'no_reply' && (
+                                    <td>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                            {[1, 2, 3].map(day => {
+                                                const attempts = (order.callHistory || {})[day] || 0;
+                                                if (attempts === 0) return null;
+                                                return (
+                                                    <div key={day} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', minWidth: '35px' }}>DAY {day}</span>
+                                                        <div style={{ display: 'flex', gap: '3px' }}>
+                                                            {[1, 2, 3, 4, 5].map(attempt => {
+                                                                const isActive = attempt <= attempts;
+                                                                return (
+                                                                    <div
+                                                                        key={attempt}
+                                                                        style={{
+                                                                            width: '10px',
+                                                                            height: '10px',
+                                                                            borderRadius: '50%',
+                                                                            background: isActive ? '#10b981' : '#f1f5f9',
+                                                                            border: isActive ? 'none' : '1px solid #e2e8f0',
+                                                                            boxShadow: isActive ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none'
+                                                                        }}
+                                                                    />
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                            {!order.callHistory || Object.keys(order.callHistory).length === 0 && (
+                                                <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontStyle: 'italic' }}>No calls logged</span>
+                                            )}
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="flex gap-2 items-center">
                                     <button
                                         onClick={() => setSelectedOrder(order)}
                                         className={styles.eyeBtn}
-                                        title="View Details"
+                                        title={(filter === 'canceled' || filter === 'sales_order') ? 'View Order (Read-Only)' : 'View Details'}
                                     >
                                         <Eye size={20} />
                                     </button>
-                                    <button
-                                        className={styles.actionBtn}
-                                        style={{ color: '#ef4444' }}
-                                        title="Archive Order"
-                                        onClick={async () => {
-                                            if (confirm('Are you sure you want to archive this order?')) {
-                                                const result = await archiveOrderAction(order.id);
-                                                if (result.success) {
-                                                    // Optional: Toast notification
-                                                    window.location.reload();
-                                                } else {
-                                                    alert('Failed to archive: ' + result.error);
-                                                }
-                                            }
-                                        }}
-                                    >
-                                        <Archive size={18} />
-                                    </button>
+
                                 </td>
                             </tr>
                         ))}
@@ -247,6 +267,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                         salesPeople={salesPeople}
                         onClose={() => setSelectedOrder(null)}
                         kits={kits}
+                        readOnly={selectedOrder.status === 'canceled' || selectedOrder.status === 'sales_order'}
                     />
                 )
             }
