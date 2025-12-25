@@ -251,6 +251,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                         <div className="flex justify-between items-center mb-4">
                             <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><UserIcon size={16} /> Customer Details</h3>
                             <button
+                                disabled={readOnly}
                                 onClick={() => {
                                     const isBusiness = order.companyName !== undefined || order.ice !== undefined;
                                     if (isBusiness) {
@@ -272,8 +273,9 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: '6px',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
+                                    cursor: readOnly ? 'not-allowed' : 'pointer',
+                                    transition: 'all 0.2s',
+                                    opacity: readOnly ? 0.5 : 1
                                 }}
                             >
                                 <Briefcase size={14} />
@@ -757,6 +759,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         <span className="text-slate-500 italic text-sm">Bundle Price</span>
                                                     ) : (
                                                         <input
+                                                            disabled={readOnly}
                                                             type="number"
                                                             step="0.01"
                                                             value={item.price ?? ''}
@@ -771,6 +774,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         <span className="font-bold">{item.quantity}</span>
                                                     ) : (
                                                         <input
+                                                            disabled={readOnly}
                                                             type="number"
                                                             value={item.quantity ?? ''}
                                                             onChange={(e) => updateItem(item.productId, parseInt(e.target.value) || 1, item.price)}
@@ -781,7 +785,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                 </td>
                                                 <td className="font-bold">{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
                                                 <td>
-                                                    {!item.isKit && (
+                                                    {!item.isKit && !readOnly && (
                                                         <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
                                                     )}
                                                     {item.isKit && (
