@@ -60,7 +60,7 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
                     paymentType: order.paymentType || "ESPECES",
                     deliveryType: order.deliveryType || "Livraison CRBT",
                     packageCount: order.packageCount?.toString() || "1",
-                    allowOpening: "0" // Forced to 0 as the account does not support opening
+                    allowOpening: order.allowOpening !== undefined ? order.allowOpening.toString() : "1"
                 }
             }
         }

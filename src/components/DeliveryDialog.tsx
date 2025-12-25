@@ -199,29 +199,6 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                 {/* Inputs always visible and editable */}
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'white', padding: '1.5rem', borderRadius: '12px', border: '1px solid #d1fae5', marginBottom: '1.5rem' }}>
                                     <div className={styles.inputGroup}>
-                                        <label>Payment Type</label>
-                                        <select value={order.paymentType || 'ESPECES'} onChange={(e) => setOrder({ ...order, paymentType: e.target.value })} className={styles.inlineInput}>
-                                            <option value="ESPECES">ESPECES</option>
-                                            <option value="Virement">Virement</option>
-                                        </select>
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <label>Delivery Type</label>
-                                        <select value={order.deliveryType || 'Livraison CRBT'} onChange={(e) => setOrder({ ...order, deliveryType: e.target.value })} className={styles.inlineInput}>
-                                            <option value="Livraison CRBT">Livraison CRBT</option>
-                                            <option value="Echange">Echange</option>
-                                        </select>
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <label>Range Weight</label>
-                                        <select value={order.rangeWeight || 'Entre 1.2 Kg et 5 Kg'} onChange={(e) => setOrder({ ...order, rangeWeight: e.target.value })} className={styles.inlineInput}>
-                                            <option value="Moins de 1 Kg">Moins de 1 Kg</option>
-                                            <option value="Entre 1.2 Kg et 5 Kg">Entre 1.2 Kg et 5 Kg</option>
-                                            <option value="Entre 5.1 Kg et 10 Kg">Entre 5.1 Kg et 10 Kg</option>
-                                            <option value="Plus de 30Kg">Plus de 30Kg</option>
-                                        </select>
-                                    </div>
-                                    <div className={styles.inputGroup}>
                                         <label>Weight (Kg)</label>
                                         <input type="number" value={order.weight || 0} onChange={(e) => setOrder({ ...order, weight: parseFloat(e.target.value) })} className={styles.inlineInput} />
                                     </div>
@@ -231,7 +208,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                     </div>
                                     <div className={styles.inputGroup}>
                                         <label>Allow Opening</label>
-                                        <select value={order.allowOpening !== undefined ? order.allowOpening : 1} onChange={(e) => setOrder({ ...order, allowOpening: parseInt(e.target.value) })} className={styles.inlineInput}>
+                                        <select value={order.allowOpening ?? 1} onChange={(e) => setOrder({ ...order, allowOpening: parseInt(e.target.value) })} className={styles.inlineInput}>
                                             <option value={0}>No</option>
                                             <option value={1}>Yes</option>
                                         </select>

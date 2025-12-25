@@ -221,7 +221,7 @@ export async function createOrderAction(formData: FormData) {
             sector: formData.get('sector') as string,
         },
         salesPerson: formData.get('salesPerson') as string || undefined,
-        allowOpening: 0, // No by default
+        allowOpening: 1, // Yes by default
         packageCount: 1, // 1 by default
     };
 
