@@ -165,6 +165,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                             <th>Total</th>
                             <th>Status</th>
                             <th>Call Result</th>
+                            {filter === 'no_reply' && <th>Call Activity</th>}
                             <th>Manage</th>
                         </tr>
                     </thead>
@@ -206,6 +207,42 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                         </div>
                                     )}
                                 </td>
+                                {filter === 'no_reply' && (
+                                    <td>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                            {[1, 2, 3].map(day => {
+                                                const attempts = (order.callHistory || {})[day] || 0;
+                                                if (attempts === 0) return null;
+                                                return (
+                                                    <div key={day} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', minWidth: '35px' }}>DAY {day}</span>
+                                                        <div style={{ display: 'flex', gap: '3px' }}>
+                                                            {[1, 2, 3, 4, 5].map(attempt => {
+                                                                const isActive = attempt <= attempts;
+                                                                return (
+                                                                    <div
+                                                                        key={attempt}
+                                                                        style={{
+                                                                            width: '10px',
+                                                                            height: '10px',
+                                                                            borderRadius: '50%',
+                                                                            background: isActive ? '#10b981' : '#f1f5f9',
+                                                                            border: isActive ? 'none' : '1px solid #e2e8f0',
+                                                                            boxShadow: isActive ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none'
+                                                                        }}
+                                                                    />
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                            {!order.callHistory || Object.keys(order.callHistory).length === 0 && (
+                                                <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontStyle: 'italic' }}>No calls logged</span>
+                                            )}
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="flex gap-2 items-center">
                                     <button
                                         onClick={() => setSelectedOrder(order)}
