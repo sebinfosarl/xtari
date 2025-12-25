@@ -11,6 +11,7 @@ import {
 import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction, returnOrderAction, restoreOrderToShipmentAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 import SearchableCitySelect from './SearchableCitySelect';
+import SearchableSelect from './SearchableSelect';
 
 interface DeliveryDialogProps {
     order: Order;
@@ -107,18 +108,13 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Sector/Neighborhood</label>
-                                <select
-                                    disabled={!order.customer.city || isReturned || readonly}
+                                <SearchableSelect
+                                    options={cathedisCities.find(c => c.name === order.customer.city)?.sectors || []}
                                     value={order.customer.sector || ''}
-                                    onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
-                                    className={styles.inlineInput}
-                                    style={{ opacity: isReturned ? 0.6 : 1 }}
-                                >
-                                    <option value="">Select Sector...</option>
-                                    {cathedisCities.find(c => c.name === order.customer.city)?.sectors?.map((s: any) => (
-                                        <option key={s.id} value={s.name}>{s.name}</option>
-                                    ))}
-                                </select>
+                                    onChange={(sectorName) => setOrder({ ...order, customer: { ...order.customer, sector: sectorName } })}
+                                    disabled={!order.customer.city || isReturned || readonly}
+                                    placeholder="Select Sector..."
+                                />
                             </div>
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Exact Shipping Address</label>

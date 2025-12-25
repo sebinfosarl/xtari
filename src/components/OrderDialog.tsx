@@ -13,6 +13,7 @@ import styles from '../app/(admin)/admin/Admin.module.css';
 import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { formatCurrency } from '@/lib/format';
 import SearchableCitySelect from './SearchableCitySelect';
+import SearchableSelect from './SearchableSelect';
 
 interface OrderDialogProps {
     order: Order;
@@ -419,20 +420,13 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             </div>
                             <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Sector/Neighborhood</label>
-                                <select
-                                    disabled={readOnly || !order.customer.city}
+                                <SearchableSelect
+                                    options={cathedisCities.find(c => c.name === order.customer.city)?.sectors || (order.customer.city ? [{ id: 'autre', name: 'Autre' }] : [])}
                                     value={order.customer.sector || ''}
-                                    onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
-                                    className={styles.inlineInput}
-                                >
-                                    <option value="">Select Sector...</option>
-                                    {cathedisCities.find(c => c.name === order.customer.city)?.sectors?.map((s: any) => (
-                                        <option key={s.id} value={s.name}>{s.name}</option>
-                                    ))}
-                                    {!cathedisCities.find(c => c.name === order.customer.city)?.sectors?.length && order.customer.city && (
-                                        <option value="Autre">Autre</option>
-                                    )}
-                                </select>
+                                    onChange={(sectorName) => setOrder({ ...order, customer: { ...order.customer, sector: sectorName } })}
+                                    disabled={readOnly || !order.customer.city}
+                                    placeholder="Select Sector..."
+                                />
                             </div>
 
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>

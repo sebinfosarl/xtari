@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import styles from '../app/(admin)/admin/Admin.module.css';
 import SearchableCitySelect from './SearchableCitySelect';
+import SearchableSelect from './SearchableSelect';
 
 interface NewOrderDialogProps {
     products: Product[];
@@ -270,20 +271,13 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                             </div>
                             <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>Sector/Neighborhood *</label>
-                                <select
+                                <SearchableSelect
+                                    options={cathedisCities.find(c => c.name === customer.city)?.sectors || (customer.city ? [{ id: 'autre', name: 'Autre' }] : [])}
                                     value={customer.sector}
-                                    onChange={(e) => setCustomer({ ...customer, sector: e.target.value })}
-                                    className={styles.inlineInput}
+                                    onChange={(sectorName) => setCustomer({ ...customer, sector: sectorName })}
                                     disabled={!customer.city}
-                                >
-                                    <option value="">Select Sector...</option>
-                                    {cathedisCities.find(c => c.name === customer.city)?.sectors?.map((s: any) => (
-                                        <option key={s.id} value={s.name}>{s.name}</option>
-                                    ))}
-                                    {!cathedisCities.find(c => c.name === customer.city)?.sectors?.length && customer.city && (
-                                        <option value="Autre">Autre</option>
-                                    )}
-                                </select>
+                                    placeholder="Select Sector..."
+                                />
                             </div>
                             <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Sales Person</label>
