@@ -2,6 +2,7 @@
 import { getOrders, getProducts, getSalesPeople } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
 import InvoicesView from './InvoicesView';
 
 export default async function InvoicesPage() {
@@ -9,5 +10,9 @@ export default async function InvoicesPage() {
     const products = await getProducts();
     const salesPeople = await getSalesPeople();
 
-    return <InvoicesView initialOrders={orders} products={products} salesPeople={salesPeople} />;
+    return (
+        <Suspense fallback={<div>Loading Invoices...</div>}>
+            <InvoicesView initialOrders={orders} products={products} salesPeople={salesPeople} />
+        </Suspense>
+    );
 }
