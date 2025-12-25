@@ -1,5 +1,7 @@
 
 import { getOrders, getProducts, getSalesPeople } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
 import InvoicesView from './InvoicesView';
 
 export default async function InvoicesPage() {

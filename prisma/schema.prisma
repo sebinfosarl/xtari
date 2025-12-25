@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:Sebaghi123.@db.wxpmsbhlynbdeydxrwkv.supabase.co:5432/postgres"
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  stock       Int      @default(0)
+  salePrice   Float?
+  
+  // Relations
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  
+  categoryIds String[] 
+  
+  image       String
+  gallery     String[]
+  
+  featured    Boolean  @default(false)
+  isVisible   Boolean  @default(true)
+  sku         String?
+  location    String?
+  weight      Float?
+  
+  dimensions  Json?
+  
+  linkedProducts Json?
+  
+  attributes  Json?
+  
+  brandId     String?
+  brand       Brand?   @relation(fields: [brandId], references: [id])
+  
+  status      String   @default("live")
+
+  orderItems  OrderItem[]
+  kitComponents KitComponent[]
+  kitTargets    Kit[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  parentId String?
+  order    Int?
+  products Product[]
+}
+
+model Brand {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  logo     String?
+  products Product[]
+}
+
+model Order {
+  id                String   @id @default(cuid())
+  total             Float
+  status            String   @default("pending")
+  fulfillmentStatus String?
+  date              DateTime @default(now())
+  
+  customer          Json
+  
+  salesPerson       String?
+  companyName       String?
+  ice               String?
+  
+  shippingId        String?
+  shippingStatus    String?
+  shippingLabelUrl  String?
+  shippingVoucherUrl String?
+  deliveryNotePrinted Boolean @default(false)
+  
+  callResult        String?
+  cancellationMotif String?
+  cancellationComment String?
+  callHistory       Json?
+  
+  logs              Json[]
+  
+  items             OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}
+
+model PurchaseOrder {
+  id         String   @id @default(cuid())
+  supplierId String
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+  total      Float
+  status     String   @default("draft")
+  date       DateTime @default(now())
+  notes      String?
+  
+  items      PurchaseOrderItem[]
+}
+
+model PurchaseOrderItem {
+  id              String        @id @default(cuid())
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  productId       String
+  quantity        Int
+  buyPrice        Float
+}
+
+model Supplier {
+  id            String          @id @default(cuid())
+  name          String
+  contactPerson String?
+  email         String?
+  phone         String?
+  address       String?
+  purchaseOrders PurchaseOrder[]
+}
+
+model SalesPerson {
+  id        String  @id @default(cuid())
+  fullName  String
+  cnie      String?
+  address   String?
+  ice       String?
+  if        String?
+  tp        String?
+  tel       String?
+  email     String?
+  signature String?
+  cachet    String?
+}
+
+model Kit {
+  id              String         @id @default(cuid())
+  targetProductId String
+  targetProduct   Product        @relation(fields: [targetProductId], references: [id])
+  reference       String
+  outputQuantity  Int            @default(1)
+  components      KitComponent[]
+}
+
+model KitComponent {
+  id        String  @id @default(cuid())
+  kitId     String
+  kit       Kit     @relation(fields: [kitId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+}
+
+model Settings {
+  id              Int     @id @default(1)
+  cathedis        Json?
+  woocommerce     Json?
+  pickupLocations String?
+}

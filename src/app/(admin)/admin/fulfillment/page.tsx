@@ -1,4 +1,6 @@
 import { getOrders, getProducts, getSalesPeople, getPurchaseOrders, getSuppliers, getSettings, getKits } from "@/lib/db";
+
+export const dynamic = 'force-dynamic';
 import FulfillmentView from "./FulfillmentView";
 
 export default async function AdminFulfillmentPage() {

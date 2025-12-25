@@ -1,0 +1,32 @@
+[
+  {
+    "id": "SUP-29Z7KY",
+    "name": "Digistar",
+    "contactPerson": "Rania Updated",
+    "email": "digistar@digistar.ma",
+    "phone": "0661172290",
+    "address": "this is her address",
+    "poCount": 3,
+    "totalInvested": 641.9,
+    "lastPODate": "2025-12-23T11:09:32.912Z"
+  },
+  {
+    "id": "SUP-K2Q9CI",
+    "name": "Lookinfo",
+    "contactPerson": "Hassan",
+    "email": "hassan@lookinfo.ma",
+    "phone": "0661182295",
+    "address": "this is his address",
+    "poCount": 0,
+    "totalInvested": 0,
+    "lastPODate": "N/A"
+  },
+  {
+    "id": "SUP-QF1XXF",
+    "name": "Disway",
+    "contactPerson": "Walid",
+    "email": "",
+    "phone": "0661100000",
+    "address": ""
+  }
+]

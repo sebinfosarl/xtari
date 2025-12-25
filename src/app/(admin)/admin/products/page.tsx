@@ -1,4 +1,6 @@
 import { getProducts, getKits, getSettings } from "@/lib/db";
+
+export const dynamic = 'force-dynamic';
 import ProductsView from './ProductsView';
 
 export default async function AdminProductsPage() {

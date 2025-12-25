@@ -1,4 +1,6 @@
 import { getOrders, getProducts, getSalesPeople, getSettings, getKits } from "@/lib/db";
+
+export const dynamic = 'force-dynamic';
 import OrdersView from "./OrdersView";
 
 export default async function AdminOrdersPage() {

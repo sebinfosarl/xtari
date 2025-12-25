@@ -1,4 +1,6 @@
 import { getPurchaseOrders, getProducts, getSuppliers } from "@/lib/db";
+
+export const dynamic = 'force-dynamic';
 import PurchaseOrdersView from "./PurchaseOrdersView";
 
 export default async function AdminPurchasePage() {
