@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Order, Product, SalesPerson } from '@/lib/db';
+import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { createOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import {
     X, Search, Plus, ShoppingCart, User as UserIcon, Briefcase, ChevronRight, Eye, MapPin, Trash2, PlusCircle
@@ -13,9 +13,10 @@ interface NewOrderDialogProps {
     products: Product[];
     salesPeople: SalesPerson[];
     onClose: () => void;
+    kits?: Kit[];
 }
 
-export default function NewOrderDialog({ products, salesPeople, onClose }: NewOrderDialogProps) {
+export default function NewOrderDialog({ products, salesPeople, onClose, kits }: NewOrderDialogProps) {
     const router = useRouter();
     const [isSaving, setIsSaving] = useState(false);
 
@@ -461,6 +462,26 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                                             <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
                                             <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                         </div>
+                                        {kits?.some(k => k.targetProductId === p.id) && (
+                                            <span style={{
+                                                position: 'absolute',
+                                                top: '10px',
+                                                right: '12px',
+                                                display: 'inline-block',
+                                                padding: '2px 6px',
+                                                fontSize: '10px',
+                                                fontWeight: 'bold',
+                                                color: 'white',
+                                                backgroundColor: '#9333ea',
+                                                borderRadius: '2px',
+                                                boxShadow: '0 0 5px rgba(147, 51, 234, 0.6)',
+                                                letterSpacing: '0.05em',
+                                                textTransform: 'uppercase',
+                                                zIndex: 4
+                                            }}>
+                                                KIT
+                                            </span>
+                                        )}
                                         <button
                                             onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
                                             className={styles.previewBtn}
@@ -543,6 +564,6 @@ export default function NewOrderDialog({ products, salesPeople, onClose }: NewOr
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

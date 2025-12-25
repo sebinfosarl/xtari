@@ -972,6 +972,26 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                 <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
                                                 <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                             </div>
+                                            {kits?.some(k => k.targetProductId === p.id) && (
+                                                <span style={{
+                                                    position: 'absolute',
+                                                    top: '10px',
+                                                    right: '12px',
+                                                    display: 'inline-block',
+                                                    padding: '2px 6px',
+                                                    fontSize: '10px',
+                                                    fontWeight: 'bold',
+                                                    color: 'white',
+                                                    backgroundColor: '#9333ea',
+                                                    borderRadius: '2px',
+                                                    boxShadow: '0 0 5px rgba(147, 51, 234, 0.6)',
+                                                    letterSpacing: '0.05em',
+                                                    textTransform: 'uppercase',
+                                                    zIndex: 4
+                                                }}>
+                                                    KIT
+                                                </span>
+                                            )}
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
                                                 className={styles.previewBtn}
