@@ -36,6 +36,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
     const [showProductGallery, setShowProductGallery] = useState(false);
     const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+    const [showAddButton, setShowAddButton] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [newComment, setNewComment] = useState('');
@@ -816,7 +817,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                                 src={product.image}
                                                                 className={styles.imageCell}
                                                                 alt=""
-                                                                onClick={() => setPreviewProduct(product)}
+                                                                onClick={() => { setPreviewProduct(product); setShowAddButton(false); }}
                                                                 style={{ cursor: 'pointer' }}
                                                             />
                                                         )}
@@ -1133,7 +1134,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                 </span>
                                             )}
                                             <button
-                                                onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
+                                                onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); setShowAddButton(true); }}
                                                 className={styles.previewBtn}
                                                 style={{
                                                     position: 'absolute',
@@ -1174,13 +1175,19 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 className={styles.confirmCard}
                                 style={{
                                     maxWidth: '600px',
+                                    maxHeight: '90vh',
                                     padding: 0,
-                                    overflow: 'hidden',
-                                    background: 'white'
-                                }}
+                                    overflow: 'auto',
+                                    background: 'white',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    // Modern scrollbar styling
+                                    scrollbarWidth: 'thin',
+                                    scrollbarColor: '#cbd5e1 #f1f5f9'
+                                } as React.CSSProperties & { scrollbarWidth?: string; scrollbarColor?: string }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <div style={{ position: 'relative' }}>
+                                <div style={{ position: 'relative', flexShrink: 0 }}>
                                     <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
                                     <button
                                         onClick={() => setPreviewProduct(null)}
@@ -1199,18 +1206,43 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                         <X size={20} />
                                     </button>
                                 </div>
-                                <div style={{ padding: '1.5rem', background: 'white' }}>
-                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
-                                    <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
-                                    <div className="flex justify-between items-center">
-                                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
-                                        >
-                                            Add to Order
-                                        </button>
-                                    </div>
+                                <div style={{
+                                    padding: '1.5rem',
+                                    background: 'white'
+                                }}>
+                                    <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.25rem', fontWeight: '700' }}>{previewProduct.title}</h3>
+                                    <div
+                                        style={{
+                                            color: '#64748b',
+                                            fontSize: '0.9rem',
+                                            margin: '0 0 1.5rem 0',
+                                            lineHeight: '1.6'
+                                        }}
+                                        dangerouslySetInnerHTML={{ __html: previewProduct.description }}
+                                    />
+                                    {showAddButton && (
+                                        <div className="flex justify-between items-center" style={{
+                                            borderTop: '1px solid #f1f5f9',
+                                            paddingTop: '1rem'
+                                        }}>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                            >
+                                                Add to Order
+                                            </button>
+                                        </div>
+                                    )}
+                                    {!showAddButton && (
+                                        <div style={{
+                                            borderTop: '1px solid #f1f5f9',
+                                            paddingTop: '1rem',
+                                            textAlign: 'center'
+                                        }}>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
