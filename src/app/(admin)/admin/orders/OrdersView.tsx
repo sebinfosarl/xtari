@@ -166,7 +166,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                             <th>Status</th>
                             <th>Call Result</th>
                             {filter === 'no_reply' && <th>Call Activity</th>}
-                            <th>{filter === 'canceled' ? 'View' : 'Manage'}</th>
+                            <th>{(filter === 'canceled' || filter === 'sales_order') ? 'View' : 'Manage'}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -247,7 +247,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                     <button
                                         onClick={() => setSelectedOrder(order)}
                                         className={styles.eyeBtn}
-                                        title={filter === 'canceled' ? 'View Order (Read-Only)' : 'View Details'}
+                                        title={(filter === 'canceled' || filter === 'sales_order') ? 'View Order (Read-Only)' : 'View Details'}
                                     >
                                         <Eye size={20} />
                                     </button>
@@ -267,7 +267,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                         salesPeople={salesPeople}
                         onClose={() => setSelectedOrder(null)}
                         kits={kits}
-                        readOnly={selectedOrder.status === 'canceled'}
+                        readOnly={selectedOrder.status === 'canceled' || selectedOrder.status === 'sales_order'}
                     />
                 )
             }
