@@ -282,18 +282,75 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                         </div>
 
                         <div className="grid grid-cols-2 gap-6">
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>Full Name</label>
                                 <input disabled={readOnly} value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
                             </div>
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Phone Number</label>
-                                <input disabled={readOnly} value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: '0.5rem',
+                                    overflow: 'hidden',
+                                    background: 'white',
+                                    transition: 'all 0.2s',
+                                    borderColor: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '#ef4444' : '#e2e8f0',
+                                    boxShadow: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '0 0 0 1px #ef4444' : 'none'
+                                }}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        padding: '0.5rem 0.75rem',
+                                        background: '#f8fafc',
+                                        borderRight: '1px solid #e2e8f0',
+                                        color: '#475569',
+                                        fontWeight: 600,
+                                        fontSize: '0.9rem',
+                                        userSelect: 'none'
+                                    }}>
+                                        <img
+                                            src="https://flagcdn.com/w40/ma.png"
+                                            alt="Morocco"
+                                            style={{ width: '20px', height: 'auto', borderRadius: '2px' }}
+                                        />
+                                        <span>+212</span>
+                                    </div>
+                                    <input
+                                        disabled={readOnly}
+                                        value={order.customer.phone}
+                                        onChange={(e) => {
+                                            let val = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                                            if (val.startsWith('0')) val = val.substring(1); // Remove leading 0
+                                            if (val.length > 9) val = val.substring(0, 9); // Max 9 digits
+
+                                            setOrder({ ...order, customer: { ...order.customer, phone: val } });
+                                        }}
+                                        placeholder="612345678"
+                                        className={styles.inlineInput}
+                                        style={{
+                                            border: 'none',
+                                            boxShadow: 'none',
+                                            borderRadius: '0',
+                                            flex: 1,
+                                            padding: '0.5rem 0.75rem',
+                                            color: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '#ef4444' : 'inherit'
+                                        }}
+                                    />
+                                </div>
+                                {order.customer.phone && (
+                                    <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#ef4444', height: '1.25rem' }}>
+                                        {!['5', '6', '7'].includes(order.customer.phone[0]) && <span>Must start with 5, 6, or 7. </span>}
+                                        {order.customer.phone.length !== 9 && <span>Must be 9 digits.</span>}
+                                    </div>
+                                )}
                             </div>
 
                             {(order.companyName !== undefined || order.ice !== undefined) && (
                                 <>
-                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
+                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd', gridColumn: 'span 1', marginRight: '0.75rem' }}>
                                         <label style={{ color: '#0369a1' }}>Company/Business Name</label>
                                         <input
                                             disabled={readOnly}
@@ -304,7 +361,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             style={{ background: 'white', borderColor: '#7dd3fc' }}
                                         />
                                     </div>
-                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
+                                    <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd', gridColumn: 'span 1', marginLeft: '0.75rem' }}>
                                         <label style={{ color: '#0369a1' }}>ICE (Tax ID)</label>
                                         <input
                                             disabled={readOnly}
@@ -318,7 +375,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 </>
                             )}
 
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>City</label>
                                 <select
                                     disabled={readOnly || isLoadingCities}
@@ -342,7 +399,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     ))}
                                 </select>
                             </div>
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Sector/Neighborhood</label>
                                 <select
                                     disabled={readOnly || !order.customer.city}
