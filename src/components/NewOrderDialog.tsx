@@ -366,7 +366,25 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                                             <td>
                                                 <div className="flex items-center gap-3">
                                                     {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
-                                                    <div className="font-bold">{product?.title || 'Unknown'}</div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="font-bold">{product?.title || 'Unknown'}</div>
+                                                        {kits?.some(k => k.targetProductId === product?.id) && (
+                                                            <span style={{
+                                                                display: 'inline-block',
+                                                                padding: '2px 6px',
+                                                                fontSize: '10px',
+                                                                fontWeight: 'bold',
+                                                                color: 'white',
+                                                                backgroundColor: '#9333ea',
+                                                                borderRadius: '2px',
+                                                                boxShadow: '0 0 5px rgba(147, 51, 234, 0.6)',
+                                                                letterSpacing: '0.05em',
+                                                                textTransform: 'uppercase'
+                                                            }}>
+                                                                KIT
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>

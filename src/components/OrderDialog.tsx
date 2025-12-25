@@ -742,7 +742,22 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         <div className="flex flex-col">
                                                             <div className="font-bold flex items-center gap-2">
                                                                 {product?.title || 'Unknown'}
-                                                                {item.isKit && <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">Bundle</span>}
+                                                                {item.isKit && (
+                                                                    <span style={{
+                                                                        display: 'inline-block',
+                                                                        padding: '2px 6px',
+                                                                        fontSize: '10px',
+                                                                        fontWeight: 'bold',
+                                                                        color: 'white',
+                                                                        backgroundColor: '#9333ea',
+                                                                        borderRadius: '2px',
+                                                                        boxShadow: '0 0 5px rgba(147, 51, 234, 0.6)',
+                                                                        letterSpacing: '0.05em',
+                                                                        textTransform: 'uppercase'
+                                                                    }}>
+                                                                        KIT
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                             {item.isKit && (
                                                                 <div className="text-xs text-slate-500 italic">
