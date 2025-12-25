@@ -277,6 +277,7 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                         products={products}
                         salesPeople={salesPeople}
                         onClose={() => setShowNewOrderDialog(false)}
+                        kits={kits}
                     />
                 )
             }

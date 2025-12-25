@@ -9,7 +9,10 @@ import {
     User as UserIcon, ShoppingCart, Truck, Package, ChevronDown, ChevronUp, Printer, Trash2, RotateCcw
 } from 'lucide-react';
 import { updateOrderAction, createShipmentAction, cancelShipmentAction, getCathedisCitiesAction, markDeliveryNotePrintedAction, cancelOrderAction, returnOrderAction, restoreOrderToShipmentAction } from '@/app/actions';
+import { formatCurrency } from '@/lib/format';
 import styles from '../app/(admin)/admin/Admin.module.css';
+import SearchableCitySelect from './SearchableCitySelect';
+import SearchableSelect from './SearchableSelect';
 
 interface DeliveryDialogProps {
     order: Order;
@@ -86,42 +89,33 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>City</label>
-                                <select
-                                    disabled={isLoadingCities || isReturned || readonly}
+                                <SearchableCitySelect
+                                    cities={cathedisCities}
                                     value={order.customer.city || ''}
-                                    onChange={(e) => {
-                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                    onChange={(cityName) => {
+                                        const city = cathedisCities.find(c => c.name === cityName);
                                         setOrder({
                                             ...order,
                                             customer: {
                                                 ...order.customer,
-                                                city: e.target.value,
+                                                city: cityName,
                                                 sector: city?.sectors?.[0]?.name || ''
                                             }
                                         });
                                     }}
-                                    className={styles.inlineInput}
-                                >
-                                    <option value="">Select City...</option>
-                                    {cathedisCities.map((c: any) => (
-                                        <option key={c.id} value={c.name}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    disabled={isLoadingCities || isReturned || readonly}
+                                    placeholder="Select City..."
+                                />
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Sector/Neighborhood</label>
-                                <select
-                                    disabled={!order.customer.city || isReturned || readonly}
+                                <SearchableSelect
+                                    options={cathedisCities.find(c => c.name === order.customer.city)?.sectors || []}
                                     value={order.customer.sector || ''}
-                                    onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
-                                    className={styles.inlineInput}
-                                    style={{ opacity: isReturned ? 0.6 : 1 }}
-                                >
-                                    <option value="">Select Sector...</option>
-                                    {cathedisCities.find(c => c.name === order.customer.city)?.sectors?.map((s: any) => (
-                                        <option key={s.id} value={s.name}>{s.name}</option>
-                                    ))}
-                                </select>
+                                    onChange={(sectorName) => setOrder({ ...order, customer: { ...order.customer, sector: sectorName } })}
+                                    disabled={!order.customer.city || isReturned || readonly}
+                                    placeholder="Select Sector..."
+                                />
                             </div>
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                                 <label>Exact Shipping Address</label>
@@ -161,8 +155,8 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                                 </div>
                                             </td>
                                             <td className="font-bold">{item.quantity}</td>
-                                            <td>${(item.price || 0).toFixed(2)}</td>
-                                            <td className="font-bold">${((item.price || 0) * item.quantity).toFixed(2)}</td>
+                                            <td>{formatCurrency(item.price || 0)}</td>
+                                            <td className="font-bold">{formatCurrency((item.price || 0) * item.quantity)}</td>
                                         </tr>
                                     );
                                 })}
@@ -170,7 +164,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             <tfoot>
                                 <tr>
                                     <td colSpan={3} className="text-right p-4 font-bold">Total Cash on Delivery</td>
-                                    <td className="p-4 font-extrabold text-blue-600 text-xl">${order.total.toFixed(2)}</td>
+                                    <td className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(order.total)}</td>
                                 </tr>
                             </tfoot>
                         </table>

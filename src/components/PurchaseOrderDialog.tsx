@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { PurchaseOrder, Product, Supplier } from '@/lib/db';
 import { savePurchaseOrderAction, deletePurchaseOrderAction } from '@/app/actions';
 import { X, Calendar, ShoppingBag, User, CheckCircle2, AlertCircle, Trash2, Printer, Save } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 import styles from '../app/(admin)/admin/Admin.module.css';
 
 interface PurchaseOrderDialogProps {
@@ -144,9 +145,9 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose, 
                                                     <div className="font-bold">{product?.title || 'Unknown Product'}</div>
                                                 </div>
                                             </td>
-                                            <td>${item.buyPrice.toFixed(2)}</td>
+                                            <td>{formatCurrency(item.buyPrice)}</td>
                                             <td>{item.quantity}</td>
-                                            <td className="text-right font-bold">${(item.buyPrice * item.quantity).toFixed(2)}</td>
+                                            <td className="text-right font-bold">{formatCurrency(item.buyPrice * item.quantity)}</td>
                                         </tr>
                                     );
                                 })}
@@ -154,7 +155,7 @@ export default function PurchaseOrderDialog({ po, products, suppliers, onClose, 
                             <tfoot>
                                 <tr>
                                     <td colSpan={3} className="text-right p-4 font-bold text-slate-500">Total Purchase Amount</td>
-                                    <td className="text-right p-4 font-extrabold text-blue-600 text-xl">${(po.total || 0).toFixed(2)}</td>
+                                    <td className="text-right p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(po.total || 0)}</td>
                                 </tr>
                             </tfoot>
                         </table>

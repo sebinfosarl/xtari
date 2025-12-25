@@ -12,6 +12,8 @@ import { updateOrderAction, getCathedisCitiesAction } from '@/app/actions';
 import styles from '../app/(admin)/admin/Admin.module.css';
 import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { formatCurrency } from '@/lib/format';
+import SearchableCitySelect from './SearchableCitySelect';
+import SearchableSelect from './SearchableSelect';
 
 interface OrderDialogProps {
     order: Order;
@@ -36,6 +38,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
     const [showProductGallery, setShowProductGallery] = useState(false);
     const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+    const [showAddButton, setShowAddButton] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [newComment, setNewComment] = useState('');
@@ -174,13 +177,31 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
     const addItem = (productId: string) => {
         const product = products.find(p => p.id === productId);
         if (!product) return;
-        const newItems = [...order.items, { productId, quantity: 1, price: product.price }];
+
+        // Check if product already exists in order
+        const existingItem = order.items.find(item => item.productId === productId);
+
+        let newItems;
+        if (existingItem) {
+            // Increase quantity of existing item
+            newItems = order.items.map(item =>
+                item.productId === productId
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+        } else {
+            // Add as new item
+            newItems = [...order.items, { productId, quantity: 1, price: product.price }];
+        }
+
         const newTotal = newItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
         setOrder({
             ...order,
             items: newItems,
             total: newTotal,
-            logs: addLog('item_add', `Added ${product.title} to order`)
+            logs: addLog('item_add', existingItem
+                ? `Increased ${product.title} quantity to ${existingItem.quantity + 1}`
+                : `Added ${product.title} to order`)
         });
         setShowProductGallery(false);
     };
@@ -379,44 +400,33 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                             <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>City</label>
-                                <select
-                                    disabled={readOnly || isLoadingCities}
+                                <SearchableCitySelect
+                                    cities={cathedisCities}
                                     value={order.customer.city || ''}
-                                    onChange={(e) => {
-                                        const city = cathedisCities.find(c => c.name === e.target.value);
+                                    onChange={(cityName) => {
+                                        const city = cathedisCities.find(c => c.name === cityName);
                                         setOrder({
                                             ...order,
                                             customer: {
                                                 ...order.customer,
-                                                city: e.target.value,
+                                                city: cityName,
                                                 sector: city?.sectors?.[0]?.name || ''
                                             }
                                         });
                                     }}
-                                    className={styles.inlineInput}
-                                >
-                                    <option value="">Select City...</option>
-                                    {cathedisCities.map((c: any) => (
-                                        <option key={c.id} value={c.name}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    disabled={readOnly || isLoadingCities}
+                                    placeholder="Select City..."
+                                />
                             </div>
                             <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Sector/Neighborhood</label>
-                                <select
-                                    disabled={readOnly || !order.customer.city}
+                                <SearchableSelect
+                                    options={cathedisCities.find(c => c.name === order.customer.city)?.sectors || (order.customer.city ? [{ id: 'autre', name: 'Autre' }] : [])}
                                     value={order.customer.sector || ''}
-                                    onChange={(e) => setOrder({ ...order, customer: { ...order.customer, sector: e.target.value } })}
-                                    className={styles.inlineInput}
-                                >
-                                    <option value="">Select Sector...</option>
-                                    {cathedisCities.find(c => c.name === order.customer.city)?.sectors?.map((s: any) => (
-                                        <option key={s.id} value={s.name}>{s.name}</option>
-                                    ))}
-                                    {!cathedisCities.find(c => c.name === order.customer.city)?.sectors?.length && order.customer.city && (
-                                        <option value="Autre">Autre</option>
-                                    )}
-                                </select>
+                                    onChange={(sectorName) => setOrder({ ...order, customer: { ...order.customer, sector: sectorName } })}
+                                    disabled={readOnly || !order.customer.city}
+                                    placeholder="Select Sector..."
+                                />
                             </div>
 
                             <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
@@ -655,7 +665,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                     {/* SECTION 3: ORDER CONTENT */}
                     <section className={styles.infoSection}>
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem' }}>
                             <h3 className={styles.sectionTitle} style={{ border: 'none', marginBottom: 0 }}><ShoppingCart size={16} /> Order Content</h3>
                             {!readOnly && (
                                 <button onClick={() => setShowProductGallery(true)} className="btn btn-accent btn-sm">
@@ -664,14 +674,60 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             )}
                         </div>
 
-                        <table className={styles.managementTable}>
+                        <table
+                            className={styles.managementTable}
+                            style={{
+                                border: '2px solid #cbd5e1',
+                                borderCollapse: 'collapse',
+                                background: 'white'
+                            }}
+                        >
                             <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                    <th>Qty</th>
-                                    <th>Subtotal</th>
-                                    <th></th>
+                                <tr style={{ background: '#f1f5f9' }}>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em'
+                                    }}>Item</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'center'
+                                    }}>Price</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'center'
+                                    }}>Qty</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'right'
+                                    }}>Subtotal</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        width: '60px'
+                                    }}></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -735,14 +791,46 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     return displayItems.map((item, idx) => {
                                         const product = products.find(p => p.id === item.productId);
                                         return (
-                                            <tr key={`${item.productId}-${idx}`} className={item.isKit ? "bg-blue-50/50" : ""}>
-                                                <td>
+                                            <tr
+                                                key={`${item.productId}-${idx}`}
+                                                style={{
+                                                    background: item.isKit ? '#eff6ff' : 'white',
+                                                    transition: 'background 0.2s'
+                                                }}
+                                            >
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem'
+                                                }}>
                                                     <div className="flex items-center gap-8">
-                                                        {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
+                                                        {product?.image && (
+                                                            <img
+                                                                src={product.image}
+                                                                className={styles.imageCell}
+                                                                alt=""
+                                                                onClick={() => { setPreviewProduct(product); setShowAddButton(false); }}
+                                                                style={{ cursor: 'pointer' }}
+                                                            />
+                                                        )}
                                                         <div className="flex flex-col">
                                                             <div className="font-bold flex items-center gap-2">
                                                                 {product?.title || 'Unknown'}
-                                                                {item.isKit && <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">Bundle</span>}
+                                                                {(item.isKit || kits?.some(k => k.targetProductId === item.productId)) && (
+                                                                    <span style={{
+                                                                        display: 'inline-block',
+                                                                        padding: '2px 6px',
+                                                                        fontSize: '10px',
+                                                                        fontWeight: 'bold',
+                                                                        color: 'white',
+                                                                        backgroundColor: '#9333ea',
+                                                                        borderRadius: '2px',
+                                                                        boxShadow: '0 0 5px rgba(147, 51, 234, 0.6)',
+                                                                        letterSpacing: '0.05em',
+                                                                        textTransform: 'uppercase'
+                                                                    }}>
+                                                                        KIT
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                             {item.isKit && (
                                                                 <div className="text-xs text-slate-500 italic">
@@ -754,7 +842,11 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    textAlign: 'center'
+                                                }}>
                                                     {item.isKit ? (
                                                         <span className="text-slate-500 italic text-sm">Bundle Price</span>
                                                     ) : (
@@ -769,7 +861,11 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         />
                                                     )}
                                                 </td>
-                                                <td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    textAlign: 'center'
+                                                }}>
                                                     {item.isKit ? (
                                                         <span className="font-bold">{item.quantity}</span>
                                                     ) : (
@@ -783,8 +879,18 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                         />
                                                     )}
                                                 </td>
-                                                <td className="font-bold">{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
-                                                <td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    fontWeight: '700',
+                                                    textAlign: 'right',
+                                                    color: '#0f172a'
+                                                }}>{formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
+                                                <td style={{
+                                                    border: '1px solid #cbd5e1',
+                                                    padding: '1rem',
+                                                    textAlign: 'center'
+                                                }}>
                                                     {!item.isKit && !readOnly && (
                                                         <button onClick={() => removeItem(item.productId)} className={styles.deleteBtn}><Trash2 size={16} /></button>
                                                     )}
@@ -800,9 +906,35 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 })()}
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colSpan={3} className="text-right p-4 font-bold">Total Amount</td>
-                                    <td colSpan={2} className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(order.total)}</td>
+                                <tr style={{ background: '#f8fafc' }}>
+                                    <td
+                                        colSpan={3}
+                                        style={{
+                                            border: '2px solid #cbd5e1',
+                                            padding: '1.25rem',
+                                            textAlign: 'right',
+                                            fontWeight: '800',
+                                            fontSize: '1rem',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            color: '#475569'
+                                        }}
+                                    >
+                                        Total Amount
+                                    </td>
+                                    <td
+                                        colSpan={2}
+                                        style={{
+                                            border: '2px solid #cbd5e1',
+                                            padding: '1.25rem',
+                                            fontWeight: '800',
+                                            fontSize: '1.5rem',
+                                            color: '#2563eb',
+                                            textAlign: 'right'
+                                        }}
+                                    >
+                                        {formatCurrency(order.total)}
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -969,11 +1101,31 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             </div>
                                             <div style={{ flex: 1, paddingRight: '2.5rem' }}>
                                                 <div className={styles.galleryTitle}>{p.title}</div>
-                                                <div className={styles.galleryPrice}>${(p.price || 0).toFixed(2)}</div>
+                                                <div className={styles.galleryPrice}>{formatCurrency(p.price || 0)}</div>
                                                 <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{p.category}</div>
                                             </div>
+                                            {kits?.some(k => k.targetProductId === p.id) && (
+                                                <span style={{
+                                                    position: 'absolute',
+                                                    top: '10px',
+                                                    right: '12px',
+                                                    display: 'inline-block',
+                                                    padding: '2px 6px',
+                                                    fontSize: '10px',
+                                                    fontWeight: 'bold',
+                                                    color: 'white',
+                                                    backgroundColor: '#9333ea',
+                                                    borderRadius: '2px',
+                                                    boxShadow: '0 0 5px rgba(147, 51, 234, 0.6)',
+                                                    letterSpacing: '0.05em',
+                                                    textTransform: 'uppercase',
+                                                    zIndex: 4
+                                                }}>
+                                                    KIT
+                                                </span>
+                                            )}
                                             <button
-                                                onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); }}
+                                                onClick={(e) => { e.stopPropagation(); setPreviewProduct(p); setShowAddButton(true); }}
                                                 className={styles.previewBtn}
                                                 style={{
                                                     position: 'absolute',
@@ -984,12 +1136,24 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                     padding: '4px',
                                                     border: '1px solid #e2e8f0',
                                                     cursor: 'pointer',
-                                                    transition: 'all 0.2s',
+                                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                                     boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
                                                     zIndex: 5
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1.15)';
+                                                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(37, 99, 235, 0.25)';
+                                                    e.currentTarget.style.background = '#eff6ff';
+                                                    e.currentTarget.style.borderColor = '#2563eb';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                                                    e.currentTarget.style.background = 'white';
+                                                    e.currentTarget.style.borderColor = '#e2e8f0';
                                                 }}
                                             >
                                                 <Eye size={14} color="var(--color-primary)" />
@@ -1014,14 +1178,20 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 className={styles.confirmCard}
                                 style={{
                                     maxWidth: '600px',
+                                    maxHeight: '90vh',
                                     padding: 0,
-                                    overflow: 'hidden',
-                                    background: 'white'
-                                }}
+                                    overflow: 'auto',
+                                    background: 'white',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    // Modern scrollbar styling
+                                    scrollbarWidth: 'thin',
+                                    scrollbarColor: '#cbd5e1 #f1f5f9'
+                                } as React.CSSProperties & { scrollbarWidth?: string; scrollbarColor?: string }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <div style={{ position: 'relative' }}>
-                                    <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
+                                <div style={{ position: 'relative', flexShrink: 0, width: '100%', aspectRatio: '1/1', overflow: 'hidden' }}>
+                                    <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     <button
                                         onClick={() => setPreviewProduct(null)}
                                         style={{
@@ -1039,18 +1209,43 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                         <X size={20} />
                                     </button>
                                 </div>
-                                <div style={{ padding: '1.5rem', background: 'white' }}>
-                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{previewProduct.title}</h3>
-                                    <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.5rem 0 1rem 0' }}>{previewProduct.description}</p>
-                                    <div className="flex justify-between items-center">
-                                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${previewProduct.price.toFixed(2)}</span>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
-                                        >
-                                            Add to Order
-                                        </button>
-                                    </div>
+                                <div style={{
+                                    padding: '1.5rem',
+                                    background: 'white'
+                                }}>
+                                    <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.25rem', fontWeight: '700' }}>{previewProduct.title}</h3>
+                                    <div
+                                        style={{
+                                            color: '#64748b',
+                                            fontSize: '0.9rem',
+                                            margin: '0 0 1.5rem 0',
+                                            lineHeight: '1.6'
+                                        }}
+                                        dangerouslySetInnerHTML={{ __html: previewProduct.description }}
+                                    />
+                                    {showAddButton && (
+                                        <div className="flex justify-between items-center" style={{
+                                            borderTop: '1px solid #f1f5f9',
+                                            paddingTop: '1rem'
+                                        }}>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(previewProduct.price)}</span>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => { addItem(previewProduct.id); setPreviewProduct(null); }}
+                                            >
+                                                Add to Order
+                                            </button>
+                                        </div>
+                                    )}
+                                    {!showAddButton && (
+                                        <div style={{
+                                            borderTop: '1px solid #f1f5f9',
+                                            paddingTop: '1rem',
+                                            textAlign: 'center'
+                                        }}>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(previewProduct.price)}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
