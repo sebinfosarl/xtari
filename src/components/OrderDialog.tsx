@@ -253,7 +253,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             <button
                                 disabled={readOnly}
                                 onClick={() => {
-                                    const isBusiness = order.companyName !== undefined || order.ice !== undefined;
+                                    const isBusiness = (order.companyName != null) || (order.ice != null);
                                     if (isBusiness) {
                                         // Disable business mode: clear fields
                                         setOrder({ ...order, companyName: undefined, ice: undefined, logs: addLog('business_mode', 'Disabled Business/Company Info') });
@@ -267,9 +267,9 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                     fontWeight: 800,
                                     padding: '6px 14px',
                                     borderRadius: 'full',
-                                    background: (order.companyName !== undefined || order.ice !== undefined) ? 'rgba(59, 130, 246, 0.1)' : '#f8fafc',
-                                    color: (order.companyName !== undefined || order.ice !== undefined) ? '#2563eb' : '#94a3b8',
-                                    border: (order.companyName !== undefined || order.ice !== undefined) ? '1px solid #2563eb' : '1px solid #e2e8f0',
+                                    background: ((order.companyName != null) || (order.ice != null)) ? 'rgba(59, 130, 246, 0.1)' : '#f8fafc',
+                                    color: ((order.companyName != null) || (order.ice != null)) ? '#2563eb' : '#94a3b8',
+                                    border: ((order.companyName != null) || (order.ice != null)) ? '1px solid #2563eb' : '1px solid #e2e8f0',
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: '6px',
@@ -279,7 +279,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 }}
                             >
                                 <Briefcase size={14} />
-                                {(order.companyName !== undefined || order.ice !== undefined) ? 'BUSINESS MODE ACTIVE' : 'SWITCH TO BUSINESS INVOICE'}
+                                {((order.companyName != null) || (order.ice != null)) ? 'BUSINESS MODE ACTIVE' : 'SWITCH TO BUSINESS INVOICE'}
                             </button>
                         </div>
 
@@ -350,7 +350,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 )}
                             </div>
 
-                            {(order.companyName !== undefined || order.ice !== undefined) && (
+                            {((order.companyName != null) || (order.ice != null)) && (
                                 <>
                                     <div className={styles.inputGroup} style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '12px', border: '1px solid #bae6fd', gridColumn: 'span 1', marginRight: '0.75rem' }}>
                                         <label style={{ color: '#0369a1' }}>Company/Business Name</label>
