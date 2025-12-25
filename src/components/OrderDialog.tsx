@@ -1145,12 +1145,24 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                                     padding: '4px',
                                                     border: '1px solid #e2e8f0',
                                                     cursor: 'pointer',
-                                                    transition: 'all 0.2s',
+                                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                                     boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
                                                     zIndex: 5
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1.15)';
+                                                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(37, 99, 235, 0.25)';
+                                                    e.currentTarget.style.background = '#eff6ff';
+                                                    e.currentTarget.style.borderColor = '#2563eb';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                                                    e.currentTarget.style.background = 'white';
+                                                    e.currentTarget.style.borderColor = '#e2e8f0';
                                                 }}
                                             >
                                                 <Eye size={14} color="var(--color-primary)" />
@@ -1187,8 +1199,8 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                 } as React.CSSProperties & { scrollbarWidth?: string; scrollbarColor?: string }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <div style={{ position: 'relative', flexShrink: 0 }}>
-                                    <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', maxHeight: '450px', objectFit: 'contain' }} />
+                                <div style={{ position: 'relative', flexShrink: 0, width: '100%', aspectRatio: '1/1', overflow: 'hidden' }}>
+                                    <img src={previewProduct.image} alt={previewProduct.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     <button
                                         onClick={() => setPreviewProduct(null)}
                                         style={{
