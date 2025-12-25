@@ -678,7 +678,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                         return (
                                             <tr key={`${item.productId}-${idx}`} className={item.isKit ? "bg-blue-50/50" : ""}>
                                                 <td>
-                                                    <div className="flex items-center gap-3">
+                                                    <div className="flex items-center gap-8">
                                                         {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
                                                         <div className="flex flex-col">
                                                             <div className="font-bold flex items-center gap-2">
