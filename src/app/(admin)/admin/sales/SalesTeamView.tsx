@@ -215,26 +215,14 @@ export default function SalesTeamView({ initialSalesPeople }: { initialSalesPeop
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className={styles.inputGroup}>
-                                        <label>Signature Image</label>
-                                        <div className="flex flex-col gap-2">
-                                            {editingPerson.signature && <img src={editingPerson.signature} className="h-12 object-contain bg-white border rounded p-1 w-fit" alt="Preview" />}
-                                            <label className="btn btn-outline btn-sm cursor-pointer !w-full">
-                                                <Upload size={14} /> Upload Signature
-                                                <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'signature')} />
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <label>Cachet Image</label>
-                                        <div className="flex flex-col gap-2">
-                                            {editingPerson.cachet && <img src={editingPerson.cachet} className="h-12 object-contain bg-white border rounded p-1 w-fit" alt="Preview" />}
-                                            <label className="btn btn-outline btn-sm cursor-pointer !w-full">
-                                                <Upload size={14} /> Upload Cachet
-                                                <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'cachet')} />
-                                            </label>
-                                        </div>
+                                <div className={styles.inputGroup}>
+                                    <label>Signature Image</label>
+                                    <div className="flex flex-col gap-2">
+                                        {editingPerson.signature && <img src={editingPerson.signature} className="h-32 object-contain bg-white border rounded p-1 w-fit" alt="Preview" />}
+                                        <label className="btn btn-outline btn-sm cursor-pointer !w-full">
+                                            <Upload size={14} /> Upload Signature
+                                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'signature')} />
+                                        </label>
                                     </div>
                                 </div>
                             </div>
