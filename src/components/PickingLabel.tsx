@@ -199,12 +199,13 @@ export default function PickingLabel({ orders, products }: PickingLabelProps) {
                         {orders.map(o => {
                             const visual = orderVisuals[o.id];
                             return (
-                                <div key={o.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', border: '1px solid #ddd', padding: '4px 8px', borderRadius: '4px', background: 'white' }}>
+                                <div key={o.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid #ddd', padding: '4px 8px', borderRadius: '4px', background: 'white' }}>
                                     <div className="visual-tag" style={{ background: visual.color, width: '24px', height: '24px', fontSize: '12px' }}>{visual.label}</div>
                                     <div>
                                         <div style={{ fontSize: '11px', fontWeight: 'bold' }}>Order #{o.id}</div>
                                         <div style={{ fontSize: '9px', color: '#666' }}>{o.customer.name.substring(0, 15)}</div>
                                     </div>
+                                    <Barcode text={o.id} scale={1.5} height={8} showText={false} />
                                 </div>
                             );
                         })}
