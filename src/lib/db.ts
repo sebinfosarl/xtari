@@ -87,6 +87,8 @@ export interface Order {
         phone: string;
         city?: string;
         sector?: string;
+        country?: string;
+        state?: string;
     };
     salesPerson?: string;
     invoiceDownloaded?: boolean;

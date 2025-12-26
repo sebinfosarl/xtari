@@ -237,7 +237,15 @@ function extractCityFromAddress(address: string, validCities: { name: string }[]
 export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder, validCities: { name: string }[] = []): Order {
     let rawCity = wcOrder.shipping?.city || wcOrder.billing?.city || '';
 
-    // Fallback: If city is empty, try to extract from address
+    // Fallback 1: If city is empty, check if 'state' holds the city name (per user data observation)
+    if (!rawCity.trim()) {
+        const potentialCityFromState = wcOrder.shipping?.state || wcOrder.billing?.state;
+        if (potentialCityFromState && potentialCityFromState.trim()) {
+            rawCity = potentialCityFromState;
+        }
+    }
+
+    // Fallback 2: If city (and state) is empty, try to extract from address
     if (!rawCity.trim()) {
         const fullAddress = `${wcOrder.shipping?.address_1 || ''} ${wcOrder.shipping?.address_2 || ''} ${wcOrder.billing?.address_1 || ''} ${wcOrder.billing?.address_2 || ''}`;
         const extracted = extractCityFromAddress(fullAddress, validCities);
@@ -264,6 +272,8 @@ export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder, validCitie
             phone: normalizeMoroccanPhone(wcOrder.billing.phone),
             address: `${wcOrder.shipping?.address_1 || ''} ${wcOrder.shipping?.address_2 || ''}`.trim(),
             city: resolvedCity,
+            country: wcOrder.shipping?.country || wcOrder.billing?.country,
+            state: wcOrder.shipping?.state || wcOrder.billing?.state,
         },
         paymentType: wcOrder.payment_method_title,
         packageCount: 1,

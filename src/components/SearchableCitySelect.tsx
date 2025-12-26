@@ -39,7 +39,7 @@ export default function SearchableCitySelect({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleCitySelect = (cityName: string) => {
+    const handleSelect = (cityName: string) => {
         onChange(cityName);
         setIsOpen(false);
         setSearchQuery('');
@@ -101,7 +101,7 @@ export default function SearchableCitySelect({
                         <Search size={16} style={{ color: '#94a3b8' }} />
                         <input
                             type="text"
-                            placeholder="Search cities..."
+                            placeholder="Search city..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             autoFocus
@@ -115,7 +115,7 @@ export default function SearchableCitySelect({
                         />
                     </div>
 
-                    {/* City List */}
+                    {/* Cities List */}
                     <div style={{
                         overflowY: 'auto',
                         maxHeight: '240px'
@@ -125,7 +125,7 @@ export default function SearchableCitySelect({
                                 <button
                                     key={city.id}
                                     type="button"
-                                    onClick={() => handleCitySelect(city.name)}
+                                    onClick={() => handleSelect(city.name)}
                                     style={{
                                         width: '100%',
                                         padding: '0.75rem',
