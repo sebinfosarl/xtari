@@ -63,6 +63,19 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
     const isAwaitingPickup = order.shippingId && !s.includes('livr') && !s.includes('expédi') && !order.shippingStatus?.includes('Pickup:');
     const isPickedUp = order.shippingId && ((s.includes('expédi') || s.includes('pickup done') || order.shippingStatus?.includes('Pickup:')) && !s.includes('livr'));
 
+    const handlePrintDeliveryNote = async () => {
+        const frame = document.getElementById('print-iframe') as HTMLIFrameElement;
+        if (frame) {
+            frame.src = `/print/delivery/${order.id}`;
+            // Track that it was printed
+            const res = await markDeliveryNotePrintedAction(order.id);
+            if (res.success && res.order) {
+                setOrder(res.order);
+                router.refresh(); // Sync with parent
+            }
+        }
+    };
+
     return (
         <div className={styles.modalOverlay} style={{ zIndex: 1500 }}>
             <div className={styles.orderModal}>
@@ -71,7 +84,19 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                         <h2 className={styles.modalTitle}>Manage Delivery for Order #{order.id} <span style={{ fontSize: '0.8em', fontWeight: 'normal', opacity: 0.7 }}>({new Date(order.date).toLocaleDateString()})</span></h2>
                         <span className={styles.modalSubtitle}>{order.customer.name} - {order.customer.city}</span>
                     </div>
-                    <button onClick={onClose} className={styles.closeBtn}><X size={24} /></button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        {order.shippingId && (
+                            <button
+                                onClick={handlePrintDeliveryNote}
+                                className={styles.dynamicFlowButton}
+                                title="Print Delivery Note"
+                            >
+                                <Printer size={16} />
+                                DELIVERY NOTE
+                            </button>
+                        )}
+                        <button onClick={onClose} className={styles.closeBtn}><X size={24} /></button>
+                    </div>
                 </header>
 
                 <div className={styles.modalBody}>
@@ -119,39 +144,30 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                         disabled={isReturned || readonly}
                                         value={order.customer.phone}
                                         onChange={(e) => {
-                                            let val = e.target.value.replace(/\D/g, ''); // Remove non-digits
-                                            if (val.startsWith('0')) val = val.substring(1); // Remove leading 0
-                                            if (val.length > 9) val = val.substring(0, 9); // Max 9 digits
+                                            // 1. Remove non-digits
+                                            let val = e.target.value.replace(/\D/g, '');
 
-                                            // If user deletes the leading 0, maybe we should let them? 
-                                            // But if we force view to start with 0, then deleting it might look weird if it instantly comes back.
-                                            // Let's just store what they type. If they type '6...', the value prop will add '0' back visually? 
-                                            // No, that causes cursor jumping.
-                                            // Better to just ensure we store with 0 if possible? 
-                                            // Actually, if we change the value prop to ALWAYS prepend 0, then onChange must handle that.
+                                            // 2. Remove leading '0' or '212' if pasted/typed
+                                            if (val.startsWith('0')) val = val.substring(1);
+                                            if (val.startsWith('212')) val = val.substring(3);
 
-                                            // If input value doesn't start with 0, prepend it?
-                                            if (val.length > 0 && !val.startsWith('0')) {
-                                                val = '0' + val;
-                                            }
+                                            // 3. Limit to 9 digits
+                                            if (val.length > 9) val = val.slice(0, 9);
 
-                                            setOrder({ ...order, customer: { ...order.customer, phone: val } });
+                                            setOrder({
+                                                ...order,
+                                                customer: { ...order.customer, phone: val }
+                                            });
                                         }}
-                                        placeholder="612345678"
                                         className={styles.inlineInput}
-                                        style={{
-                                            border: 'none',
-                                            boxShadow: 'none',
-                                            borderRadius: '0',
-                                            flex: 1,
-                                            padding: '0.5rem 0.75rem',
-                                            color: (order.customer.phone && !((order.customer.phone.length === 10 && order.customer.phone.startsWith('0') && ['5', '6', '7'].includes(order.customer.phone[1])) || (order.customer.phone.length === 9 && ['5', '6', '7'].includes(order.customer.phone[0])))) ? '#ef4444' : 'inherit'
-                                        }}
+                                        style={{ border: 'none', boxShadow: 'none', borderRadius: 0, width: '100%' }}
+                                        placeholder="612345678"
                                     />
                                 </div>
-                                {order.customer.phone && (
-                                    <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#ef4444', height: '1.25rem' }}>
-                                        {!((order.customer.phone.length === 10 && order.customer.phone.startsWith('0') && ['5', '6', '7'].includes(order.customer.phone[1])) || (order.customer.phone.length === 9 && ['5', '6', '7'].includes(order.customer.phone[0]))) && <span>Must start with 05, 06, or 07 and be 10 digits.</span>}
+                                {order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9) && (
+                                    <div style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                        <X size={12} />
+                                        <span>Must start with 5, 6, or 7 and be 9 digits</span>
                                     </div>
                                 )}
                             </div>
@@ -419,18 +435,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                             </button>
 
                                             <button
-                                                onClick={async () => {
-                                                    const frame = document.getElementById('print-iframe') as HTMLIFrameElement;
-                                                    if (frame) {
-                                                        frame.src = `/print/delivery/${order.id}`;
-                                                        // Track that it was printed
-                                                        const res = await markDeliveryNotePrintedAction(order.id);
-                                                        if (res.success && res.order) {
-                                                            setOrder(res.order);
-                                                            router.refresh(); // Sync with parent
-                                                        }
-                                                    }
-                                                }}
+                                                onClick={handlePrintDeliveryNote}
                                                 className="btn btn-sm"
                                                 style={{ background: '#3b82f6', color: 'white', borderColor: '#3b82f6' }}
                                                 title="Print Delivery Note"
