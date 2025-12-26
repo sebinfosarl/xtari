@@ -85,7 +85,64 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>Phone Number</label>
-                                <input disabled={isReturned || readonly} value={order.customer.phone} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, phone: e.target.value } })} className={styles.inlineInput} />
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: '0.5rem',
+                                    overflow: 'hidden',
+                                    background: 'white',
+                                    transition: 'all 0.2s',
+                                    borderColor: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '#ef4444' : '#e2e8f0',
+                                    boxShadow: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '0 0 0 1px #ef4444' : 'none'
+                                }}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        padding: '0.5rem 0.75rem',
+                                        background: '#f8fafc',
+                                        borderRight: '1px solid #e2e8f0',
+                                        color: '#475569',
+                                        fontWeight: 600,
+                                        fontSize: '0.9rem',
+                                        userSelect: 'none'
+                                    }}>
+                                        <img
+                                            src="https://flagcdn.com/w40/ma.png"
+                                            alt="Morocco"
+                                            style={{ width: '20px', height: 'auto', borderRadius: '2px' }}
+                                        />
+                                        <span>+212</span>
+                                    </div>
+                                    <input
+                                        disabled={isReturned || readonly}
+                                        value={order.customer.phone}
+                                        onChange={(e) => {
+                                            let val = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                                            if (val.startsWith('0')) val = val.substring(1); // Remove leading 0
+                                            if (val.length > 9) val = val.substring(0, 9); // Max 9 digits
+
+                                            setOrder({ ...order, customer: { ...order.customer, phone: val } });
+                                        }}
+                                        placeholder="612345678"
+                                        className={styles.inlineInput}
+                                        style={{
+                                            border: 'none',
+                                            boxShadow: 'none',
+                                            borderRadius: '0',
+                                            flex: 1,
+                                            padding: '0.5rem 0.75rem',
+                                            color: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '#ef4444' : 'inherit'
+                                        }}
+                                    />
+                                </div>
+                                {order.customer.phone && (
+                                    <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#ef4444', height: '1.25rem' }}>
+                                        {!['5', '6', '7'].includes(order.customer.phone[0]) && <span>Must start with 5, 6, or 7. </span>}
+                                        {order.customer.phone.length !== 9 && <span>Must be 9 digits.</span>}
+                                    </div>
+                                )}
                             </div>
                             <div className={styles.inputGroup}>
                                 <label>City</label>
@@ -134,37 +191,79 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                     {/* SECTION 2: PRODUCTS ORDERED */}
                     <section className={styles.infoSection}>
                         <h3 className={styles.sectionTitle}><ShoppingCart size={16} /> Merchandise Details</h3>
-                        <table className={styles.managementTable}>
+                        <table
+                            className={styles.managementTable}
+                            style={{
+                                border: '2px solid #cbd5e1',
+                                borderCollapse: 'collapse',
+                                background: 'white'
+                            }}
+                        >
                             <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Price/Unit</th>
-                                    <th>Subtotal</th>
+                                <tr style={{ background: '#f1f5f9' }}>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em'
+                                    }}>Product</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'center'
+                                    }}>Quantity</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'center'
+                                    }}>Price/Unit</th>
+                                    <th style={{
+                                        border: '1px solid #cbd5e1',
+                                        padding: '1rem',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.75rem',
+                                        color: '#475569',
+                                        letterSpacing: '0.05em',
+                                        textAlign: 'right'
+                                    }}>Subtotal</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {order.items.map(item => {
                                     const product = products.find(p => p.id === item.productId);
                                     return (
-                                        <tr key={item.productId}>
-                                            <td>
+                                        <tr key={item.productId} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                                            <td style={{ padding: '0.75rem 1rem', borderRight: '1px solid #e2e8f0' }}>
                                                 <div className="flex items-center gap-3">
                                                     {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
                                                     <div className="font-bold">{product?.title || 'Unknown'}</div>
                                                 </div>
                                             </td>
-                                            <td className="font-bold">{item.quantity}</td>
-                                            <td>{formatCurrency(item.price || 0)}</td>
-                                            <td className="font-bold">{formatCurrency((item.price || 0) * item.quantity)}</td>
+                                            <td className="font-bold" style={{ padding: '0.75rem 1rem', textAlign: 'center', borderRight: '1px solid #e2e8f0' }}>{item.quantity}</td>
+                                            <td style={{ padding: '0.75rem 1rem', textAlign: 'center', borderRight: '1px solid #e2e8f0' }}>{formatCurrency(item.price || 0)}</td>
+                                            <td className="font-bold" style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>{formatCurrency((item.price || 0) * item.quantity)}</td>
                                         </tr>
                                     );
                                 })}
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colSpan={3} className="text-right p-4 font-bold">Total Cash on Delivery</td>
-                                    <td className="p-4 font-extrabold text-blue-600 text-xl">{formatCurrency(order.total)}</td>
+                                    <td colSpan={3} className="text-right p-4 font-bold" style={{ borderTop: '2px solid #cbd5e1', background: '#f8fafc', color: '#64748b' }}>Total Cash on Delivery</td>
+                                    <td className="p-4 font-extrabold text-blue-600 text-xl" style={{ borderTop: '2px solid #cbd5e1', background: '#f8fafc', textAlign: 'right' }}>{formatCurrency(order.total)}</td>
                                 </tr>
                             </tfoot>
                         </table>
