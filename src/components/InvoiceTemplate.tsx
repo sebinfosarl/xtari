@@ -148,11 +148,8 @@ export default function InvoiceTemplate({ order, products, salesPeople }: Invoic
             <div className="signature-box" style={{ minHeight: '200px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '20px' }}>
                 <div style={{ marginBottom: '10px' }}>Signature :</div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '20px' }}>
-                    {autoEntrepreneur?.cachet && (
-                        <img src={autoEntrepreneur.cachet} alt="Cachet" style={{ height: '170px', objectFit: 'contain', opacity: 0.9, marginBottom: '-50px', position: 'relative', zIndex: 1 }} />
-                    )}
                     {autoEntrepreneur?.signature && (
-                        <img src={autoEntrepreneur.signature} alt="Signature" style={{ height: '120px', objectFit: 'contain', position: 'relative', zIndex: 2 }} />
+                        <img src={autoEntrepreneur.signature} alt="Signature" style={{ height: '200px', objectFit: 'contain', position: 'relative', zIndex: 2 }} />
                     )}
                 </div>
             </div>
