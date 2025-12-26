@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Order, Product, SalesPerson, Kit, getOrderById } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer } from 'lucide-react';
@@ -21,6 +22,7 @@ interface OrdersViewProps {
 }
 
 export default function OrdersView({ initialOrders, products, salesPeople, isWooCommerceConnected, kits }: OrdersViewProps) {
+    const router = useRouter();
     const [orders, setOrders] = useState<Order[]>(initialOrders);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
@@ -31,6 +33,7 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
     const [isRequestingPickup, setIsRequestingPickup] = useState(false);
     const [isSyncingShipping, setIsSyncingShipping] = useState(false);
     const [isImporting, setIsImporting] = useState(false);
+    const [printFrameUrl, setPrintFrameUrl] = useState<string | null>(null);
 
     // Sync initialOrders prop to state if it changes (revalidation etc)
     useEffect(() => {
@@ -85,6 +88,65 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
 
     // Removed old handleImportWoocommerce logic as it's now in the dialog
 
+    // Handle direct invoice printing
+    const handlePrintInvoice = async (order: Order) => {
+        if (order.status !== 'sales_order' || !order.salesPerson) return;
+
+        const now = new Date().toISOString();
+        const updatedOrder = {
+            ...order,
+            invoiceDownloaded: true,
+            invoiceDate: order.invoiceDate || now,
+        };
+
+        // Update local state immediately for instant UI feedback
+        setOrders(prev => prev.map(o => o.id === order.id ? updatedOrder : o));
+
+        try {
+            await updateOrderAction(updatedOrder);
+            // Don't call router.refresh() - let the realtime subscription handle the update
+            // to avoid race condition where refresh pulls old data before DB update completes
+        } catch (err) {
+            console.error('Failed to auto-save invoice status', err);
+            // Revert on error
+            setOrders(prev => prev.map(o => o.id === order.id ? order : o));
+        }
+
+        // Trigger print via hidden iframe
+        setPrintFrameUrl(`/print/invoice/${order.id}?t=${Date.now()}`);
+    };
+
+    // Helper function to get filtered count for a specific status
+    const getFilteredCount = (statusFilter: 'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled') => {
+        return orders.filter(o => {
+            // Status filter
+            if (statusFilter !== 'all' && o.status !== statusFilter) return false;
+
+            // Search query filter
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                const matchesId = o.id.toLowerCase().includes(q);
+                const matchesName = o.customer.name.toLowerCase().includes(q);
+                const matchesPhone = o.customer.phone.toLowerCase().includes(q);
+                if (!matchesId && !matchesName && !matchesPhone) return false;
+            }
+
+            // Date range filter
+            if (startDate || endDate) {
+                const orderDate = new Date(o.date).setHours(0, 0, 0, 0);
+                if (startDate) {
+                    const start = new Date(startDate).setHours(0, 0, 0, 0);
+                    if (orderDate < start) return false;
+                }
+                if (endDate) {
+                    const end = new Date(endDate).setHours(23, 59, 59, 999);
+                    if (orderDate > end) return false;
+                }
+            }
+            return true;
+        }).length;
+    };
+
     const filteredOrders = orders.filter(o => {
         // Status filter
         if (filter !== 'all' && o.status !== filter) return false;
@@ -134,15 +196,31 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                 </div>
 
                 <div className="flex gap-2">
-                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
-                        <button
-                            key={f}
-                            onClick={() => setFilter(f)}
-                            className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
-                        >
-                            {f.replace('_', ' ').toUpperCase()}
-                        </button>
-                    ))}
+                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => {
+                        const count = getFilteredCount(f);
+
+                        return (
+                            <button
+                                key={f}
+                                onClick={() => setFilter(f)}
+                                className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
+                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                            >
+                                <span>{f.replace('_', ' ').toUpperCase()}</span>
+                                <span style={{
+                                    background: filter === f ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.08)',
+                                    padding: '0.125rem 0.5rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: '700',
+                                    minWidth: '1.5rem',
+                                    textAlign: 'center'
+                                }}>
+                                    {count}
+                                </span>
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* ADVANCED FILTER BAR */}
@@ -219,6 +297,7 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                             <th>Status</th>
                             <th>Call Result</th>
                             {filter === 'no_reply' && <th>Call Activity</th>}
+                            {filter === 'sales_order' && <th>Invoice</th>}
                             <th>{(filter === 'canceled' || filter === 'sales_order') ? 'View' : 'Actions'}</th>
                         </tr>
                     </thead>
@@ -256,20 +335,10 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                                     {order.callResult ? (
                                         <div className="flex flex-col gap-1">
                                             <span className={styles.resultBadge}>{order.callResult}</span>
-                                            {order.invoiceDownloaded && (
-                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
-                                                    INVOICE ↓
-                                                </span>
-                                            )}
                                         </div>
                                     ) : (
                                         <div className="flex flex-col gap-1">
                                             <span className="text-muted text-xs italic">Not called</span>
-                                            {order.invoiceDownloaded && (
-                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
-                                                    INVOICE ↓
-                                                </span>
-                                            )}
                                         </div>
                                     )}
                                 </td>
@@ -307,6 +376,31 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                                                 <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontStyle: 'italic' }}>No calls logged</span>
                                             )}
                                         </div>
+                                    </td>
+                                )}
+                                {filter === 'sales_order' && (
+                                    <td>
+                                        <button
+                                            onClick={() => handlePrintInvoice(order)}
+                                            disabled={!order.salesPerson}
+                                            className={styles.eyeBtn}
+                                            title={order.invoiceDownloaded ? 'Print Invoice (Already Printed)' : 'Print Invoice'}
+                                            style={{
+                                                background: order.invoiceDownloaded
+                                                    ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                                    : '#ffffff',
+                                                border: order.invoiceDownloaded ? 'none' : '2px solid #e2e8f0',
+                                                color: order.invoiceDownloaded ? '#ffffff' : '#64748b',
+                                                opacity: !order.salesPerson ? 0.5 : 1,
+                                                cursor: !order.salesPerson ? 'not-allowed' : 'pointer',
+                                                boxShadow: order.invoiceDownloaded
+                                                    ? '0 4px 12px rgba(16, 185, 129, 0.3)'
+                                                    : '0 2px 8px rgba(0, 0, 0, 0.05)',
+                                                transition: 'all 0.3s ease'
+                                            }}
+                                        >
+                                            <Printer size={20} />
+                                        </button>
                                     </td>
                                 )}
                                 <td className="flex gap-2 items-center">
@@ -403,6 +497,18 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
             >
                 <Plus size={28} strokeWidth={2.5} />
             </button>
+
+            {/* Hidden iframe for invoice printing */}
+            {printFrameUrl && (
+                <iframe
+                    src={printFrameUrl}
+                    style={{ display: 'none' }}
+                    onLoad={() => {
+                        // Clear the URL after the iframe has loaded to allow re-triggering
+                        setTimeout(() => setPrintFrameUrl(null), 1000);
+                    }}
+                />
+            )}
         </div>
     );
 }

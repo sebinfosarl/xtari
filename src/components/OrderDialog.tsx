@@ -270,7 +270,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                 <header className={styles.modalHeader}>
                     <div className={styles.headerInfo}>
                         <h2 className={styles.modalTitle}>Manage Order #{order.id}</h2>
-                        <span className={styles.modalSubtitle}>{new Date(order.date).toLocaleString()}</span>
+                        <span className={styles.modalSubtitle}>{order.customer.name} — {new Date(order.date).toLocaleString()}</span>
                     </div>
                     <button onClick={onClose} className={styles.closeBtn}><X size={24} /></button>
                 </header>

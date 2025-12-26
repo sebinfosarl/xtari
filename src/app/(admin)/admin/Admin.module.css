@@ -964,6 +964,7 @@
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1191,7 +1192,7 @@
 
 /* Sticky Bulk Actions Bar */
 .stickyBar {
-    position: sticky;
+    position: fixed;
     bottom: 2rem;
     left: 0;
     right: 0;
@@ -1205,7 +1206,7 @@
     align-items: center;
     gap: 1.5rem;
     border: 1px solid #e2e8f0;
-    z-index: 50;
+    z-index: 2000;
     animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1262,8 +1263,8 @@
 }
 
 .bulkCloseBtn {
-    background: #f1f5f9;
-    color: #64748b;
+    background: #eff6ff;
+    color: #3b82f6;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -1276,8 +1277,8 @@
 }
 
 .bulkCloseBtn:hover {
-    background: #e2e8f0;
-    color: #0f172a;
+    background: #dbeafe;
+    color: #1d4ed8;
 }
 
 /* Indicators / Labels */
@@ -1301,4 +1302,55 @@
     background: #f1f5f9;
     color: #94a3b8;
     border-color: #e2e8f0;
+}
+
+@keyframes flowGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulseBlue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}
+
+.dynamicFlowButton {
+    background: linear-gradient(-45deg, #1d4ed8, #2563eb, #3b82f6, #1d4ed8);
+    background-size: 300% 300%;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dynamicFlowButton:hover {
+    animation: flowGradient 2s ease infinite, pulseBlue 2s infinite;
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3), 0 4px 6px -2px rgba(37, 99, 235, 0.1);
 }
