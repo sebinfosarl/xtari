@@ -68,7 +68,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
             <div className={styles.orderModal}>
                 <header className={styles.modalHeader}>
                     <div className={styles.headerInfo}>
-                        <h2 className={styles.modalTitle}>Manage Delivery for Order #{order.id}</h2>
+                        <h2 className={styles.modalTitle}>Manage Delivery for Order #{order.id} <span style={{ fontSize: '0.8em', fontWeight: 'normal', opacity: 0.7 }}>({new Date(order.date).toLocaleDateString()})</span></h2>
                         <span className={styles.modalSubtitle}>{order.customer.name} - {order.customer.city}</span>
                     </div>
                     <button onClick={onClose} className={styles.closeBtn}><X size={24} /></button>
