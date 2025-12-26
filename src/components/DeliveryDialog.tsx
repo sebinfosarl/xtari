@@ -79,11 +79,11 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                     <section className={styles.infoSection}>
                         <h3 className={styles.sectionTitle}><UserIcon size={16} /> Recipient Information</h3>
                         <div className="grid grid-cols-2 gap-6">
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>Full Name</label>
                                 <input disabled={isReturned || readonly} value={order.customer.name} onChange={(e) => setOrder({ ...order, customer: { ...order.customer, name: e.target.value } })} className={styles.inlineInput} />
                             </div>
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Phone Number</label>
                                 <div style={{
                                     display: 'flex',
@@ -123,6 +123,18 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                             if (val.startsWith('0')) val = val.substring(1); // Remove leading 0
                                             if (val.length > 9) val = val.substring(0, 9); // Max 9 digits
 
+                                            // If user deletes the leading 0, maybe we should let them? 
+                                            // But if we force view to start with 0, then deleting it might look weird if it instantly comes back.
+                                            // Let's just store what they type. If they type '6...', the value prop will add '0' back visually? 
+                                            // No, that causes cursor jumping.
+                                            // Better to just ensure we store with 0 if possible? 
+                                            // Actually, if we change the value prop to ALWAYS prepend 0, then onChange must handle that.
+
+                                            // If input value doesn't start with 0, prepend it?
+                                            if (val.length > 0 && !val.startsWith('0')) {
+                                                val = '0' + val;
+                                            }
+
                                             setOrder({ ...order, customer: { ...order.customer, phone: val } });
                                         }}
                                         placeholder="612345678"
@@ -133,18 +145,17 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                             borderRadius: '0',
                                             flex: 1,
                                             padding: '0.5rem 0.75rem',
-                                            color: (order.customer.phone && (!['5', '6', '7'].includes(order.customer.phone[0]) || order.customer.phone.length !== 9)) ? '#ef4444' : 'inherit'
+                                            color: (order.customer.phone && !((order.customer.phone.length === 10 && order.customer.phone.startsWith('0') && ['5', '6', '7'].includes(order.customer.phone[1])) || (order.customer.phone.length === 9 && ['5', '6', '7'].includes(order.customer.phone[0])))) ? '#ef4444' : 'inherit'
                                         }}
                                     />
                                 </div>
                                 {order.customer.phone && (
                                     <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#ef4444', height: '1.25rem' }}>
-                                        {!['5', '6', '7'].includes(order.customer.phone[0]) && <span>Must start with 5, 6, or 7. </span>}
-                                        {order.customer.phone.length !== 9 && <span>Must be 9 digits.</span>}
+                                        {!((order.customer.phone.length === 10 && order.customer.phone.startsWith('0') && ['5', '6', '7'].includes(order.customer.phone[1])) || (order.customer.phone.length === 9 && ['5', '6', '7'].includes(order.customer.phone[0]))) && <span>Must start with 05, 06, or 07 and be 10 digits.</span>}
                                     </div>
                                 )}
                             </div>
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginRight: '0.75rem' }}>
                                 <label>City</label>
                                 <SearchableCitySelect
                                     cities={cathedisCities}
@@ -164,7 +175,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                     placeholder="Select City..."
                                 />
                             </div>
-                            <div className={styles.inputGroup}>
+                            <div className={styles.inputGroup} style={{ marginLeft: '0.75rem' }}>
                                 <label>Sector/Neighborhood</label>
                                 <SearchableSelect
                                     options={cathedisCities.find(c => c.name === order.customer.city)?.sectors || []}
@@ -248,7 +259,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                     return (
                                         <tr key={item.productId} style={{ borderBottom: '1px solid #e2e8f0' }}>
                                             <td style={{ padding: '0.75rem 1rem', borderRight: '1px solid #e2e8f0' }}>
-                                                <div className="flex items-center gap-3">
+                                                <div className="flex items-center gap-8">
                                                     {product?.image && <img src={product.image} className={styles.imageCell} alt="" />}
                                                     <div className="font-bold">{product?.title || 'Unknown'}</div>
                                                 </div>
@@ -261,9 +272,34 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                 })}
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colSpan={3} className="text-right p-4 font-bold" style={{ borderTop: '2px solid #cbd5e1', background: '#f8fafc', color: '#64748b' }}>Total Cash on Delivery</td>
-                                    <td className="p-4 font-extrabold text-blue-600 text-xl" style={{ borderTop: '2px solid #cbd5e1', background: '#f8fafc', textAlign: 'right' }}>{formatCurrency(order.total)}</td>
+                                <tr style={{ background: '#f8fafc' }}>
+                                    <td
+                                        colSpan={3}
+                                        style={{
+                                            border: '2px solid #cbd5e1',
+                                            padding: '1.25rem',
+                                            textAlign: 'right',
+                                            fontWeight: '800',
+                                            fontSize: '1rem',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            color: '#475569'
+                                        }}
+                                    >
+                                        Total Cash on Delivery
+                                    </td>
+                                    <td
+                                        style={{
+                                            border: '2px solid #cbd5e1',
+                                            padding: '1.25rem',
+                                            fontWeight: '800',
+                                            fontSize: '1.5rem',
+                                            color: '#2563eb',
+                                            textAlign: 'right'
+                                        }}
+                                    >
+                                        {formatCurrency(order.total)}
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>

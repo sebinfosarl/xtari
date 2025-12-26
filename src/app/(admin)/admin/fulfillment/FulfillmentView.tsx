@@ -715,7 +715,20 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                                             </td>
                                             <td>
                                                 <div style={{ fontWeight: 600 }}>{order.customer.name}</div>
-                                                <div style={{ fontSize: '0.8rem', color: '#64748b' }}><Phone size={10} style={{ display: 'inline', marginRight: '2px' }} /> {order.customer.phone || 'No phone'}</div>
+                                                <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                                                    <Phone size={10} style={{ display: 'inline', marginRight: '2px' }} />
+                                                    {(() => {
+                                                        const p = order.customer.phone;
+                                                        if (!p) return 'No phone';
+                                                        let displayPhone = p.replace(/\s/g, '');
+                                                        if (displayPhone.startsWith('+212')) {
+                                                            displayPhone = '0' + displayPhone.substring(4);
+                                                        } else if (!displayPhone.startsWith('0')) {
+                                                            displayPhone = '0' + displayPhone;
+                                                        }
+                                                        return displayPhone;
+                                                    })()}
+                                                </div>
                                             </td>
                                             <td>
                                                 <div style={{ fontWeight: 600 }}><MapPin size={12} style={{ display: 'inline', marginRight: '4px' }} /> {order.customer.city || 'No City'}</div>
