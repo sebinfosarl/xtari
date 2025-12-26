@@ -137,7 +137,30 @@ function normalizeMoroccanPhone(phone: string): string {
     return cleaned;
 }
 
-export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder): Order {
+function resolveCity(inputCity: string, validCities?: { name: string }[]): string {
+    if (!inputCity) return '';
+    const normalizedInput = inputCity.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+
+    // 1. No valid cities list provided? Return uppercase as best guess
+    if (!validCities || validCities.length === 0) {
+        return inputCity.toUpperCase().trim();
+    }
+
+    // 2. Exact match (case-insensitive + accents)
+    const exactMatch = validCities.find(c =>
+        c.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() === normalizedInput
+    );
+
+    if (exactMatch) return exactMatch.name;
+
+    // 3. Fallback: Return uppercase input if no match found
+    return inputCity.toUpperCase().trim();
+}
+
+export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder, validCities: { name: string }[] = []): Order {
+    const rawCity = wcOrder.shipping?.city || wcOrder.billing?.city || '';
+    const resolvedCity = resolveCity(rawCity, validCities);
+
     return {
         id: Math.random().toString(36).substr(2, 6).toUpperCase(),
         items: wcOrder.line_items.map(item => ({
@@ -153,7 +176,7 @@ export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder): Order {
             email: wcOrder.billing.email,
             phone: normalizeMoroccanPhone(wcOrder.billing.phone),
             address: `${wcOrder.shipping?.address_1 || ''} ${wcOrder.shipping?.address_2 || ''}`.trim(),
-            city: (wcOrder.shipping?.city || wcOrder.billing?.city || '').trim().toUpperCase(),
+            city: resolvedCity,
         },
         paymentType: wcOrder.payment_method_title,
         packageCount: 1,

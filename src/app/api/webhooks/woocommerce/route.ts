@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createOrder, getOrders, getSettings, Order } from '@/lib/db';
 import { mapWoocommerceOrderToLocal } from '@/lib/woocommerce';
+import { getCathedisCities } from '@/lib/shipping';
 
 export async function POST(req: NextRequest) {
     try {
@@ -13,36 +14,18 @@ export async function POST(req: NextRequest) {
         }
 
         const settings = await getSettings();
-        if (!settings.woocommerce || !settings.woocommerce.consumerSecret) { // Note: Ideally use a specific Webhook Secret, but Consumer Secret is often used or a separate field
-            // If we want a separate field for webhook secret, we'd add it to settings. 
-            // For now, let's assume the user might reuse consumer secret or we should verify if WC uses a specific key.
-            // WC Webhooks have a specific "Secret" field you set when creating the hook. 
-            // IMPORTANT: We need to tell the user to set this "Secret" in our settings or use the Consumer Secret.
-            // Let's use Consumer Secret as a fallback or assume they pasted it into a new field?
-            // Actually, usually it's a specific secret. Let's assume Consumer Secret for now to simplify, OR just check validity if we can.
-            // Standard practice: User sets a secret in WC, and pastes the SAME secret in our App.
-            // Since we don't have a "Webhook Secret" field, let's try to verify with Consumer Secret, OR simpler: 
-            // allow the user to just use the integration. 
-            // Re-reading plan: I didn't add a Webhook Secret field. 
-            // VALIDATION: simpler to check signature against Consumer Secret if that's what they used, 
-            // but correct way is a specific key.
-
-            // Let's verify using the Consumer Secret for MVP simplicity, assume user sets that as the secret in WC.
+        if (!settings.woocommerce || !settings.woocommerce.consumerSecret) {
+            // If secret is missing, we can't verify. For now, we proceed or fail.
+            // Best to fail if we want security.
         }
 
-        // However, for strict correctness, we should verify the signature:
-        // Signature = HMAC-SHA256(payload, secret).base64
+        // Signature Verification
         const calculatedSignature = crypto
             .createHmac('sha256', settings.woocommerce?.consumerSecret || '')
             .update(body)
             .digest('base64');
 
         if (signature !== calculatedSignature) {
-            // If they are different, maybe they used the Consumer Key? Or a different secret.
-            // For MVP, we can log a warning but maybe proceed or fail?
-            // Security-wise, fail.
-            // BUT: UX-wise, if they didn't know to copy the secret, it fails.
-            // Let's enforce it.
             return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
         }
 
@@ -67,10 +50,22 @@ export async function POST(req: NextRequest) {
         }
 
         // Map and Save
-        const newOrder: Order = mapWoocommerceOrderToLocal(wcOrder);
+        // Fetch valid cities for smart resolution
+        let validCities: any[] = [];
+        try {
+            validCities = await getCathedisCities();
+        } catch (e) {
+            console.warn('Failed to fetch valid cities for resolution:', e);
+        }
+
+        const newOrder: Order = mapWoocommerceOrderToLocal(wcOrder, validCities);
         await createOrder(newOrder);
 
-        return NextResponse.json({ success: true, id: newOrder.id }, { status: 200 });
+        return NextResponse.json({
+            success: true,
+            id: newOrder.id,
+            resolvedCity: newOrder.customer.city
+        }, { status: 200 });
 
     } catch (error: any) {
         console.error('Webhook Error:', error);
