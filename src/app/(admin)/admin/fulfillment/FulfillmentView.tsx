@@ -871,7 +871,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                                                 onClick={handleFinishPicking}
                                                 disabled={isUpdatingBulk}
                                                 className={styles.bulkShipBtn}
-                                                style={{ background: '#2563eb' }}
+                                                style={{ background: '#2563eb', marginLeft: '1rem' }}
                                             >
                                                 <CheckCircle2 size={18} className={isUpdatingBulk ? 'animate-spin' : ''} />
                                                 <span>{isUpdatingBulk ? 'Updating...' : 'Finish Picking'}</span>
