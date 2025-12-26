@@ -107,17 +107,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                 updates.fulfillmentStatus = 'to_pick';
             }
 
-            // Auto-format phone number with +212 for fulfillment/shipping
-            const currentPhone = order.customer.phone || '';
-            if (currentPhone && !currentPhone.startsWith('+212')) {
-                updates.customer = {
-                    ...order.customer,
-                    phone: `+212${currentPhone}`
-                };
-                logMsg += ` | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK | Phone formatted with +212`;
-            } else {
-                logMsg += ` | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK`;
-            }
+            logMsg += ` | Auto-set Call Result: Appel confirmer | Fulfillment initialized to TO_PICK`;
         }
 
         const updatedOrder = {
@@ -476,7 +466,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                             <div className={styles.inputGroup}>
                                 <label>Sales Person</label>
                                 <select
-                                    disabled={readOnly}
+                                    disabled={readOnly && order.status === 'canceled'}
                                     className={styles.inlineInput}
                                     value={order.salesPerson || ''}
                                     onChange={(e) => handleSalesPersonChange(e.target.value)}
