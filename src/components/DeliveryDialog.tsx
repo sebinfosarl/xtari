@@ -231,7 +231,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                         letterSpacing: '0.05em',
                                         textAlign: 'center'
                                     }}>Quantity</th>
-                                    <th style={{
+                                    {/* <th style={{
                                         border: '1px solid #cbd5e1',
                                         padding: '1rem',
                                         fontWeight: '700',
@@ -250,7 +250,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                         color: '#475569',
                                         letterSpacing: '0.05em',
                                         textAlign: 'right'
-                                    }}>Subtotal</th>
+                                    }}>Subtotal</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -265,13 +265,13 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                                 </div>
                                             </td>
                                             <td className="font-bold" style={{ padding: '0.75rem 1rem', textAlign: 'center', borderRight: '1px solid #e2e8f0' }}>{item.quantity}</td>
-                                            <td style={{ padding: '0.75rem 1rem', textAlign: 'center', borderRight: '1px solid #e2e8f0' }}>{formatCurrency(item.price || 0)}</td>
-                                            <td className="font-bold" style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>{formatCurrency((item.price || 0) * item.quantity)}</td>
+                                            {/* <td style={{ padding: '0.75rem 1rem', textAlign: 'center', borderRight: '1px solid #e2e8f0' }}>{formatCurrency(item.price || 0)}</td>
+                                            <td className="font-bold" style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>{formatCurrency((item.price || 0) * item.quantity)}</td> */}
                                         </tr>
                                     );
                                 })}
                             </tbody>
-                            <tfoot>
+                            {/* <tfoot>
                                 <tr style={{ background: '#f8fafc' }}>
                                     <td
                                         colSpan={3}
@@ -301,7 +301,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                         {formatCurrency(order.total)}
                                     </td>
                                 </tr>
-                            </tfoot>
+                            </tfoot> */}
                         </table>
                     </section>
 

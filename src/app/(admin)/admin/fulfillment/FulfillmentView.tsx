@@ -922,6 +922,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                                 <button
                                     onClick={() => setSelectedOrderIds([])}
                                     className={styles.bulkCloseBtn}
+                                    style={{ marginLeft: '1.5rem' }}
                                     title="Cancel Selection"
                                 >
                                     <X size={20} />
