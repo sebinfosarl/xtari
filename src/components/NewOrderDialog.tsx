@@ -263,7 +263,7 @@ export default function NewOrderDialog({ products, salesPeople, onClose, kits }:
                                         setCustomer({
                                             ...customer,
                                             city: cityName,
-                                            sector: city?.sectors?.[0]?.name || ''
+                                            sector: ''
                                         });
                                     }}
                                     disabled={isLoadingCities}
