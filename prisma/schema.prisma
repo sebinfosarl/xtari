@@ -82,6 +82,9 @@ model Order {
   shippingVoucherUrl String?
   deliveryNotePrinted Boolean @default(false)
   
+  invoiceDownloaded Boolean @default(false)
+  invoiceDate       DateTime?
+  
   callResult        String?
   cancellationMotif String?
   cancellationComment String?
