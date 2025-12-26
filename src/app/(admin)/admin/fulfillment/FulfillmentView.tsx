@@ -42,6 +42,32 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
     const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
     const [barcodeInput, setBarcodeInput] = useState('');
 
+    const playBeep = (type: 'success' | 'error') => {
+        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioContext) return;
+
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'success') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1000, ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.1);
+        } else {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.3);
+        }
+    };
+
     const handleBarcodeSearch = (e: React.FormEvent) => {
         e.preventDefault();
         const query = barcodeInput.trim();
@@ -54,6 +80,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
         );
 
         if (foundOrder) {
+            playBeep('success');
             // Determine context based on status
             const status = foundOrder.status; // pending, validated, shipped, delivered, canceled
             const shipStatus = foundOrder.shippingStatus?.toLowerCase() || '';
@@ -88,6 +115,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
             setIsBarcodeModalOpen(false);
             setBarcodeInput('');
         } else {
+            playBeep('error');
             alert('Order not found with this ID or Barcode.');
         }
     };
