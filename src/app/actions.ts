@@ -893,6 +893,13 @@ export async function importWoocommerceOrdersAction(after?: string, before?: str
             before
         );
 
+        let validCities: any[] = [];
+        try {
+            validCities = await getCathedisCities();
+        } catch (e) {
+            console.warn('Failed to fetch cities for import resolution', e);
+        }
+
         const orders = await getOrders();
         let importedCount = 0;
 
@@ -905,7 +912,7 @@ export async function importWoocommerceOrdersAction(after?: string, before?: str
 
             if (isDuplicate) continue;
 
-            const newOrder: Order = mapWoocommerceOrderToLocal(wcOrder);
+            const newOrder: Order = mapWoocommerceOrderToLocal(wcOrder, validCities);
 
             await createOrder(newOrder);
             importedCount++;

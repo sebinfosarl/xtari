@@ -122,16 +122,16 @@ export async function generateCathedisVoucher(deliveryIds: (string | number)[], 
     return null;
 }
 
-export async function getCathedisCities() {
-    const response = await fetch(`${API_URL}/ws/public/c2c/city?deliveryAvailability=true`, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        }
-    });
+import { getCitiesFromDB } from '@/lib/db';
 
-    const result = await response.json();
-    return result.status === 0 ? result.data : [];
+export async function getCathedisCities() {
+    try {
+        const cities = await getCitiesFromDB();
+        return cities;
+    } catch (e) {
+        console.error('getCathedisCities db error', e);
+        return [];
+    }
 }
 
 export async function getCathedisBanks() {
