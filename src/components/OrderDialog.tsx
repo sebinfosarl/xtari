@@ -410,7 +410,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
                                             customer: {
                                                 ...order.customer,
                                                 city: cityName,
-                                                sector: city?.sectors?.[0]?.name || ''
+                                                sector: ''
                                             }
                                         });
                                     }}
