@@ -86,7 +86,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
             const shipStatus = foundOrder.shippingStatus?.toLowerCase() || '';
 
             // Logic to switch tabs
-            if (foundOrder.fulfillmentStatus !== 'picked' && foundOrder.fulfillmentStatus !== 'delivered') {
+            if (foundOrder.fulfillmentStatus !== 'picked') {
                 // Usually goes to Pick tab
                 setActiveTab('pick');
                 // Could be 'pending' or 'printed' - check logs or printed flag
