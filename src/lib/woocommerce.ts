@@ -137,28 +137,115 @@ function normalizeMoroccanPhone(phone: string): string {
     return cleaned;
 }
 
+// Helper for Levenshtein distance
+function levenshteinDistance(a: string, b: string): number {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+    for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+
+function cleanString(str: string): string {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
 function resolveCity(inputCity: string, validCities?: { name: string }[]): string {
     if (!inputCity) return '';
-    const normalizedInput = inputCity.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    const cleanedInput = cleanString(inputCity);
 
-    // 1. No valid cities list provided? Return uppercase as best guess
+    // 1. If no valid cities, return uppercase as strict fallback
     if (!validCities || validCities.length === 0) {
         return inputCity.toUpperCase().trim();
     }
 
-    // 2. Exact match (case-insensitive + accents)
-    const exactMatch = validCities.find(c =>
-        c.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() === normalizedInput
-    );
+    // 2. Exact match (normalized)
+    // We search the list. Ideally this list should be pre-normalized map for perf, but array is small enough.
+    const exact = validCities.find(c => cleanString(c.name) === cleanedInput);
+    if (exact) return exact.name;
 
-    if (exactMatch) return exactMatch.name;
+    // 3. Fuzzy match (Levenshtein)
+    let bestMatch: string | null = null;
+    let minDistance = Infinity;
 
-    // 3. Fallback: Return uppercase input if no match found
-    return inputCity.toUpperCase().trim();
+    // Adaptive threshold: Allow more typos for longer words.
+    // Length < 5: 0 (Exact only - handled above, but maybe strict char diff needed?) -> allow 1
+    // Length >= 5: 2
+    // Length >= 10: 3
+    const threshold = cleanedInput.length < 5 ? 1 : (cleanedInput.length < 10 ? 2 : 3);
+
+    for (const city of validCities) {
+        const cleanedCity = cleanString(city.name);
+
+        // Optimisation: if lengths differ too much, skip
+        if (Math.abs(cleanedCity.length - cleanedInput.length) > threshold) continue;
+
+        const dist = levenshteinDistance(cleanedInput, cleanedCity);
+
+        if (dist <= threshold && dist < minDistance) {
+            minDistance = dist;
+            bestMatch = city.name;
+        }
+    }
+
+    if (bestMatch) return bestMatch;
+
+    // 4. Fallback: Return original input (trimmed) if no match found. 
+    return inputCity.trim();
+}
+
+function extractCityFromAddress(address: string, validCities: { name: string }[]): string {
+    if (!address || !validCities || validCities.length === 0) return '';
+    const cleanedAddr = cleanString(address);
+
+    // Sort cities by length descending to match longest sequences first (e.g. "Sidi Yahya Lgharb" before "Sidi")
+    // We cache this sort ideally, but for now 400 items is fine.
+    const sortedCities = [...validCities].sort((a, b) => b.name.length - a.name.length);
+
+    for (const city of sortedCities) {
+        const cleanedCity = cleanString(city.name);
+        // Check for word boundary? Or just includes?
+        // simple includes might find "Fes" in "Festival". 
+        // Adding spaces for boundary check is safer: " " + addr + " " includes " " + city + " "
+        // But punctuation matters. cleanString removes punctuation?
+        // cleanString: normalized, replaces \s+ with ' ', lower. Punctuation?
+        // replace(/[\u0300-\u036f]/g, "") removes accents.
+        // It does NOT remove punctuation like commas.
+        // Let's improve cleanString to remove punctuation for address matching context?
+        // Actually, just checking includes is a good start. 
+        if (cleanedAddr.includes(cleanedCity)) {
+            return city.name;
+        }
+    }
+    return '';
 }
 
 export function mapWoocommerceOrderToLocal(wcOrder: WooCommerceOrder, validCities: { name: string }[] = []): Order {
-    const rawCity = wcOrder.shipping?.city || wcOrder.billing?.city || '';
+    let rawCity = wcOrder.shipping?.city || wcOrder.billing?.city || '';
+
+    // Fallback: If city is empty, try to extract from address
+    if (!rawCity.trim()) {
+        const fullAddress = `${wcOrder.shipping?.address_1 || ''} ${wcOrder.shipping?.address_2 || ''} ${wcOrder.billing?.address_1 || ''} ${wcOrder.billing?.address_2 || ''}`;
+        const extracted = extractCityFromAddress(fullAddress, validCities);
+        if (extracted) {
+            rawCity = extracted; // Use extracted city for resolution verification
+        }
+    }
+
     const resolvedCity = resolveCity(rawCity, validCities);
 
     return {
