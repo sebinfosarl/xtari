@@ -556,6 +556,40 @@ export async function deleteKit(id: string) {
 }
 
 
+// ... (existing exports)
+
+export interface City {
+    id: string;
+    name: string;
+    sectors: { id: string | number; name: string }[];
+    updatedAt?: string;
+}
+
+// ... (existing functions)
+
+// Cities
+export async function getCitiesFromDB(): Promise<City[]> {
+    const { data, error } = await supabase.from('City').select('*').order('name');
+    if (error) { console.error('getCitiesFromDB error', error); return []; }
+    return data || [];
+}
+
+export async function saveCity(city: City) {
+    const payload = clean({
+        id: city.id,
+        name: city.name,
+        sectors: city.sectors,
+        updatedAt: new Date().toISOString()
+    });
+    const { error } = await supabase.from('City').upsert(payload);
+    if (error) console.error('saveCity error', error);
+}
+
+export async function deleteAllCities() {
+    const { error } = await supabase.from('City').delete().neq('id', '0'); // Delete all
+    if (error) console.error('deleteAllCities error', error);
+}
+
 // Settings
 export async function getSettings(): Promise<Settings> {
     const { data, error } = await supabase.from('Settings').select('*').eq('id', 1).single();
