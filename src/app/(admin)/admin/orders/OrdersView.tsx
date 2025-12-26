@@ -178,7 +178,20 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
                                 </td>
                                 <td>
                                     <div style={{ fontWeight: 600 }}>{order.customer.name}</div>
-                                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}><Phone size={10} style={{ display: 'inline', marginRight: '2px' }} /> {order.customer.phone || 'No phone'}</div>
+                                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                                        <Phone size={10} style={{ display: 'inline', marginRight: '2px' }} />
+                                        {(() => {
+                                            const p = order.customer.phone;
+                                            if (!p) return 'No phone';
+                                            let displayPhone = p.replace(/\s/g, '');
+                                            if (displayPhone.startsWith('+212')) {
+                                                displayPhone = '0' + displayPhone.substring(4);
+                                            } else if (displayPhone.length === 9 && ['5', '6', '7'].includes(displayPhone[0])) {
+                                                displayPhone = '0' + displayPhone;
+                                            }
+                                            return displayPhone;
+                                        })()}
+                                    </div>
                                 </td>
                                 <td className={styles.bold}>{formatCurrency(order.total)}</td>
                                 <td>
