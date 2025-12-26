@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Order, Product, SalesPerson, Kit } from '@/lib/db';
+import { useState, useEffect } from 'react';
+import { Order, Product, SalesPerson, Kit, getOrderById } from '@/lib/db';
+import { supabase } from '@/lib/supabase';
 import { Eye, Clock, CheckCircle2, Phone, Calendar, DollarSign, Ban, MessageSquare, Plus, Truck, RefreshCw, Trash2, Edit, Printer } from 'lucide-react';
 import { requestPickupAction, refreshShipmentStatusAction, updateOrderAction } from '@/app/actions';
 import styles from '../Admin.module.css';
@@ -19,7 +20,8 @@ interface OrdersViewProps {
     kits?: Kit[];
 }
 
-export default function OrdersView({ initialOrders: orders, products, salesPeople, isWooCommerceConnected, kits }: OrdersViewProps) {
+export default function OrdersView({ initialOrders, products, salesPeople, isWooCommerceConnected, kits }: OrdersViewProps) {
+    const [orders, setOrders] = useState<Order[]>(initialOrders);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [filter, setFilter] = useState<'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
@@ -29,6 +31,57 @@ export default function OrdersView({ initialOrders: orders, products, salesPeopl
     const [isRequestingPickup, setIsRequestingPickup] = useState(false);
     const [isSyncingShipping, setIsSyncingShipping] = useState(false);
     const [isImporting, setIsImporting] = useState(false);
+
+    // Sync initialOrders prop to state if it changes (revalidation etc)
+    useEffect(() => {
+        setOrders(initialOrders);
+    }, [initialOrders]);
+
+    // Realtime Subscription
+    useEffect(() => {
+        const channel = supabase
+            .channel('orders-realtime')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'Order'
+                },
+                async (payload) => {
+                    console.log('Realtime change received:', payload);
+
+                    if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+                        // Fetch full order details (including items which might be inserted shortly after)
+                        // We wait a brief moment for items to be inserted if it's a new order
+                        if (payload.eventType === 'INSERT') {
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                        }
+
+                        const newOrder = await getOrderById(payload.new.id);
+                        if (newOrder) {
+                            setOrders(prev => {
+                                const exists = prev.find(o => o.id === newOrder.id);
+                                if (exists) {
+                                    // Update existing
+                                    return prev.map(o => o.id === newOrder.id ? newOrder : o);
+                                } else {
+                                    // Add new (prepend)
+                                    return [newOrder, ...prev];
+                                }
+                            });
+                        }
+                    } else if (payload.eventType === 'DELETE') {
+                        setOrders(prev => prev.filter(o => o.id !== payload.old.id));
+                    }
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
 
     // Removed old handleImportWoocommerce logic as it's now in the dialog
 

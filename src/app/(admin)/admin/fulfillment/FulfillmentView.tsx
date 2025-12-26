@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Order, Product, SalesPerson, PurchaseOrder, Supplier, Kit } from '@/lib/db';
+import { Order, Product, SalesPerson, PurchaseOrder, Supplier, Kit, getOrderById } from '@/lib/db';
+import { supabase } from '@/lib/supabase';
 import { Eye, Truck, Calendar, Phone, Search, MapPin, Package, CheckCircle, Circle, X, ClipboardList, Printer, CheckCircle2, Receipt, ArrowDownToLine, XCircle, RotateCcw } from 'lucide-react';
 import sc from './SegmentedControl.module.css';
 import { createShipmentAction, updateOrderAction, bulkMarkDeliveryNotePrintedAction, requestPickupAction } from '@/app/actions';
@@ -22,9 +23,10 @@ interface FulfillmentViewProps {
     kits: Kit[];
 }
 
-export default function FulfillmentView({ initialOrders: orders, products, salesPeople, purchaseOrders, suppliers, pickupLocationsRaw, kits }: FulfillmentViewProps) {
+export default function FulfillmentView({ initialOrders, products, salesPeople, purchaseOrders, suppliers, pickupLocationsRaw, kits }: FulfillmentViewProps) {
     const router = useRouter();
     // ... existing state ...
+    const [orders, setOrders] = useState<Order[]>(initialOrders);
     const [activeTab, setActiveTab] = useState<'pick' | 'deliveries' | 'receipts' | 'returns'>('pick');
     const [receiptFilter, setReceiptFilter] = useState<'pending' | 'done' | 'canceled'>('pending');
     const [pickFilter, setPickFilter] = useState<'pending' | 'printed'>('pending');
@@ -37,6 +39,52 @@ export default function FulfillmentView({ initialOrders: orders, products, sales
 
     const [isUpdatingBulk, setIsUpdatingBulk] = useState(false);
     const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
+
+    // Sync initialOrders prop to state if it changes (revalidation etc)
+    useEffect(() => {
+        setOrders(initialOrders);
+    }, [initialOrders]);
+
+    // Realtime Subscription
+    useEffect(() => {
+        const channel = supabase
+            .channel('fulfillment-realtime')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'Order'
+                },
+                async (payload) => {
+                    if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+                        // Fetch full order details
+                        if (payload.eventType === 'INSERT') {
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                        }
+
+                        const newOrder = await getOrderById(payload.new.id);
+                        if (newOrder) {
+                            setOrders(prev => {
+                                const exists = prev.find(o => o.id === newOrder.id);
+                                if (exists) {
+                                    return prev.map(o => o.id === newOrder.id ? newOrder : o);
+                                } else {
+                                    return [newOrder, ...prev];
+                                }
+                            });
+                        }
+                    } else if (payload.eventType === 'DELETE') {
+                        setOrders(prev => prev.filter(o => o.id !== payload.old.id));
+                    }
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
 
     // Parse pickup locations
     const pickupLocations = pickupLocationsRaw.split('\n')
