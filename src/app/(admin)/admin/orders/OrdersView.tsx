@@ -335,20 +335,10 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                                     {order.callResult ? (
                                         <div className="flex flex-col gap-1">
                                             <span className={styles.resultBadge}>{order.callResult}</span>
-                                            {order.invoiceDownloaded && (
-                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
-                                                    INVOICE ↓
-                                                </span>
-                                            )}
                                         </div>
                                     ) : (
                                         <div className="flex flex-col gap-1">
                                             <span className="text-muted text-xs italic">Not called</span>
-                                            {order.invoiceDownloaded && (
-                                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
-                                                    INVOICE ↓
-                                                </span>
-                                            )}
                                         </div>
                                     )}
                                 </td>
