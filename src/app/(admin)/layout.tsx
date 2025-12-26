@@ -23,6 +23,40 @@ import {
 } from 'lucide-react';
 import styles from './AdminLayout.module.css';
 
+const QUOTES = [
+    "في كل مشكلة تكمن فرصة خفية",
+    "في قلب كل صعوبة توجد بذرة من النجاح",
+    "لا تنتظر الظروف المثالية؛ اصنع أنت الظروف بفعلك",
+    "الفشل هو ببساطة فرصة للبدء من جديد بذكاء أكبر",
+    "أكبر خطر في الحياة هو عدم المخاطرة بأي شيء",
+    "كلما زادت التحديات، زادت قيمة النجاح عند الوصول",
+    "السفينة في الميناء آمنة، لكنها لم تُصنع لتبقى هناك",
+    "النمو يبدأ دائماً حيث تنتهي منطقة الراحة الخاصة بك",
+    "لا تخشَ التغيير، بل اخشَ البقاء في مكانك للأبد",
+    "الاستثمار في المعرفة يحقق دائماً أفضل العوائد",
+    "العقل الذي ينفتح على فكرة جديدة لا يعود أبداً إلى أبعاده الأصلية",
+    "التعلم هو القوة الوحيدة التي لا يمكن لأحد سلبها منك",
+    "ليس من الضروري أن تكون عظيماً لتبدأ، ولكن يجب أن تبدأ لتكون عظيماً",
+    "القيادة ليست منصباً، بل هي تأثير وإلهام",
+    "التميز ليس فعلاً عابراً، بل هو عادة نمارسها كل يوم",
+    "السمعة الجيدة في العمل هي العملة الأغلى التي تمتلكها",
+    "لا تبنِ عملاً، بل ابنِ فريقاً، والفريق سيبني العمل",
+    "الجودة تعني أن تفعل الشيء الصحيح حتى عندما لا يراقبك أحد",
+    "الرؤية بدون تنفيذ هي مجرد حلم، والتنفيذ بدون رؤية هو كابوس",
+    "النجاح هو الانتقال من فشل إلى فشل دون فقدان الحماس",
+    "الفرق بين المستحيل والممكن يعتمد على عزيمة المرء",
+    "لا تتوقف عندما تتعب، توقف عندما تنتهي",
+    "العمل الشاق يتفوق على الموهبة عندما لا تعمل الموهبة بجد",
+    "الانضباط هو الجسر الذي يربط بين الأهداف والإنجازات",
+    "السر في المضي قدماً هو البدء الآن",
+    "لا تبحث عن النجاح، بل ابحث عن القيمة، وسوف يتبعك النجاح",
+    "الوقت هو رأس مالك الحقيقي، فلا تبدده في معارك ثانوية",
+    "من يريد تسلق السلم، عليه أن يبدأ من الدرجة الأولى",
+    "التواضع في القمة هو ذروة الرقي، والصبر عند القاع هو منبع القوة",
+    "اجعل أثرك جميلاً، فالبصمة لا تموت برحيل صاحبها",
+    "السعادة في العمل تضع الكمال في النتيجة النهائية"
+];
+
 export default function AdminLayout({
     children,
 }: {
@@ -34,7 +68,16 @@ export default function AdminLayout({
     const [hoveredGroup, setHoveredGroup] = useState<{ name: string; top: number; subItems: any[] } | null>(null);
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    // Quote rotation state (Daily)
+    const [quote, setQuote] = useState('');
 
+    useEffect(() => {
+        // Calculate index based on days since epoch to ensure daily rotation
+        const dayIndex = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+        setQuote(QUOTES[dayIndex % QUOTES.length]);
+    }, []);
+
+    // ... existing useEffect ...
 
     useEffect(() => {
         const groups = [];
@@ -42,6 +85,8 @@ export default function AdminLayout({
         if (pathname.startsWith('/admin/contacts')) groups.push('Contacts');
         setOpenGroups(groups);
     }, [pathname]);
+
+    // ... existing functions ...
 
     const toggleGroup = (groupName: string) => {
         setOpenGroups(prev =>
@@ -248,7 +293,18 @@ export default function AdminLayout({
                     </div>
 
                     <div className={styles.headerActions}>
-                        {/* Header actions removed per request */}
+                        <div style={{
+                            fontFamily: 'var(--font-cairo)',
+                            fontSize: '1.1rem',
+                            fontWeight: 700,
+                            color: '#1e293b',
+                            background: 'linear-gradient(to right, #1e293b, #334155)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            marginRight: '1rem'
+                        }}>
+                            {quote}
+                        </div>
                     </div>
                 </header>
 
