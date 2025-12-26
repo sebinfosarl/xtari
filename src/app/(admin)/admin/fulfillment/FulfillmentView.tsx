@@ -394,7 +394,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                                     background: activeTab === 'deliveries' ? 'rgba(255,255,255,0.2)' : '#e2e8f0',
                                     color: activeTab === 'deliveries' ? 'white' : '#475569'
                                 }}>
-                                    {deliveryOrders.length}
+                                    {deliveryOrders.filter(o => !o.shippingId || (!!o.shippingId && !o.shippingStatus?.toLowerCase().includes('livr') && !o.shippingStatus?.toLowerCase().includes('expédi') && !o.shippingStatus?.includes('Pickup:'))).length}
                                 </span>
                             </button>
                             <button
@@ -426,7 +426,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                                     background: activeTab === 'receipts' ? 'rgba(255,255,255,0.2)' : '#e2e8f0',
                                     color: activeTab === 'receipts' ? 'white' : '#475569'
                                 }}>
-                                    {receiptOrders.length}
+                                    {receiptOrders.filter(p => p.status === 'in_progress').length}
                                 </span>
                             </button>
                             <button
