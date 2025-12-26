@@ -1149,7 +1149,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                                     <input
                                         autoFocus
                                         type="text"
-                                        placeholder="Scan barcode..."
+                                        placeholder=""
                                         value={barcodeInput}
                                         onChange={(e) => setBarcodeInput(e.target.value)}
                                         style={{
