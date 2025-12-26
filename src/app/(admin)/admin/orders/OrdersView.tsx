@@ -85,6 +85,37 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
 
     // Removed old handleImportWoocommerce logic as it's now in the dialog
 
+    // Helper function to get filtered count for a specific status
+    const getFilteredCount = (statusFilter: 'all' | 'pending' | 'sales_order' | 'no_reply' | 'canceled') => {
+        return orders.filter(o => {
+            // Status filter
+            if (statusFilter !== 'all' && o.status !== statusFilter) return false;
+
+            // Search query filter
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                const matchesId = o.id.toLowerCase().includes(q);
+                const matchesName = o.customer.name.toLowerCase().includes(q);
+                const matchesPhone = o.customer.phone.toLowerCase().includes(q);
+                if (!matchesId && !matchesName && !matchesPhone) return false;
+            }
+
+            // Date range filter
+            if (startDate || endDate) {
+                const orderDate = new Date(o.date).setHours(0, 0, 0, 0);
+                if (startDate) {
+                    const start = new Date(startDate).setHours(0, 0, 0, 0);
+                    if (orderDate < start) return false;
+                }
+                if (endDate) {
+                    const end = new Date(endDate).setHours(23, 59, 59, 999);
+                    if (orderDate > end) return false;
+                }
+            }
+            return true;
+        }).length;
+    };
+
     const filteredOrders = orders.filter(o => {
         // Status filter
         if (filter !== 'all' && o.status !== filter) return false;
@@ -134,15 +165,31 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                 </div>
 
                 <div className="flex gap-2">
-                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => (
-                        <button
-                            key={f}
-                            onClick={() => setFilter(f)}
-                            className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
-                        >
-                            {f.replace('_', ' ').toUpperCase()}
-                        </button>
-                    ))}
+                    {(['pending', 'sales_order', 'no_reply', 'canceled', 'all'] as const).map(f => {
+                        const count = getFilteredCount(f);
+
+                        return (
+                            <button
+                                key={f}
+                                onClick={() => setFilter(f)}
+                                className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-outline'}`}
+                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                            >
+                                <span>{f.replace('_', ' ').toUpperCase()}</span>
+                                <span style={{
+                                    background: filter === f ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.08)',
+                                    padding: '0.125rem 0.5rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: '700',
+                                    minWidth: '1.5rem',
+                                    textAlign: 'center'
+                                }}>
+                                    {count}
+                                </span>
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* ADVANCED FILTER BAR */}
