@@ -356,8 +356,8 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                     {!order.shippingId ? (
                                         <button
                                             onClick={async () => {
-                                                if (!order.customer.city || !order.customer.sector) {
-                                                    alert('Please select a City and Sector before shipping.');
+                                                if (!order.customer.city) {
+                                                    alert('Please select a City before shipping.');
                                                     return;
                                                 }
 

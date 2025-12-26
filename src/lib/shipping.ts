@@ -43,7 +43,18 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
                     recipient: order.customer.name,
                     city: order.customer.city || "Casablanca",
                     sector: order.customer.sector || "Autre",
-                    phone: order.customer.phone,
+                    phone: (() => {
+                        const p = order.customer.phone.replace(/\s/g, '');
+                        // If it's a 9 digit number starting with 5, 6, or 7, prepend 0
+                        if (p.length === 9 && ['5', '6', '7'].includes(p[0])) {
+                            return '0' + p;
+                        }
+                        // If it's stored with +212, simplify
+                        if (p.startsWith('+212')) {
+                            return '0' + p.substring(4);
+                        }
+                        return p;
+                    })(),
                     amount: Math.round(order.total).toString(),
                     caution: "0",
                     fragile: order.fragile ? "1" : "0",

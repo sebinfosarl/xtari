@@ -39,6 +39,58 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
 
     const [isUpdatingBulk, setIsUpdatingBulk] = useState(false);
     const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
+    const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
+    const [barcodeInput, setBarcodeInput] = useState('');
+
+    const handleBarcodeSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        const query = barcodeInput.trim();
+        if (!query) return;
+
+        // Search in all orders
+        const foundOrder = orders.find(o =>
+            o.id.toString() === query ||
+            (o.shippingId && o.shippingId === query)
+        );
+
+        if (foundOrder) {
+            // Determine context based on status
+            const status = foundOrder.status; // pending, validated, shipped, delivered, canceled
+            const shipStatus = foundOrder.shippingStatus?.toLowerCase() || '';
+
+            // Logic to switch tabs
+            if (foundOrder.fulfillmentStatus !== 'picked' && foundOrder.fulfillmentStatus !== 'delivered') {
+                // Usually goes to Pick tab
+                setActiveTab('pick');
+                // Could be 'pending' or 'printed' - check logs or printed flag
+                if (foundOrder.deliveryNotePrinted) {
+                    setPickFilter('printed');
+                } else {
+                    setPickFilter('pending');
+                }
+            } else {
+                // Deliveries tab
+                setActiveTab('deliveries');
+                if (!foundOrder.shippingId) {
+                    setDeliveryFilter('awaiting_export');
+                } else if (shipStatus.includes('livr')) {
+                    setDeliveryFilter('done');
+                } else if (shipStatus.includes('expédi') || shipStatus.includes('pickup done') || shipStatus.includes('pickup:')) {
+                    setDeliveryFilter('picked_up');
+                } else {
+                    // Default fallback
+                    setDeliveryFilter('awaiting_pickup');
+                }
+            }
+
+            // Open dialog
+            setSelectedOrder(foundOrder);
+            setIsBarcodeModalOpen(false);
+            setBarcodeInput('');
+        } else {
+            alert('Order not found with this ID or Barcode.');
+        }
+    };
 
     // Sync initialOrders prop to state if it changes (revalidation etc)
     useEffect(() => {
@@ -465,24 +517,47 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-4">
-                        <div className="flex-1" style={{ position: 'relative' }}>
-                            <input
-                                type="text"
-                                placeholder="Search orders..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                        <div className="flex-1 flex gap-2" style={{ position: 'relative' }}>
+                            <div style={{ position: 'relative', flex: 1 }}>
+                                <input
+                                    type="text"
+                                    placeholder="Search orders..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem 0.75rem 2.5rem',
+                                        borderRadius: '8px',
+                                        border: '1px solid #cbd5e1',
+                                        fontSize: '0.9rem',
+                                        background: 'white'
+                                    }}
+                                />
+                                <div style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}>
+                                    <Search size={16} />
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setIsBarcodeModalOpen(true)}
+                                className={styles.iconBtn}
+                                title="Scan Barcode"
                                 style={{
-                                    width: '100%',
-                                    padding: '0.75rem 1rem 0.75rem 2.5rem',
+                                    height: '42px',
+                                    width: '42px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                     borderRadius: '8px',
                                     border: '1px solid #cbd5e1',
-                                    fontSize: '0.9rem',
-                                    background: 'white'
+                                    background: 'white',
+                                    cursor: 'pointer',
+                                    color: '#475569'
                                 }}
-                            />
-                            <div style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}>
-                                <Search size={16} />
-                            </div>
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M3 5v14" /><path d="M8 5v14" /><path d="M12 5v14" /><path d="M17 5v14" /><path d="M21 5v14" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1014,6 +1089,116 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                     .no-print { display: none !important; }
                 }
             `}} />
+            {/* Barcode Search Modal */}
+            {isBarcodeModalOpen && (
+                <div className={styles.modalOverlay} onClick={() => setIsBarcodeModalOpen(false)}>
+                    <div
+                        className={styles.modalContent}
+                        onClick={e => e.stopPropagation()}
+                        style={{
+                            maxWidth: '480px',
+                            padding: '0',
+                            overflow: 'hidden',
+                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                            borderRadius: '16px',
+                            backgroundColor: 'white'
+                        }}
+                    >
+                        <div style={{ background: '#f8fafc', padding: '1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                <div style={{
+                                    background: 'white',
+                                    padding: '0.75rem',
+                                    borderRadius: '12px',
+                                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                                    color: '#2563eb',
+                                    display: 'flex'
+                                }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M3 5v14" /><path d="M8 5v14" /><path d="M12 5v14" /><path d="M17 5v14" /><path d="M21 5v14" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Scan Barcode</h2>
+                                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Find order by ID or Shipping ID</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setIsBarcodeModalOpen(false)}
+                                style={{
+                                    background: 'white',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: '8px',
+                                    width: '32px',
+                                    height: '32px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    color: '#64748b',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                <X size={18} />
+                            </button>
+                        </div>
+
+                        <div style={{ padding: '2rem' }}>
+                            <form onSubmit={handleBarcodeSearch} className="flex flex-col gap-4">
+                                <div style={{ position: 'relative' }}>
+                                    <input
+                                        autoFocus
+                                        type="text"
+                                        placeholder="Click here and scan..."
+                                        value={barcodeInput}
+                                        onChange={(e) => setBarcodeInput(e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '1rem 3rem',
+                                            fontSize: '1.25rem',
+                                            fontWeight: 600,
+                                            borderRadius: '12px',
+                                            border: '2px solid #e2e8f0',
+                                            outline: 'none',
+                                            color: '#0f172a',
+                                            transition: 'border-color 0.2s',
+                                            background: '#fff',
+                                            textAlign: 'center'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#2563eb'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+                                    />
+                                    <div style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#cbd5e1' }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M3 5v14" /><path d="M8 5v14" /><path d="M12 5v14" /><path d="M17 5v14" /><path d="M21 5v14" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    style={{
+                                        background: '#2563eb',
+                                        width: '100%',
+                                        justifyContent: 'center',
+                                        padding: '1rem',
+                                        fontSize: '1rem',
+                                        borderRadius: '12px',
+                                        marginTop: '0.5rem'
+                                    }}
+                                >
+                                    Search Order
+                                </button>
+                            </form>
+
+                            <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.85rem', color: '#94a3b8', background: '#f8fafc', padding: '0.75rem', borderRadius: '8px' }}>
+                                <p style={{ margin: 0 }}>💡 Tip: You can scan the barcode on the shipping label or type the Order ID manually.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
