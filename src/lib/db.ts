@@ -345,7 +345,19 @@ export async function createOrder(order: Order) {
         cancellationMotif: order.cancellationMotif,
         cancellationComment: order.cancellationComment,
         callHistory: order.callHistory,
-        logs: order.logs
+        logs: order.logs,
+        // Include new shipping fields
+        weight: order.weight,
+        packageCount: order.packageCount,
+        fragile: order.fragile,
+        allowOpening: order.allowOpening,
+        width: order.width,
+        height: order.height,
+        length: order.length,
+        rangeWeight: order.rangeWeight,
+        insuranceValue: order.insuranceValue,
+        paymentType: order.paymentType,
+        deliveryType: order.deliveryType
     });
 
     const { error: orderError } = await supabase.from('Order').insert(orderPayload);
@@ -402,7 +414,19 @@ export async function updateOrder(order: Order) {
         cancellationMotif: order.cancellationMotif,
         cancellationComment: order.cancellationComment,
         callHistory: order.callHistory,
-        logs: order.logs
+        logs: order.logs,
+        // Include new shipping fields
+        weight: order.weight,
+        packageCount: order.packageCount,
+        fragile: order.fragile,
+        allowOpening: order.allowOpening,
+        width: order.width,
+        height: order.height,
+        length: order.length,
+        rangeWeight: order.rangeWeight,
+        insuranceValue: order.insuranceValue,
+        paymentType: order.paymentType,
+        deliveryType: order.deliveryType
     });
 
     const { error } = await supabase.from('Order').upsert(orderPayload);
