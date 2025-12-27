@@ -11,6 +11,7 @@ import OrderDialog from '@/components/OrderDialog';
 import NewOrderDialog from '@/components/NewOrderDialog';
 import ImportOrdersDialog from '@/components/ImportOrdersDialog';
 import { formatCurrency } from '@/lib/format';
+import InvoiceDownloadButton from '@/components/pdf/InvoiceDownloadButton';
 
 
 interface OrdersViewProps {
@@ -33,9 +34,16 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
     const [isRequestingPickup, setIsRequestingPickup] = useState(false);
     const [isSyncingShipping, setIsSyncingShipping] = useState(false);
     const [isImporting, setIsImporting] = useState(false);
-    const [printFrameUrl, setPrintFrameUrl] = useState<string | null>(null);
+    // 3. Callback to update local state from child dialogs
+    const handleOrderUpdate = (updatedOrder: Order) => {
+        setOrders(prev => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o));
 
-    // Sync initialOrders prop to state if it changes (revalidation etc)
+        // Also update selectedOrder if it matches
+        if (selectedOrder && selectedOrder.id === updatedOrder.id) {
+            setSelectedOrder(updatedOrder);
+        }
+    };
+
     useEffect(() => {
         setOrders(initialOrders);
     }, [initialOrders]);
@@ -88,7 +96,7 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
 
     // Removed old handleImportWoocommerce logic as it's now in the dialog
 
-    // Handle direct invoice printing
+    // Handle direct invoice printing - Now just marks as printed since PDF is generated client-side
     const handlePrintInvoice = async (order: Order) => {
         if (order.status !== 'sales_order' || !order.salesPerson) return;
 
@@ -100,20 +108,18 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
         };
 
         // Update local state immediately for instant UI feedback
-        setOrders(prev => prev.map(o => o.id === order.id ? updatedOrder : o));
+        setOrders(prev => {
+            const updated = prev.map(o => o.id === order.id ? updatedOrder : o);
+            return updated;
+        });
 
         try {
             await updateOrderAction(updatedOrder);
-            // Don't call router.refresh() - let the realtime subscription handle the update
-            // to avoid race condition where refresh pulls old data before DB update completes
         } catch (err) {
             console.error('Failed to auto-save invoice status', err);
             // Revert on error
             setOrders(prev => prev.map(o => o.id === order.id ? order : o));
         }
-
-        // Trigger print via hidden iframe
-        setPrintFrameUrl(`/print/invoice/${order.id}?t=${Date.now()}`);
     };
 
     // Helper function to get filtered count for a specific status
@@ -381,27 +387,52 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                                 )}
                                 {filter === 'sales_order' && (
                                     <td>
-                                        <button
-                                            onClick={() => handlePrintInvoice(order)}
-                                            disabled={!order.salesPerson}
-                                            className={styles.eyeBtn}
-                                            title={order.invoiceDownloaded ? 'Print Invoice (Already Printed)' : 'Print Invoice'}
-                                            style={{
-                                                background: order.invoiceDownloaded
-                                                    ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                                                    : '#ffffff',
-                                                border: order.invoiceDownloaded ? 'none' : '2px solid #e2e8f0',
-                                                color: order.invoiceDownloaded ? '#ffffff' : '#64748b',
-                                                opacity: !order.salesPerson ? 0.5 : 1,
-                                                cursor: !order.salesPerson ? 'not-allowed' : 'pointer',
-                                                boxShadow: order.invoiceDownloaded
-                                                    ? '0 4px 12px rgba(16, 185, 129, 0.3)'
-                                                    : '0 2px 8px rgba(0, 0, 0, 0.05)',
-                                                transition: 'all 0.3s ease'
-                                            }}
-                                        >
-                                            <Printer size={20} />
-                                        </button>
+                                        {order.salesPerson ? (
+                                            <InvoiceDownloadButton
+                                                order={order}
+                                                products={products}
+                                                salesPeople={salesPeople}
+                                                className={styles.eyeBtn}
+                                                onClick={() => handlePrintInvoice(order)}
+                                                style={{
+                                                    background: order.invoiceDownloaded
+                                                        ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                                        : '#ffffff',
+                                                    border: order.invoiceDownloaded ? 'none' : '2px solid #e2e8f0',
+                                                    color: order.invoiceDownloaded ? '#ffffff' : '#64748b',
+                                                    opacity: 1,
+                                                    cursor: 'pointer',
+                                                    boxShadow: order.invoiceDownloaded
+                                                        ? '0 4px 12px rgba(16, 185, 129, 0.3)'
+                                                        : '0 2px 8px rgba(0, 0, 0, 0.05)',
+                                                    transition: 'all 0.3s ease',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    width: '32px',
+                                                    height: '32px',
+                                                    borderRadius: '8px'
+                                                }}
+                                            >
+                                                {/* @ts-ignore */}
+                                                {({ loading }) => (
+                                                    <Printer size={20} className={loading ? 'animate-pulse opacity-50' : ''} />
+                                                )}
+                                            </InvoiceDownloadButton>
+                                        ) : (
+                                            <button
+                                                disabled
+                                                className={styles.eyeBtn}
+                                                style={{
+                                                    background: '#ffffff',
+                                                    border: '2px solid #e2e8f0',
+                                                    color: '#cbd5e1',
+                                                    cursor: 'not-allowed',
+                                                }}
+                                            >
+                                                <Printer size={20} />
+                                            </button>
+                                        )}
                                     </td>
                                 )}
                                 <td className="flex gap-2 items-center">
@@ -429,6 +460,7 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                         onClose={() => setSelectedOrder(null)}
                         kits={kits}
                         readOnly={selectedOrder.status === 'canceled' || selectedOrder.status === 'sales_order'}
+                        onOrderUpdate={handleOrderUpdate}
                     />
                 )
             }
@@ -499,17 +531,7 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
                 <Plus size={28} strokeWidth={2.5} />
             </button>
 
-            {/* Hidden iframe for invoice printing */}
-            {printFrameUrl && (
-                <iframe
-                    src={printFrameUrl}
-                    style={{ display: 'none' }}
-                    onLoad={() => {
-                        // Clear the URL after the iframe has loaded to allow re-triggering
-                        setTimeout(() => setPrintFrameUrl(null), 1000);
-                    }}
-                />
-            )}
+
         </div>
     );
 }

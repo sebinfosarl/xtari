@@ -14,6 +14,7 @@ import { Order, Product, SalesPerson, Kit } from '@/lib/db';
 import { formatCurrency } from '@/lib/format';
 import SearchableCitySelect from './SearchableCitySelect';
 import SearchableSelect from './SearchableSelect';
+import InvoiceDownloadButton from './pdf/InvoiceDownloadButton';
 
 interface OrderDialogProps {
     order: Order;
@@ -22,13 +23,13 @@ interface OrderDialogProps {
     onClose: () => void;
     readOnly?: boolean;
     kits?: Kit[];
+    onOrderUpdate?: (order: Order) => void;
 }
 
-export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose, readOnly = false, kits }: OrderDialogProps) {
+export default function OrderDialog({ order: initialOrder, products, salesPeople, onClose, readOnly = false, kits, onOrderUpdate }: OrderDialogProps) {
     const router = useRouter();
     const [order, setOrder] = useState<Order>(initialOrder);
     const [isSaving, setIsSaving] = useState(false);
-    const [printFrameUrl, setPrintFrameUrl] = useState<string | null>(null);
 
     // UI States
     const [pendingStatus, setPendingStatus] = useState<Order['status'] | null>(null);
@@ -240,28 +241,26 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
             setIsSaving(false);
         }
     };
-
     const handlePrintInvoice = async () => {
-        if (!readOnly) {
-            const now = new Date().toISOString();
-            const updatedOrder = {
-                ...order,
-                invoiceDownloaded: true,
-                invoiceDate: order.invoiceDate || now, // Set once, keep for reprints
-                logs: addLog('invoice_download', `Downloaded order invoice (Issue Date: ${new Date(now).toLocaleString()})`)
-            };
-            setOrder(updatedOrder);
+        const now = new Date().toISOString();
+        const updatedOrder = {
+            ...order,
+            invoiceDownloaded: true,
+            invoiceDate: order.invoiceDate || now,
+            logs: addLog('invoice_download', `Downloaded order invoice (Issue Date: ${new Date(now).toLocaleString()})`)
+        };
 
-            try {
-                await updateOrderAction(updatedOrder);
-                router.refresh();
-            } catch (err) {
-                console.error('Failed to auto-save invoice status', err);
-            }
+        setOrder(updatedOrder);
+
+        // Notify parent to update list immediately
+        if (onOrderUpdate) onOrderUpdate(updatedOrder);
+
+        try {
+            await updateOrderAction(updatedOrder);
+            router.refresh();
+        } catch (err) {
+            console.error('Failed to auto-save invoice status', err);
         }
-
-        // Silent print via hidden iframe (append timestamp to force reload)
-        setPrintFrameUrl(`/print/invoice/${order.id}?t=${Date.now()}`);
     };
 
     return (
@@ -980,14 +979,21 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                 <footer className={styles.modalFooter}>
                     {(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') && (
-                        <button
+                        <InvoiceDownloadButton
+                            order={order}
+                            products={products}
+                            salesPeople={salesPeople}
+                            className={styles.btnOutline}
                             onClick={handlePrintInvoice}
-                            className="btn btn-outline"
-                            style={{ marginRight: 'auto' }}
-                        >
-                            <FileText size={18} />
-                            Download Invoice
-                        </button>
+                            style={{
+                                background: order.invoiceDownloaded
+                                    ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                    : undefined,
+                                borderColor: order.invoiceDownloaded ? 'transparent' : undefined,
+                                color: order.invoiceDownloaded ? 'white' : undefined,
+                                boxShadow: order.invoiceDownloaded ? '0 4px 12px rgba(16, 185, 129, 0.3)' : undefined
+                            }}
+                        />
                     )}
                     <button onClick={onClose} className="btn btn-outline" style={!(order.status === 'sales_order' && order.salesPerson && order.salesPerson !== '') ? { marginLeft: 'auto' } : {}}>
                         {readOnly ? 'Close' : 'Cancel'}
@@ -1001,13 +1007,7 @@ export default function OrderDialog({ order: initialOrder, products, salesPeople
 
                 {/* HIDDEN INVOICE PRINT AREA */}
                 {/* HIDDEN PRINT FRAME */}
-                {printFrameUrl && (
-                    <iframe
-                        src={printFrameUrl}
-                        style={{ position: 'absolute', width: 0, height: 0, border: 'none', visibility: 'hidden' }}
-                        title="print-frame"
-                    />
-                )}
+
 
                 {/* DYNAMIC POPUPS */}
                 {
