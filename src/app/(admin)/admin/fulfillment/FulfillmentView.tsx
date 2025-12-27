@@ -657,6 +657,7 @@ export default function FulfillmentView({ initialOrders, products, salesPeople, 
                 {activeTab === 'deliveries' && deliveryFilter === 'picked_up' && (
                     <PdfDropzone orders={deliveryOrders} />
                 )}
+                {/* Ensure Dropzone is only visible in Picked Up filter */}
 
                 {activeTab === 'receipts' && (
                     <div className="flex gap-2 mb-6 px-4">
