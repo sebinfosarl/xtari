@@ -61,7 +61,8 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
                     fragile: order.fragile ? "1" : "0",
                     declaredValue: Math.round(order.insuranceValue || order.total).toString(),
                     address: (order.customer.address || order.customer.city || "A domicile").replace(/[\r\n]+/g, " ").trim().substring(0, 200),
-                    nomOrder: order.id,
+                    // Append timestamp to avoid duplicate reference error if order was previously attempted
+                    nomOrder: `${order.id}-${Date.now().toString().slice(-4)}`,
                     comment: "Livraison standard",
                     rangeWeight: order.rangeWeight || "Entre 1.2 Kg et 5 Kg",
                     weight: order.weight?.toString() || "0",
