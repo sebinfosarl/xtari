@@ -331,7 +331,7 @@ export default async function DeliveryNotePage({
                                 <div>Livraison standard</div>
                             </div>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                {(allowOpening == 1 || allowOpening === true) && (
+                                {(allowOpening === 1) && (
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} title="Ouvrir Colis">
                                         <img src="/icon-open.png" alt="Open" style={{ width: '8mm', height: '8mm', objectFit: 'contain' }} />
                                     </div>
