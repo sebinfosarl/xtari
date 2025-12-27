@@ -4,10 +4,8 @@ export default function PrintLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body style={{ margin: 0, padding: 0, background: 'white', color: 'black' }}>
-                {children}
-            </body>
-        </html>
+        <div style={{ margin: 0, padding: 0, background: 'white', color: 'black' }}>
+            {children}
+        </div>
     );
 }

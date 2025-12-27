@@ -66,13 +66,36 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
     const isPickedUp = order.shippingId && ((s.includes('expédi') || s.includes('pickup done') || order.shippingStatus?.includes('Pickup:')) && !s.includes('livr'));
 
     const handlePrintDeliveryNote = async () => {
+        // First, save the current order to ensure all values are persisted
+        try {
+            await updateOrderAction(order);
+        } catch (err) {
+            console.error('Failed to save order before printing:', err);
+            alert('Failed to save changes before printing. Please try again.');
+            return;
+        }
+
+        // Then load the print page with packageCount as URL parameter
         const frame = document.getElementById('print-iframe') as HTMLIFrameElement;
         if (frame) {
-            frame.src = `/print/delivery/${order.id}`;
+            // Pass params as query parameter to avoid database race condition
+            const packageCount = order.packageCount || 1;
+
+            // Get allowOpening directly from DOM to ensure we get current value
+            const allowOpeningSelect = document.getElementById('allow-opening-select') as HTMLSelectElement;
+            const allowOpening = allowOpeningSelect ? allowOpeningSelect.value : (order.allowOpening ?? 0);
+
+            // Get fragile directly from DOM
+            const fragileCheckbox = document.getElementById('fragile-checkbox') as HTMLInputElement;
+            const fragile = fragileCheckbox ? (fragileCheckbox.checked ? '1' : '0') : (order.fragile ? '1' : '0');
+
+            frame.src = `/print/delivery/${order.id}?packageCount=${packageCount}&allowOpening=${allowOpening}&fragile=${fragile}`;
+
             // Track that it was printed
             const res = await markDeliveryNotePrintedAction(order.id);
-            if (res.success && res.order) {
-                setOrder(res.order);
+            if (res.success) {
+                // Only update the deliveryNotePrinted flag, keep all other local changes
+                setOrder({ ...order, deliveryNotePrinted: true });
                 router.refresh(); // Sync with parent
             }
         }
@@ -509,7 +532,7 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'white', padding: '1.5rem', borderRadius: '12px', border: '1px solid #d1fae5', marginBottom: '1.5rem' }}>
                                             <div className={styles.inputGroup}>
                                                 <label>Weight (Kg)</label>
-                                                <input type="number" value={order.weight || 0} onChange={(e) => setOrder({ ...order, weight: parseFloat(e.target.value) })} className={styles.inlineInput} />
+                                                <input type="number" value={order.weight || 1} onChange={(e) => setOrder({ ...order, weight: parseFloat(e.target.value) })} className={styles.inlineInput} />
                                             </div>
                                             <div className={styles.inputGroup}>
                                                 <label>Package Count</label>
@@ -517,14 +540,14 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                             </div>
                                             <div className={styles.inputGroup}>
                                                 <label>Allow Opening</label>
-                                                <select value={order.allowOpening ?? 1} onChange={(e) => setOrder({ ...order, allowOpening: parseInt(e.target.value) })} className={styles.inlineInput}>
+                                                <select id="allow-opening-select" value={order.allowOpening ?? 1} onChange={(e) => setOrder({ ...order, allowOpening: parseInt(e.target.value) })} className={styles.inlineInput}>
                                                     <option value={0}>No</option>
                                                     <option value={1}>Yes</option>
                                                 </select>
                                             </div>
                                             <div className={styles.inputGroup} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                                 <label style={{ margin: 0 }}>Fragile</label>
-                                                <input type="checkbox" checked={order.fragile || false} onChange={(e) => setOrder({ ...order, fragile: e.target.checked })} style={{ width: '20px', height: '20px' }} />
+                                                <input id="fragile-checkbox" type="checkbox" checked={order.fragile || false} onChange={(e) => setOrder({ ...order, fragile: e.target.checked })} style={{ width: '20px', height: '20px' }} />
                                             </div>
                                             <div className={styles.inputGroup}>
                                                 <label>Insurance Value (MAD)</label>
@@ -552,8 +575,21 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                                         if (!confirmed) return;
 
                                                         setIsCreatingShipment(true);
+
+                                                        // First save the order locally to persist UI changes
+                                                        try {
+                                                            await updateOrderAction(order);
+                                                        } catch (err) {
+                                                            console.error('Failed to save order before shipping:', err);
+                                                            alert('Failed to save changes. Please try again.');
+                                                            setIsCreatingShipment(false);
+                                                            return;
+                                                        }
+
+                                                        // Then create shipment
                                                         const result = await createShipmentAction(order);
                                                         setIsCreatingShipment(false);
+
                                                         if (result.success && result.order) {
                                                             setOrder(result.order);
                                                             alert('Shipment created successfully!');
@@ -578,9 +614,23 @@ export default function DeliveryDialog({ order: initialOrder, products, onClose,
                                                     <button
                                                         onClick={async () => {
                                                             if (!confirm('This will push your local modifications (Recipient, Address, Items, Settings) to Cathedis. Continue?')) return;
+
                                                             setIsCreatingShipment(true);
+
+                                                            // First save the order locally to persist UI changes
+                                                            try {
+                                                                await updateOrderAction(order);
+                                                            } catch (err) {
+                                                                console.error('Failed to save order before shipping:', err);
+                                                                alert('Failed to save changes. Please try again.');
+                                                                setIsCreatingShipment(false);
+                                                                return;
+                                                            }
+
+                                                            // Then push to Cathedis
                                                             const result = await createShipmentAction(order);
                                                             setIsCreatingShipment(false);
+
                                                             if (result.success && result.order) {
                                                                 setOrder(result.order);
                                                                 alert('Cathedis shipment updated successfully!');

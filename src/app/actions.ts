@@ -224,6 +224,7 @@ export async function createOrderAction(formData: FormData) {
         salesPerson: formData.get('salesPerson') as string || undefined,
         allowOpening: 1, // Yes by default
         packageCount: 1, // 1 by default
+        weight: 1, // 1 kg by default
     };
 
     await createOrder(order);
