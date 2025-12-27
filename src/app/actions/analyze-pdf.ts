@@ -2,7 +2,8 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
+const apiKey = process.env.GOOGLE_GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '';
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function analyzePdf(formData: FormData) {
     try {
@@ -12,13 +13,15 @@ export async function analyzePdf(formData: FormData) {
             return { success: false, error: 'No file provided' };
         }
 
-        if (!process.env.GOOGLE_API_KEY) {
-            return { success: false, error: 'GOOGLE_API_KEY is not set in environment variables' };
+        if (!apiKey) {
+            return { success: false, error: 'GOOGLE_GEMINI_API_KEY or GOOGLE_API_KEY is not set in environment variables' };
         }
 
         const arrayBuffer = await file.arrayBuffer();
+        console.log('ArrayBuffer size:', arrayBuffer.byteLength);
         const buffer = Buffer.from(arrayBuffer);
         const base64Data = buffer.toString('base64');
+        console.log('Base64 data length:', base64Data.length);
 
         const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
