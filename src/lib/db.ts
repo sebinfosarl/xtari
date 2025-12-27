@@ -347,21 +347,25 @@ export async function createOrder(order: Order) {
         callHistory: order.callHistory,
         logs: order.logs,
         // Include new shipping fields
-        weight: order.weight,
-        packageCount: order.packageCount,
-        fragile: order.fragile,
-        allowOpening: order.allowOpening,
-        width: order.width,
-        height: order.height,
-        length: order.length,
-        rangeWeight: order.rangeWeight,
-        insuranceValue: order.insuranceValue,
-        paymentType: order.paymentType,
-        deliveryType: order.deliveryType
+        // Include new shipping fields - COMMENTED TO FIX SCHEMA MISMATCH
+        // weight: order.weight,
+        // packageCount: order.packageCount,
+        // fragile: order.fragile,
+        // allowOpening: order.allowOpening,
+        // width: order.width,
+        // height: order.height,
+        // length: order.length,
+        // rangeWeight: order.rangeWeight,
+        // insuranceValue: order.insuranceValue,
+        // paymentType: order.paymentType,
+        // deliveryType: order.deliveryType
     });
 
     const { error: orderError } = await supabase.from('Order').insert(orderPayload);
-    if (orderError) { console.error('createOrder (head) error', orderError); return; }
+    if (orderError) {
+        console.error('createOrder (head) error', orderError);
+        throw new Error(`DB Insert Error: ${orderError.message} (${orderError.details || orderError.code})`);
+    }
 
     // 2. Insert Items
     if (order.items && order.items.length > 0) {
@@ -416,17 +420,18 @@ export async function updateOrder(order: Order) {
         callHistory: order.callHistory,
         logs: order.logs,
         // Include new shipping fields
-        weight: order.weight,
-        packageCount: order.packageCount,
-        fragile: order.fragile,
-        allowOpening: order.allowOpening,
-        width: order.width,
-        height: order.height,
-        length: order.length,
-        rangeWeight: order.rangeWeight,
-        insuranceValue: order.insuranceValue,
-        paymentType: order.paymentType,
-        deliveryType: order.deliveryType
+        // Include new shipping fields - COMMENTED TO FIX SCHEMA MISMATCH
+        // weight: order.weight,
+        // packageCount: order.packageCount,
+        // fragile: order.fragile,
+        // allowOpening: order.allowOpening,
+        // width: order.width,
+        // height: order.height,
+        // length: order.length,
+        // rangeWeight: order.rangeWeight,
+        // insuranceValue: order.insuranceValue,
+        // paymentType: order.paymentType,
+        // deliveryType: order.deliveryType
     });
 
     const { error } = await supabase.from('Order').upsert(orderPayload);

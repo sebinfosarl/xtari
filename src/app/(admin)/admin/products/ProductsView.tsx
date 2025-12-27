@@ -88,6 +88,7 @@ export default function ProductsView({ products, kits, isWooCommerceConnected }:
                         </Link>
                         {isWooCommerceConnected && (
                             <button
+                                type="button"
                                 onClick={() => setIsImporting(true)}
                                 className={styles.wooImportBtn}
                                 style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', width: '100%' }}

@@ -187,6 +187,7 @@ export default function OrdersView({ initialOrders, products, salesPeople, isWoo
 
                     {isWooCommerceConnected && (
                         <button
+                            type="button"
                             onClick={() => setIsImporting(true)}
                             className={styles.wooImportBtn}
                         >

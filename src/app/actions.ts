@@ -920,7 +920,7 @@ export async function importWoocommerceOrdersAction(after?: string, before?: str
         }
 
         revalidatePath('/admin/orders');
-        return { success: true, count: importedCount };
+        return { success: true, count: importedCount, skipped: wcOrders.length - importedCount, totalFetched: wcOrders.length };
 
     } catch (e: any) {
         console.error('Import failed', e);

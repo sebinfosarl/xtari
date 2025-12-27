@@ -13,7 +13,7 @@ export default function ImportOrdersDialog({ onClose, onSuccess }: ImportOrdersD
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [isImporting, setIsImporting] = useState(false);
-    const [result, setResult] = useState<{ success: boolean; count?: number; error?: string } | null>(null);
+    const [result, setResult] = useState<{ success: boolean; count?: number; skipped?: number; totalFetched?: number; error?: string } | null>(null);
 
     const handleImport = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,7 +33,7 @@ export default function ImportOrdersDialog({ onClose, onSuccess }: ImportOrdersD
             const res = await importWoocommerceOrdersAction(after, before);
 
             if (res.success) {
-                setResult({ success: true, count: res.count });
+                setResult({ success: true, count: res.count, skipped: res.skipped, totalFetched: res.totalFetched });
                 if (onSuccess) onSuccess();
             } else {
                 setResult({ success: false, error: res.error });
@@ -73,6 +73,15 @@ export default function ImportOrdersDialog({ onClose, onSuccess }: ImportOrdersD
                             <h3 className={styles.successTitle}>Import Successful!</h3>
                             <p className={styles.successText}>
                                 Successfully imported <span className={styles.count}>{result.count}</span> new orders.
+                                {result.skipped !== undefined && (
+                                    <>
+                                        <br />
+                                        <span className="text-sm text-gray-500">
+                                            Skipped {result.skipped} existing orders.
+                                            (Fetched: {result.totalFetched})
+                                        </span>
+                                    </>
+                                )}
                             </p>
                             <button
                                 onClick={() => {
