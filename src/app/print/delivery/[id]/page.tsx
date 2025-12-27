@@ -185,7 +185,7 @@ export default async function DeliveryNotePage({
                     height: 12mm;
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: center;
                     padding: 0 4mm;
                     border-bottom: 2px solid black;
                 }
@@ -313,7 +313,7 @@ export default async function DeliveryNotePage({
                                     : <span style={{ fontSize: '14px' }}>Voir Colis 1/{packageCount}</span>
                                 }
                             </div>
-                            <div className="sort-code">{sortCode}</div>
+                            {/* Removed synthetic sort code <div className="sort-code">{sortCode}</div> */}
                         </div>
 
                         <div className="barcode-strip">

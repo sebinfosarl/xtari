@@ -110,6 +110,11 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
         throw new Error(`Cathedis API returned success status but failed to provide a delivery ID. \n\nRaw API Response: ${JSON.stringify(result)} \n\nThis usually means a required field (like address) is invalid or the Order ID is a duplicate.`);
     }
 
+    // Debug: Log full response to find sorting code
+    console.log('=== CATHEDIS FULL RESPONSE ===');
+    console.log(JSON.stringify(result.data[0], null, 2));
+    console.log('==============================');
+
     return result.data[0].values?.delivery || result.data[0];
 }
 
