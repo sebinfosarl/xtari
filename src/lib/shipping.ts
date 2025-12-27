@@ -39,12 +39,13 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
         data: {
             context: {
                 delivery: {
-                    id: order.shippingId, // Include ID if updating
-                    recipient: order.customer.name,
-                    city: order.customer.city || "Casablanca",
-                    sector: order.customer.sector || "Autre",
+                    // REMOVED id to force creation and avoid invalid ID errors (e.g. sending LD... as internal ID)
+                    // id: order.shippingId, 
+                    recipient: (order.customer.name || "Client").trim(),
+                    city: (order.customer.city || "Casablanca").trim(),
+                    sector: (order.customer.sector || "Autre").trim(),
                     phone: (() => {
-                        const p = order.customer.phone.replace(/\s/g, '');
+                        const p = (order.customer.phone || "").replace(/\s/g, '');
                         // If it's a 9 digit number starting with 5, 6, or 7, prepend 0
                         if (p.length === 9 && ['5', '6', '7'].includes(p[0])) {
                             return '0' + p;
@@ -53,13 +54,13 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
                         if (p.startsWith('+212')) {
                             return '0' + p.substring(4);
                         }
-                        return p;
+                        return p || "0600000000"; // Fallback to avoid empty phone error
                     })(),
                     amount: Math.round(order.total).toString(),
                     caution: "0",
                     fragile: order.fragile ? "1" : "0",
                     declaredValue: Math.round(order.insuranceValue || order.total).toString(),
-                    address: order.customer.address || order.customer.city || "A domicile",
+                    address: (order.customer.address || order.customer.city || "A domicile").replace(/[\r\n]+/g, " ").trim().substring(0, 200),
                     nomOrder: order.id,
                     comment: "Livraison standard",
                     rangeWeight: order.rangeWeight || "Entre 1.2 Kg et 5 Kg",
@@ -71,7 +72,7 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
                     paymentType: order.paymentType || "ESPECES",
                     deliveryType: order.deliveryType || "Livraison CRBT",
                     packageCount: order.packageCount?.toString() || "1",
-                    allowOpening: order.allowOpening !== undefined ? order.allowOpening.toString() : "1"
+                    allowOpening: (order.allowOpening === 1 || order.allowOpening === '1' || order.allowOpening === true) ? "1" : "0"
                 }
             }
         }
@@ -92,6 +93,13 @@ export async function createCathedisDelivery(order: any, jsessionid: string, pro
 
     if (result.status !== 0) {
         throw new Error(result.message || 'Failed to create Cathedis delivery');
+    }
+
+    // Check if Cathedis returned an error object in data
+    if (result.data?.[0]?.error) {
+        const errorMsg = result.data[0].error.message || 'Unknown error';
+        console.error('Cathedis API returned error in data:', result);
+        throw new Error(`Cathedis API Error: ${errorMsg}\n\nOrder ID: ${order.id}\nRaw Response: ${JSON.stringify(result)}\n\nCommon causes:\n- Duplicate Order ID (already shipped)\n- Invalid or missing address\n- Invalid phone number format\n- Invalid city/sector`);
     }
 
     const deliveryId = result.data?.[0]?.id || result.data?.[0]?.values?.delivery?.id;
